@@ -1,5 +1,5 @@
 #This 'game' is less of a game and more of a pet project type thing. it is nowhere close to being done it is just fun to work on
-'''Last edited: 4/22/22 @ 10:45 PM''' wow cool
+'''Last edited: 4/22/22 @ 10:45 PM'''
 '''To-Do list(In order of most to least importance):
 
             1. Work on Object class  ###MOST IMPORTANT: Game will mostly not function without this
