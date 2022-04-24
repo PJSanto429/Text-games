@@ -3,8 +3,9 @@ from time import sleep
 from main import *
 
 class Object: #DOESN'T WORK     GARBAGE
-    def __init__(self, name, description = 'void', health = 0, money = 0, code = 000, takeable = False, inInventory = False, room = 'void'):
+    def __init__(self, name, player_room, description = 'void', room = 'void', health = 0, money = 0, takeable = False, inInventory = False, code = 000):
         self.name = name #mandatory
+        self.player_room = player_room
         self.description = description #mandatory
         self.health = health        #Health and money will be set to 0 as a default
         self.money = money          #
@@ -13,12 +14,25 @@ class Object: #DOESN'T WORK     GARBAGE
         self.inInventory = inInventory  #this will always be false by default
         self.room = room #default is void(kind of a storage area)
 
+        self.cantSee = "Hmm, I can't see that"
+        self.noDesc = "I see nothing special about that"
+
     def item_description(self):
-        if self.description == 'void':
-            pass
-        if player_room == self.room:
-            print()
-            type_effect(self.description)
+        if self.player_room == self.room:
+
+            if self.description == 'void':
+                print()
+                type_effect(self.noDesc)
+
+            else:
+                print()
+                type_effect(self.description)
+
+        else:
+            print
+            type_effect(self.cantSee)
+
+        
 
     def add_descrition(self, description):
         self.description = description

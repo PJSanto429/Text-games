@@ -1,7 +1,14 @@
 #This 'game' is less of a game and more of a pet project type thing. it is nowhere close to being done it is just fun to work on
-'''Last edited: 4/22/22 @ 10:45 PM'''
-'''To-Do list(In order of most to least importance):
+'''Last edited: 4/23/22 @ 11:08 PM'''
 
+#Last worked on:
+'''
+Worked on Object class a littl more. Better, but not done yet
+Tried to add a random letter generator, but it doesn't work. GARBAGE
+'''
+
+#To-Do list(In order of most to least importance):
+'''
             1. Work on Object class  ###MOST IMPORTANT: Game will mostly not function without this
                 A. picking up and dropping stuff
                     I. Inventory system: still pretty bare bones and incomplete
@@ -12,7 +19,7 @@
             2. Player movement(room to room)   ##Pretty Important: not nearly as important as 1, but still vital to making the game work. game won't work at all past the starting room without this
                 A. maybe add different 'look' directions 
 
-            3. Text Input  ###VERY IMPORTANT: should be 1, but I don't want to work on it because it is quite boring
+            3. Text Input  ###VERY IMPORTANT: should be 1, but I don't want to work on it because it is quite boring. Also it will be much easier to do once previous stuff is done
                 A. get it working. it pretty much does nothing
                 B. When more complete, integrate with Object class(item descriptions, inventory, etc)
 
@@ -29,7 +36,8 @@
 #imports
 from time import sleep
 import sys
-from random import randint
+from string import ascii_letters, ascii_lowercase, ascii_uppercase
+from random import randint, choice
 
 #constants:
 yes = ['yes','y'] #these two are for asking the player simple questions: if choice in yes:
@@ -41,6 +49,23 @@ def type_effect(text): #typewriter effect. idk how it works
         sleep(0.04)
         sys.stdout.write(char)
         sys.stdout.flush()
+
+def randLet(amount=1, choice='all'):  #TOTAL GARBAGE. error = 'str' object is not callable. IDK wtf to do and I don't really care
+    randLetList = []
+    a = (ascii_letters)
+    '''if choice == 'all':
+        x = ascii_letters
+    elif choice == 'upper':
+        x = ascii_uppercase
+    elif choice == 'lower':
+        x = ascii_lowercase'''
+
+    for i in range(amount):
+        y = randint(1,100)
+        randLetList.append(y)
+
+    type_effect(randLetList)
+    #random.choice(string.ascii_letters)
 
 def start_stats(): #health - money - inventory  ALL = 0
     health = 100
