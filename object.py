@@ -2,8 +2,9 @@ import sys
 from time import sleep
 from main import *
 
-class Object: #DOESN'T WORK     GARBAGE
-    def __init__(self, name, player_room, description = 'void', room = 'void', health = 0, money = 0, takeable = False, inInventory = False, code = 000):
+class Object: #unfinished - main priority
+    #name, player_room, description, room, takeable
+    def __init__(self, name, player_room = 'void', room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, code = 000):
         self.name = name #mandatory
         self.player_room = player_room
         self.description = description #mandatory
@@ -32,25 +33,31 @@ class Object: #DOESN'T WORK     GARBAGE
             print
             type_effect(self.cantSee)
 
-        
-
     def add_descrition(self, description):
         self.description = description
+
+    def change_room(self, room):
+        self.room = room
+
+    def change_descriptino(self, desccription):
+        self.description = desccription
     
-    def test(self):
+    def test(self): #prints all item descriptions
         print()
         type_effect(f"Name: {self.name}")
         print()
+        type_effect(f"Player Room: {self.player_room}")
+        print()
+        type_effect(f"Room: {self.room}")
+        print()
         type_effect(f"Description: {self.description}")
+        print()
+        type_effect(f"Takeable: {self.takeable}")
+        print()
+        type_effect(f"inInventory: {self.inInventory}")
         print()
         type_effect(f"Health: {self.health}")
         print()
         type_effect(f"Money: {self.money}")
         print()
         type_effect(f"Code: {self.code}")
-        print()
-        type_effect(f"Takeable: {self.takeable}")
-        print()
-        type_effect(f"inInventory: {self.inInventory}")
-        print()
-        type_effect(f"Room: {self.room}")

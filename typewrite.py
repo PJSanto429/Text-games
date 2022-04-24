@@ -6,6 +6,7 @@ from time import sleep
 from main import *
 from object import Object
 
-x = Object('key', 'start', 'bruh', 'start')
+#name, player_room, description = 'void', room = 'void', takeable = False, inInventory = False, health = 0, money = 0, code = 000
+x = Object('key', 'start', 'start', 'This is a large skeleton key, with a lot of rust all over the handle', True, False)
 
-x.item_description()
+x.test()

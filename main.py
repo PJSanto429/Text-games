@@ -3,8 +3,8 @@
 
 #Last worked on:
 '''
-Worked on Object class a littl more. Better, but not done yet
-Tried to add a random letter generator, but it doesn't work. GARBAGE
+Worked on Object class a little more. Better, but not done yet
+Tried to add a random letter generator, but it doesn't work. GARBAGE - DON'T spend any more time on it
 '''
 
 #To-Do list(In order of most to least importance):
@@ -43,14 +43,14 @@ from random import randint, choice
 yes = ['yes','y'] #these two are for asking the player simple questions: if choice in yes:
 no = ['no','n']
 
-def type_effect(text): #typewriter effect. idk how it works
+def type_effect(text = ""): #typewriter effect. idk how it works
     words = text
     for char in words:
         sleep(0.04)
         sys.stdout.write(char)
         sys.stdout.flush()
 
-def randLet(amount=1, choice='all'):  #TOTAL GARBAGE. error = 'str' object is not callable. IDK wtf to do and I don't really care
+def rand_let(amount=1, choice='all'):  #TOTAL GARBAGE. error = 'str' object is not callable. IDK wtf to do and I don't really care
     randLetList = []
     a = (ascii_letters)
     '''if choice == 'all':
