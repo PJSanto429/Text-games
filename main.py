@@ -1,10 +1,10 @@
 #This 'game' is less of a game and more of a pet project type thing. it is nowhere close to being done it is just fun to work on
-'''Last edited: 4/23/22 @ 11:08 PM'''
 
-#Last worked on:
+'''Last edited: 4/24/22 @ 8:50 PM ==> Last worked on:'''     
 '''
-Worked on Object class a little more. Better, but not done yet
-Tried to add a random letter generator, but it doesn't work. GARBAGE - DON'T spend any more time on it
+=> Worked on Object class a little more. => change name, description, isTakeable,item description should work(add descriptions)
+    => rearanged objectpropertie to what will be best (less used stuff with be at the end and vice versa)
+=> Changed typeWrite.py to testBed.py (makes more sense to have new name)
 '''
 
 #To-Do list(In order of most to least importance):
@@ -12,6 +12,9 @@ Tried to add a random letter generator, but it doesn't work. GARBAGE - DON'T spe
             1. Work on Object class  ###MOST IMPORTANT: Game will mostly not function without this
                 A. picking up and dropping stuff
                     I. Inventory system: still pretty bare bones and incomplete
+                    II. Make sure that item is in player room
+                        1. maybe check if the item room and player room are the same as a first step?
+
                 B. Item Descriptions
                     I. For stuff with no description, put: "I see nothing special about (item)"
                     II. For stuff not in room, put: "Hmm, I can't see that'
@@ -23,13 +26,13 @@ Tried to add a random letter generator, but it doesn't work. GARBAGE - DON'T spe
                 A. get it working. it pretty much does nothing
                 B. When more complete, integrate with Object class(item descriptions, inventory, etc)
 
-            4. Stuff to do/get
+            4. Stuff to do/get    #fun stuff(for player)
                 A. Find treasure/trophies
                 B. Solve puzzles
                 C. Other characters
                     I. Enemies
                     II. Friendlies
-                        1. Companians such as a dog or hobbit-type thing(idk if hobbits are nice but in this game they will be)
+                        1. Companion such as a dog or hobbit-type thing(idk if hobbits are nice but in this game they might be)
                     III. Shopkeepers/merchants
                 '''
 
@@ -72,25 +75,12 @@ def start_stats(): #health - money - inventory  ALL = 0
     money = 0
     inventory = []
 
-#room inventories:
-void = []
-starting_room_INV = ['house','chair','cat'] #these are not going to end up in the 'final' product, currently being used for testing 
+#room inventories:  #i don't think i will need these 
+void = ['house','chair','cat']
+starting_room_INV = [] #these are not going to end up in the 'final' product, currently being used for testing 
 RM_1_INV = []
 
 item_list = starting_room_INV + RM_1_INV
-
-'''
-#all items:
-def item_descriptions(item): #Add descriptions for ALL items
-    #if item in player_room  #make sure that the item getting looked at is in the room the player is in
-    if item == 'key':
-        print()
-        type_effect("This is a large gold key, with a large amount of rust all over the handle")
-    if item == 'cat':
-        print()
-        type_effect("this is a very cool looking cat")
-        '''
-
 
 def text_input(text, player_room): #not done (not even close) work on this first
     text = text.lower()
@@ -219,7 +209,7 @@ def tutorial(): #done
     print()
     sleep(.5)
     print()
-    type_effect("(You Type) Pick up Knife")
+    type_effect("(You Type) Take Knife")
     print()
     sleep(.5)
     type_effect("You have picked up the Knife!")
@@ -255,7 +245,6 @@ def tutorial(): #done
     print()
     type_effect("This concludes the tutorial, please press ENTER to start the game")
     choice = input()
-
 
 #introduction
 def introduction(): #pretty much done
