@@ -1,6 +1,9 @@
+'''Object class. as of date on main.py, it is UNFINISHED'''
+
 import sys
 from time import sleep
 from main import *
+from room import Room
 
 class Object: #unfinished - main priority
     #name, player_room, description, room, takeable

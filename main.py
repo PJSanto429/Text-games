@@ -19,14 +19,22 @@
                     I. For stuff with no description, put: "I see nothing special about (item)"
                     II. For stuff not in room, put: "Hmm, I can't see that'
 
-            2. Player movement(room to room)   ##Pretty Important: not nearly as important as 1, but still vital to making the game work. game won't work at all past the starting room without this
-                A. maybe add different 'look' directions 
+            2. Work on Room class
 
             3. Text Input  ###VERY IMPORTANT: should be 1, but I don't want to work on it because it is quite boring. Also it will be much easier to do once previous stuff is done
                 A. get it working. it pretty much does nothing
                 B. When more complete, integrate with Object class(item descriptions, inventory, etc)
 
-            4. Stuff to do/get    #fun stuff(for player)
+                    stuff up here is the bones and meat of the project, CAN  be transfered to another game.
+---------------------------------------------------------------------------------------------------------------
+                    stuff down here is more specific to the game, this is the creative part
+                    (#4 - player movement is pretty simple to change for another game)
+                    (#5 - stuff to do is the most creative part and would change most for a new project)
+
+            4. Player movement(room to room)   ##Pretty Important: not nearly as important as 1, but still vital to making the game work. game won't work at all past the starting room without this
+                A. maybe add different 'look' directions 
+            
+            5. Stuff to do/get    #fun stuff(for player), wrap up
                 A. Find treasure/trophies
                 B. Solve puzzles
                 C. Other characters
@@ -34,6 +42,7 @@
                     II. Friendlies
                         1. Companion such as a dog or hobbit-type thing(idk if hobbits are nice but in this game they might be)
                     III. Shopkeepers/merchants
+                        1. Buy stuff - set object money to negative initially, then set it to zero after taking it
                 '''
 
 #imports
