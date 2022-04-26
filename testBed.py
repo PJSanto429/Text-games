@@ -4,12 +4,9 @@ import sys
 from time import sleep
 from main import *
 from object import Object
+from room import Room
 
-#name, player_room, description = 'void', room = 'void', takeable = False, inInventory = False, health = 0, money = 0, code = 000
-x = Object('key', 'start', 'start', 'void', True, False)
+#name, player_room, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, code = 000
+x = Object('key', 'start', 'start', 'this is a large gold key', True, True)
 
-#x.add_description("this is a large grey key. It sucks!")
-
-x.item_description('void','void')
-
-#x.test()
+text_input('take key')

@@ -1,8 +1,9 @@
 #This 'game' is less of a game and more of a pet project type thing. it is nowhere close to being done it is just fun to work on
 
-'''Last edited: 4/24/22 @ 8:50 PM ==> Last worked on:'''     
-'''
-=> Worked on Object class a little more. => change name, description, isTakeable,item description should work(add descriptions)
+'''Last edited: 4/24/22 @ 8:50 PM ==> Last worked on:
+In order of newest to oldest:
+
+=> Worked on Object class a little more. => change name, description, isTakeable, item description should work(add descriptions)
     => rearanged objectpropertie to what will be best (less used stuff with be at the end and vice versa)
 => Changed typeWrite.py to testBed.py (makes more sense to have new name)
 '''
@@ -19,7 +20,10 @@
                     I. For stuff with no description, put: "I see nothing special about (item)"
                     II. For stuff not in room, put: "Hmm, I can't see that'
 
-            2. Work on Room class
+            2. Work on Room class #Most recent addidion => not good yet
+                A. room descriptions
+                B. room inventories
+                C. to make a room, make a def that creates the room and all the fun stuff, and then tell ths player what to do, etc.
 
             3. Text Input  ###VERY IMPORTANT: should be 1, but I don't want to work on it because it is quite boring. Also it will be much easier to do once previous stuff is done
                 A. get it working. it pretty much does nothing
@@ -41,6 +45,7 @@
                     I. Enemies
                     II. Friendlies
                         1. Companion such as a dog or hobbit-type thing(idk if hobbits are nice but in this game they might be)
+                        2. characters that help you occasionally
                     III. Shopkeepers/merchants
                         1. Buy stuff - set object money to negative initially, then set it to zero after taking it
                 '''
@@ -50,6 +55,8 @@ from time import sleep
 import sys
 from string import ascii_letters, ascii_lowercase, ascii_uppercase
 from random import randint, choice
+from object import Object
+from room import Room
 
 #constants:
 yes = ['yes','y'] #these two are for asking the player simple questions: if choice in yes:
@@ -88,20 +95,23 @@ def start_stats(): #health - money - inventory  ALL = 0
 void = ['house','chair','cat']
 starting_room_INV = [] #these are not going to end up in the 'final' product, currently being used for testing 
 RM_1_INV = []
-
 item_list = starting_room_INV + RM_1_INV
 
-def text_input(text, player_room): #not done (not even close) work on this first
+def text_input(text, player_room='void'): #not done (not even close) work on this first
     text = text.lower()
     text = text.split()
     if text[0] == 'look':
         if text[1] == 'at':
-            if text[2] in item_list:
+            if text[2]:
                 pass
                 #item_description(text[2])
     
-    if text[0] == 'take':
-        pass            #find a way to make sure that the item is able to be taken(in the players current room)
+    if text[1] == 'key':
+        from testBed import x #this is for testing purposes only. when done, all objects will be initialized in main.
+        print(text[0])
+        x.pick_drop(text[0])
+
+#x = Object('key', 'start', 'start', 'this is a large gold key', True, False)
 
 def inventory(player_room, action='look'): #NOT DONE | work on this second
     if player_room == "starting_room":

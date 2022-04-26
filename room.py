@@ -2,8 +2,6 @@
 
 import sys
 from time import sleep
-from main import *
-from object import Object
 
 class Room():
     def __init__(self, name='void', description='void'):

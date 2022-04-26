@@ -2,8 +2,13 @@
 
 import sys
 from time import sleep
-from main import *
-from room import Room
+
+def type_effect(text = ""): #typewriter effect. idk how it works
+    words = text
+    for char in words:
+        sleep(0.04)
+        sys.stdout.write(char)
+        sys.stdout.flush()
 
 class Object: #unfinished - main priority
     #name, player_room, description, room, takeable
@@ -51,12 +56,12 @@ class Object: #unfinished - main priority
     def is_takeable(self, takeable): #either True or False
         self.takeable = takeable
 
-    def pick_drop(self, action): #either 'take' or 'drop'; WILL BE USED  A LOT
+    def pick_drop(self, action, player_room = 'void'): #either 'take' or 'drop'; WILL BE USED  A LOT
         if action == 'take':
-            if self.inInventory == True: #checks to see if the 
+            if self.inInventory == True: #checks to see if the item is already in the player inventory
                 print()
                 type_effect(f"You already have {self.name} in your inventory")
-            else:
+            elif self.inInventory == False:
                 self.inInventory = True
                 print()
                 type_effect(f"You have picked up {self.name}")
@@ -66,10 +71,9 @@ class Object: #unfinished - main priority
                 self.inInventory = False
                 print()
                 type_effect(f"You have dropped {self.name}")
-            else:
+            elif self.inInventory == False:
                 print()
-                type_effect(f"You don't have{self.name} in your inventory")
-        #self.inInventory = inInventory
+                type_effect(f"You don't have {self.name} in your inventory")
 
     def test(self): #prints all item descriptions
         print()
