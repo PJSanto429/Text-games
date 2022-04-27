@@ -27,24 +27,16 @@ class Object: #unfinished - main priority
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
 
-    def item_description(self, player_room='void', room='void'):
-        self.player_room = player_room
-        self.room = room
-        if self.player_room == self.room:
-
-            if self.description == 'void':
-                print()
-                type_effect(self.noDesc)
-
-            else:
-                print()
-                type_effect(self.description)
+    def item_description(self):
+        if self.description == 'void':
+            print()
+            type_effect(self.noDesc)
 
         else:
-            print
-            type_effect(self.cantSee)
+            print()
+            type_effect(self.description)
 
-    def action(self, action):
+    def action(self, action):  #redirects the code to either item_description or take_drop
         if action == 'take' or action == 'drop':
             self.pick_drop(action)
         elif action == 'look':
@@ -62,26 +54,28 @@ class Object: #unfinished - main priority
     def is_takeable(self, takeable): #either True or False
         self.takeable = takeable
 
-    def pick_drop(self, action, player_room = 'void'): #either 'take' or 'drop'; WILL BE USED  A LOT
+    def pick_drop(self, action, inform=True): #either 'take' or 'drop'; WILL BE USED  A LOT
         if action == 'take':
             if self.inInventory == True: #checks to see if the item is already in the player inventory
-                print()
-                type_effect(f"You already have {self.name} in your inventory")
+                if inform:
+                    print()
+                    type_effect(f"You already have {self.name} in your inventory")
             elif self.inInventory == False:
                 self.inInventory = True
-                print()
-                type_effect(f"You have picked up {self.name}")
+                if inform:
+                    print()
+                    type_effect(f"You have picked up {self.name}")
 
         if action == 'drop':
-            #print()
-            #type_effect(f"You have dropped {self.name}")
             if self.inInventory == True:
                 self.inInventory = False
-                print()
-                type_effect(f"You have dropped {self.name}")
+                if inform:
+                    print()
+                    type_effect(f"You have dropped {self.name}")
             elif self.inInventory == False:
-                print()
-                type_effect(f"You don't have {self.name} in your inventory")
+                if inform:
+                    print()
+                    type_effect(f"You don't have {self.name} in your inventory")
 
     def test(self): #prints all item descriptions
         print()

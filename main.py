@@ -100,17 +100,19 @@ starting_room_INV = [] #these are not going to end up in the 'final' product, cu
 RM_1_INV = []
 item_list = starting_room_INV + RM_1_INV
 
-x = Object('key', 'start', 'start', 'this is a large gold key', True, True)
-y = Object('cat', 'start', 'start', 'this is a big dumb cat', True, True)
+key = Object('key', 'start', 'start', 'this is a large gold key', True, True)
+cat = Object('cat', 'start', 'start', 'this is a big dumb cat', True, True)
 
-def text_input(text, player_room='void'): #not done (not even close) work on this first
+def text_input(text, player_room='void'): #not done (getting there)
     text = text.lower()
     text = text.split()
-
     action = text[0]
+    x = len(text)
 
-    if text[1] == 'key' or text[2] == 'key':
-        x.action(action)
+    if text[x] == 'key':
+        key.action(action)
+    if text[1] == 'cat' or text[2] == 'cat':
+        cat.action(action)
 
     '''if text[0] == 'look':
         if text[1] == 'at':
