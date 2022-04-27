@@ -27,7 +27,7 @@ class Object: #unfinished - main priority
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
 
-    def item_description(self, player_room, room):
+    def item_description(self, player_room='void', room='void'):
         self.player_room = player_room
         self.room = room
         if self.player_room == self.room:
@@ -43,6 +43,12 @@ class Object: #unfinished - main priority
         else:
             print
             type_effect(self.cantSee)
+
+    def action(self, action):
+        if action == 'take' or action == 'drop':
+            self.pick_drop(action)
+        elif action == 'look':
+            self.item_description()
 
     def change_name(self, name):
         self.name = name

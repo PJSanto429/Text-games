@@ -72,7 +72,7 @@ def type_effect(text = ""): #typewriter effect. idk how it works
         sys.stdout.write(char)
         sys.stdout.flush()
 
-def rand_let(amount=1, choice='all'):  #TOTAL GARBAGE. error = 'str' object is not callable. IDK wtf to do and I don't really care
+def rand_let(amount=1, choice='all'):  #TOTAL GARBAGE. error = 'str' object is not callable. IDK what to do and I don't really care
     randLetList = []
     a = (ascii_letters)
     '''if choice == 'all':
@@ -101,20 +101,33 @@ RM_1_INV = []
 item_list = starting_room_INV + RM_1_INV
 
 x = Object('key', 'start', 'start', 'this is a large gold key', True, True)
+y = Object('cat', 'start', 'start', 'this is a big dumb cat', True, True)
 
 def text_input(text, player_room='void'): #not done (not even close) work on this first
     text = text.lower()
     text = text.split()
 
-    if text[0] == 'look':
+    action = text[0]
+
+    if text[1] == 'key' or text[2] == 'key':
+        x.action(action)
+
+    '''if text[0] == 'look':
         if text[1] == 'at':
-            if text[2]:
+            if text[2] == 'key':
                 x.item_description('x', 'x')
+            elif text[2] == 'cat':
+                y.item_description('x', 'x')
+            else:
+                print()
+                type_effect(text[2])
     
     if text[0] == 'take':
-        x.pick_drop('take')
+        if text[1] == 'key':
+            x.pick_drop('take')
     elif text[0] == 'drop':
-        x.pick_drop('drop')
+        if text[1] == 'key':
+            x.pick_drop('drop')'''
 
     '''if text[1] == 'key':#this is for testing purposes only. when done, all objects will be initialized in main.
         if text[0] == 'drop':
