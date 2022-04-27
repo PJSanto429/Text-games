@@ -1,7 +1,9 @@
 #This 'game' is less of a game and more of a pet project type thing. it is nowhere close to being done it is just fun to work on
 
-'''Last edited: 4/24/22 @ 8:50 PM ==> Last worked on:
+'''Last edited: 4/26/22 @ 9:49 PM ==> Last worked on:
 In order of newest to oldest:
+
+=>fixed look at and take and drop. DO NOT IMPORT FROM TESTBED. IDK why, but it will print stuff twice. very annoying
 
 => Worked on Object class a little more. => change name, description, isTakeable, item description should work(add descriptions)
     => rearanged objectpropertie to what will be best (less used stuff with be at the end and vice versa)
@@ -13,6 +15,7 @@ In order of newest to oldest:
             1. Work on Object class  ###MOST IMPORTANT: Game will mostly not function without this
                 A. picking up and dropping stuff
                     I. Inventory system: still pretty bare bones and incomplete
+                        1. add stuff to player_inventory while taking it from room inventory and vice versa
                     II. Make sure that item is in player room
                         1. maybe check if the item room and player room are the same as a first step?
 
@@ -92,24 +95,35 @@ def start_stats(): #health - money - inventory  ALL = 0
     inventory = []
 
 #room inventories:  #i don't think i will need these 
-void = ['house','chair','cat']
+void_INV = ['house','chair','cat']
 starting_room_INV = [] #these are not going to end up in the 'final' product, currently being used for testing 
 RM_1_INV = []
 item_list = starting_room_INV + RM_1_INV
 
+x = Object('key', 'start', 'start', 'this is a large gold key', True, True)
+
 def text_input(text, player_room='void'): #not done (not even close) work on this first
     text = text.lower()
     text = text.split()
+
     if text[0] == 'look':
         if text[1] == 'at':
             if text[2]:
-                pass
-                #item_description(text[2])
+                x.item_description('x', 'x')
     
-    if text[1] == 'key':
-        from testBed import x #this is for testing purposes only. when done, all objects will be initialized in main.
-        print(text[0])
-        x.pick_drop(text[0])
+    if text[0] == 'take':
+        x.pick_drop('take')
+    elif text[0] == 'drop':
+        x.pick_drop('drop')
+
+    '''if text[1] == 'key':#this is for testing purposes only. when done, all objects will be initialized in main.
+        if text[0] == 'drop':
+            x.pick_drop('drop')
+        elif text[0] == 'take':
+            x.pick_drop('take')
+        else:
+            print()
+            type_effect('you idiot')'''
 
 #x = Object('key', 'start', 'start', 'this is a large gold key', True, False)
 

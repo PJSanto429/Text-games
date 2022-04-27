@@ -67,6 +67,8 @@ class Object: #unfinished - main priority
                 type_effect(f"You have picked up {self.name}")
 
         if action == 'drop':
+            #print()
+            #type_effect(f"You have dropped {self.name}")
             if self.inInventory == True:
                 self.inInventory = False
                 print()

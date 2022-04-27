@@ -7,6 +7,6 @@ from object import Object
 from room import Room
 
 #name, player_room, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, code = 000
-x = Object('key', 'start', 'start', 'this is a large gold key', True, True)
+#x = Object('key', 'start', 'start', 'this is a large gold key', True, True)
 
-text_input('take key')
+text_input('take key')  
