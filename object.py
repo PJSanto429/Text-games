@@ -2,6 +2,9 @@
 
 import sys
 from time import sleep
+from random import randint, choice
+
+player_inventory = []
 
 def type_effect(text = ""): #typewriter effect. idk how it works
     words = text
@@ -11,8 +14,8 @@ def type_effect(text = ""): #typewriter effect. idk how it works
         sys.stdout.flush()
 
 class Object: #unfinished - main priority
-    #name, player_room, description, room, takeable
-    def __init__(self, name = 'void', player_room = 'void', room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, code = 000):
+    #name, player_room, room, description, takeable, inInventory
+    def __init__(self, name = 'void', player_room = 'void', room = 'void', description = 'void', takeable = False, inInventory = False, code = .0000, health = 0, money = 0):
         self.name = name #mandatory
         self.player_room = player_room
         self.room = room #default is void(kind of a storage area)
@@ -20,9 +23,11 @@ class Object: #unfinished - main priority
         self.description = description #mandatory
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
+        if self.inInventory:
+            player_inventory.append(self.name)
+        self. code = code  #for items that might be special. most will be 000
         self.health = health        #Health and money will be set to 0 as a default
         self.money = money          #
-        self. code = code  #for items that might be special. most will be 000
 
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
@@ -51,26 +56,34 @@ class Object: #unfinished - main priority
     def change_description(self, description):
         self.description = description
 
-    def is_takeable(self, takeable): #either True or False
+    def change_takeable(self, takeable): #either True or False
         self.takeable = takeable
 
     def pick_drop(self, action, inform=True): #either 'take' or 'drop'; WILL BE USED  A LOT
         if action == 'take':
-            if self.inInventory == True: #checks to see if the item is already in the player inventory
-                if inform:
-                    print()
-                    type_effect(f"You already have {self.name} in your inventory")
-            elif self.inInventory == False:
-                self.inInventory = True
-                if inform:
-                    print()
-                    type_effect(f"You have picked up {self.name}")
+            if self.takeable == True:
+
+                if self.inInventory == True: #checks to see if the item is already in the player inventory
+                    if inform:
+                        print()
+                        type_effect(f"You already have {self.name} in your inventory")
+                elif self.inInventory == False:
+                    self.inInventory = True
+                    if inform:
+                        print()
+                        player_inventory.append(self.name)
+                        type_effect(f"You have picked up {self.name}")
+
+            elif self.takeable == False:
+                print()
+                type_effect("Despite your best attempts, you are unable to pick this up")
 
         if action == 'drop':
             if self.inInventory == True:
                 self.inInventory = False
                 if inform:
                     print()
+                    player_inventory.remove(self.name)
                     type_effect(f"You have dropped {self.name}")
             elif self.inInventory == False:
                 if inform:

@@ -1,7 +1,10 @@
 #This 'game' is less of a game and more of a pet project type thing. it is nowhere close to being done it is just fun to work on
 
-'''Last edited: 4/26/22 @ 9:49 PM ==> Last worked on:
+'''Last edited: 4/30/22 @ 10:46 PM ==> Last worked on:
 In order of newest to oldest:
+
+=> worked on object class some more
+    => in testBed.py there is a useable 'live' simulation for looking, taking and dropping items.
 
 =>fixed look at and take and drop. DO NOT IMPORT FROM TESTBED. IDK why, but it will print stuff twice. very annoying
 
@@ -58,12 +61,14 @@ from time import sleep
 import sys
 from string import ascii_letters, ascii_lowercase, ascii_uppercase
 from random import randint, choice
-from object import Object
+from object import Object, player_inventory
 from room import Room
 
 #constants:
 yes = ['yes','y'] #these two are for asking the player simple questions: if choice in yes:
 no = ['no','n']
+cantSee = "Hmm, I can't see that"
+noDesc = "I see nothing special about that"
 
 def type_effect(text = ""): #typewriter effect. idk how it works
     words = text
@@ -92,7 +97,7 @@ def rand_let(amount=1, choice='all'):  #TOTAL GARBAGE. error = 'str' object is n
 def start_stats(): #health - money - inventory  ALL = 0
     health = 100
     money = 0
-    inventory = []
+    #player_inventory = []
 
 #room inventories:  #i don't think i will need these 
 void_INV = ['house','chair','cat']
@@ -100,49 +105,43 @@ starting_room_INV = [] #these are not going to end up in the 'final' product, cu
 RM_1_INV = []
 item_list = starting_room_INV + RM_1_INV
 
-key = Object('key', 'start', 'start', 'this is a large gold key', True, True)
-cat = Object('cat', 'start', 'start', 'this is a big dumb cat', True, True)
+void_dict = {
+    'key': .0001,
+    'cat': .0002,
+    'chair': .0003
+}
 
-def text_input(text, player_room='void'): #not done (getting there)
+'''these items are just for testing purposes'''
+#name, player_room, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, code = 000
+key = Object('key', 'start', 'start', 'this is a large gold key', True, False, .0001)
+cat = Object('cat', 'start', 'start', 'this is a big dumb cat', False, True, .0001)
+chair = Object('chair', 'start', 'start', 'this is a large fancy chair whith large butt marks', True, False, .0001)
+
+def text_input(text, player_room='start'): #not done (getting there)
     text = text.lower()
     text = text.split()
     action = text[0]
     x = len(text)
 
-    if text[x] == 'key':
-        key.action(action)
-    if text[1] == 'cat' or text[2] == 'cat':
-        cat.action(action)
-
-    '''if text[0] == 'look':
-        if text[1] == 'at':
-            if text[2] == 'key':
-                x.item_description('x', 'x')
-            elif text[2] == 'cat':
-                y.item_description('x', 'x')
-            else:
-                print()
-                type_effect(text[2])
-    
-    if text[0] == 'take':
-        if text[1] == 'key':
-            x.pick_drop('take')
-    elif text[0] == 'drop':
-        if text[1] == 'key':
-            x.pick_drop('drop')'''
-
-    '''if text[1] == 'key':#this is for testing purposes only. when done, all objects will be initialized in main.
-        if text[0] == 'drop':
-            x.pick_drop('drop')
-        elif text[0] == 'take':
-            x.pick_drop('take')
-        else:
+    if action == 'testing':
+        for thing in player_inventory:
             print()
-            type_effect('you idiot')'''
+            type_effect(thing)
+
+    elif text[x - 1] == 'key':
+        key.action(action)
+    elif text[x - 1] == 'cat':
+        cat.action(action)
+    elif text[x - 1] == 'chair':
+        chair.action(action)
+
+    else:
+        print()
+        type_effect("something went wrong")
 
 #x = Object('key', 'start', 'start', 'this is a large gold key', True, False)
 
-def inventory(player_room, action='look'): #NOT DONE | work on this second
+def inventory(player_room, action='look'): #NOT DONE | work on this second - OR NEVER
     if player_room == "starting_room":
         room_inv = starting_room_INV
     elif player_room == 'room_one':
