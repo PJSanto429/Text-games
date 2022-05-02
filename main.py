@@ -61,7 +61,7 @@ from time import sleep
 import sys
 from string import ascii_letters, ascii_lowercase, ascii_uppercase
 from random import randint, choice
-from object import Object, player_inventory
+from object import Object, player_inventory, keyList
 from room import Room
 
 #constants:
@@ -104,15 +104,15 @@ void_dict = { #stupid/useless
     'cat': .0002,
     'chair': .0003
 }
-list1 = []
+#list1 = []
 
 '''these items are just for testing purposes'''
 #name, player_room, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
-key = Object('key', 'start',  list1, 'this is a large gold key', True, False, 'large gold key')
-key2 = Object('key', 'start', list1,'this is a tiny gold key', True, False, 'small bronze key')
+key = Object('key', 'start',  'start', 'this is a large gold key', True, False, 'large gold key', 'key')
+key2 = Object('key', 'start', 'start','this is a tiny gold key', True, False, 'small bronze key', 'key')
 
 #lists for items with the same name:
-keyList = [key, key2]
+#keyList = [key, key2]
 
 cat = Object('cat', 'start', 'start', 'this is a big dumb cat', False, True, 'big cat')
 chair = Object('chair', 'start', 'start', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
@@ -124,21 +124,22 @@ def text_input(text, player_room='start'): #not done (getting there)
     action = text[0]
     x = len(text)
 
+    if player_room == 'start':
+        pass
+
     if action == 'testing':
         for thing in player_inventory:
             print()
             type_effect(thing)
 
     elif text[x - 1] == 'key':
-        y = 1
-        for thing in key.room:
-            if thing in keyList:
-                y += 1
-                if y > 1:
-                    for x in range(9):
-                        pass
-                    print()
-                    type_effect('Did you mean')
+        if len(keyList) > 1:
+            print()
+            type_effect('key list is greater than 1:')
+            print()
+            for thing in keyList:
+                print()
+                type_effect(thing)
         #key.action(action)
     elif text[x - 1] == 'cat':
         cat.action(action)
@@ -325,7 +326,6 @@ def introduction(): #pretty much done
     print()
     type_effect("There are a lot of other things that you probably need to know before the game starts, but I'm not gonna tell you. You'll figure it out at some point. I hope.")
 
-
 #rooms
 def game_begin(): #starts the game, DONE
     loading("start")
@@ -338,7 +338,7 @@ def starting_room(): #nothing here yet...
     global player_room
     player_room = 'start'
     print()
-    type_effect("You are in small, dark room, with beautiful ")
+    type_effect("You are in small, dark room")
 
 if __name__ != 'main':
     game_begin()

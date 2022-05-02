@@ -12,6 +12,10 @@ starting_room_INV = [] #these are not going to end up in the 'final' product, cu
 RM_1_INV = []
 #item_list = starting_room_INV + RM_1_INV
 
+#items with the same type, eg. key, key2, key3; chair, chair2, chair3
+keyList = []
+chairList = []
+
 def type_effect(text = ""): #typewriter effect. idk how it works
     words = text
     for char in words:
@@ -21,7 +25,7 @@ def type_effect(text = ""): #typewriter effect. idk how it works
 
 class Object: #unfinished - main priority
     #name, player_room, room, description, takeable, inInventory
-    def __init__(self, name = 'void', player_room = void_INV, room = void_INV, description = 'void', takeable = False, inInventory = False, longName = 'void', genre = 'none', code = .0000, health = 0, money = 0):
+    def __init__(self, name = 'void', player_room = 'start', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', genre = 'none', code = .0000, health = 0, money = 0):
         self.name = name #mandatory
         self.player_room = player_room
         self.room = room #default is void(kind of a storage area)
@@ -30,9 +34,8 @@ class Object: #unfinished - main priority
         self.description = description #mandatory
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
-        if self.inInventory:
-            player_inventory.append(self.name)
         self.longName = longName
+        self.genre = genre
         self. code = code  #for items that might be special. most will be 000
         self.health = health        #Health and money will be set to 0 as a default
         self.money = money          #
@@ -40,6 +43,16 @@ class Object: #unfinished - main priority
         self.takeable_message = 'void'
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
+
+        '''#items with the same type, eg. key, key2, key3; chair, chair2, chair3
+        keyList = {}
+        chairList = {}'''
+
+        if self.genre == 'key':
+            #keyList(self.longName) = self.room
+            keyList.append(self.longName)
+        if self.genre == 'chair':
+            chairList.append(self.longName)
 
     def inventory_change(self, action):
         if action == 'drop':

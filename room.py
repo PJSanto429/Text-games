@@ -3,7 +3,7 @@
 import sys
 from time import sleep
 
-def type_effect(text = ""): #typewriter effect. idk how it works
+def type_effect(text = ""): #typewriter effect
     words = text
     for char in words:
         sleep(0.04)
@@ -11,7 +11,7 @@ def type_effect(text = ""): #typewriter effect. idk how it works
         sys.stdout.flush()
 
 class Room():
-    def __init__(self, name='void', description='void', directions = 5):
+    def __init__(self, name='void', description='void', directions = 'none'):
         self.name = name
         self.description = description
         self.directions = directions
