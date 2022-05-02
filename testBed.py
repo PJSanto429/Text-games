@@ -6,7 +6,9 @@ from main import *
 from object import Object, player_inventory
 from room import Room
 
-while True:
+
+
+'''while True:
     print()
     text = input("Input: ")
-    text_input(text)
+    text_input(text)'''

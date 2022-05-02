@@ -6,6 +6,12 @@ from random import randint, choice
 
 player_inventory = []
 
+#room inventories:  #i don't think i will need these 
+void_INV = ['chair','cat']
+starting_room_INV = [] #these are not going to end up in the 'final' product, currently being used for testing 
+RM_1_INV = []
+#item_list = starting_room_INV + RM_1_INV
+
 def type_effect(text = ""): #typewriter effect. idk how it works
     words = text
     for char in words:
@@ -15,22 +21,36 @@ def type_effect(text = ""): #typewriter effect. idk how it works
 
 class Object: #unfinished - main priority
     #name, player_room, room, description, takeable, inInventory
-    def __init__(self, name = 'void', player_room = 'void', room = 'void', description = 'void', takeable = False, inInventory = False, code = .0000, health = 0, money = 0):
+    def __init__(self, name = 'void', player_room = void_INV, room = void_INV, description = 'void', takeable = False, inInventory = False, longName = 'void', genre = 'none', code = .0000, health = 0, money = 0):
         self.name = name #mandatory
         self.player_room = player_room
         self.room = room #default is void(kind of a storage area)
+        #self.room.append(self.name)
         #self.room.append(self.name)  #doesn't work. IDK if it is needed
         self.description = description #mandatory
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
         if self.inInventory:
             player_inventory.append(self.name)
+        self.longName = longName
         self. code = code  #for items that might be special. most will be 000
         self.health = health        #Health and money will be set to 0 as a default
         self.money = money          #
 
+        self.takeable_message = 'void'
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
+
+    def inventory_change(self, action):
+        if action == 'drop':
+
+            if self.room == 'void':
+                void_INV.append(self.name)
+            elif self.room == 'start':
+                starting_room_INV.append(self.name)
+
+        if action == 'take':
+            pass
 
     def item_description(self):
         if self.description == 'void':
@@ -40,6 +60,11 @@ class Object: #unfinished - main priority
         else:
             print()
             type_effect(self.description)
+
+    def notTakeable_message(self, message):
+        self.takeable_message = message
+        '''print()      #these two lines were simply for testing
+        type_effect(f'take message has been changed to {self.takeable_message}')'''
 
     def action(self, action):  #redirects the code to either item_description or take_drop
         if action == 'take' or action == 'drop':
@@ -72,11 +97,16 @@ class Object: #unfinished - main priority
                     if inform:
                         print()
                         player_inventory.append(self.name)
+
                         type_effect(f"You have picked up {self.name}")
 
             elif self.takeable == False:
-                print()
-                type_effect("Despite your best attempts, you are unable to pick this up")
+                if self.takeable_message != 'void':
+                    print()
+                    type_effect(self.takeable_message)
+                else:
+                    print()
+                    type_effect("Despite your best attempts, you are unable to pick this up")
 
         if action == 'drop':
             if self.inInventory == True:

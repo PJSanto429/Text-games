@@ -99,23 +99,24 @@ def start_stats(): #health - money - inventory  ALL = 0
     money = 0
     #player_inventory = []
 
-#room inventories:  #i don't think i will need these 
-void_INV = ['house','chair','cat']
-starting_room_INV = [] #these are not going to end up in the 'final' product, currently being used for testing 
-RM_1_INV = []
-item_list = starting_room_INV + RM_1_INV
-
-void_dict = {
+void_dict = { #stupid/useless
     'key': .0001,
     'cat': .0002,
     'chair': .0003
 }
+list1 = []
 
 '''these items are just for testing purposes'''
-#name, player_room, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, code = 000
-key = Object('key', 'start', 'start', 'this is a large gold key', True, False, .0001)
-cat = Object('cat', 'start', 'start', 'this is a big dumb cat', False, True, .0001)
-chair = Object('chair', 'start', 'start', 'this is a large fancy chair whith large butt marks', True, False, .0001)
+#name, player_room, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
+key = Object('key', 'start',  list1, 'this is a large gold key', True, False, 'large gold key')
+key2 = Object('key', 'start', list1,'this is a tiny gold key', True, False, 'small bronze key')
+
+#lists for items with the same name:
+keyList = [key, key2]
+
+cat = Object('cat', 'start', 'start', 'this is a big dumb cat', False, True, 'big cat')
+chair = Object('chair', 'start', 'start', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
+chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
 
 def text_input(text, player_room='start'): #not done (getting there)
     text = text.lower()
@@ -129,7 +130,16 @@ def text_input(text, player_room='start'): #not done (getting there)
             type_effect(thing)
 
     elif text[x - 1] == 'key':
-        key.action(action)
+        y = 1
+        for thing in key.room:
+            if thing in keyList:
+                y += 1
+                if y > 1:
+                    for x in range(9):
+                        pass
+                    print()
+                    type_effect('Did you mean')
+        #key.action(action)
     elif text[x - 1] == 'cat':
         cat.action(action)
     elif text[x - 1] == 'chair':
