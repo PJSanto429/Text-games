@@ -26,7 +26,7 @@ def type_effect(text = ""): #typewriter effect. idk how it works
 class Object: #unfinished - main priority
     #name, player_room, room, description, takeable, inInventory
     def __init__(self, name = 'void', player_room = 'start', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', genre = 'none', code = .0000, health = 0, money = 0):
-        self.name = name #mandatory
+        self.name = name #gives name to object(default is 'void')
         self.player_room = player_room
         self.room = room #default is void(kind of a storage area)
         #self.room.append(self.name)
@@ -34,11 +34,11 @@ class Object: #unfinished - main priority
         self.description = description #mandatory
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
-        self.longName = longName
-        self.genre = genre
+        self.longName = longName #for if there are multiple items in room/inventory with same name
+        self.genre = genre #for adding items to list(items with similar name/category)
         self. code = code  #for items that might be special. most will be 000
         self.health = health        #Health and money will be set to 0 as a default
-        self.money = money          #
+        self.money = money          #most items will not have health or money
 
         self.takeable_message = 'void'
         self.cantSee = "Hmm, I can't see that"
@@ -49,10 +49,17 @@ class Object: #unfinished - main priority
         chairList = {}'''
 
         if self.genre == 'key':
-            #keyList(self.longName) = self.room
-            keyList.append(self.longName)
+            x = self.longName
+            '''y = self.room
+            keyList[x] = y'''
+            keyList[x] = self.room
+            #keyList.append(self.longName)
         if self.genre == 'chair':
-            chairList.append(self.longName)
+            chairList[self.longName] = self.room
+
+    def INV_Dict(self):
+        pass
+        #return{}
 
     def inventory_change(self, action):
         if action == 'drop':
@@ -133,22 +140,28 @@ class Object: #unfinished - main priority
                     print()
                     type_effect(f"You don't have {self.name} in your inventory")
 
-    def test(self): #prints all item descriptions
-        print()
-        type_effect(f"Name: {self.name}")
-        print()
-        type_effect(f"Player Room: {self.player_room}")
-        print()
-        type_effect(f"Room: {self.room}")
-        print()
-        type_effect(f"Description: {self.description}")
-        print()
-        type_effect(f"Takeable: {self.takeable}")
-        print()
-        type_effect(f"inInventory: {self.inInventory}")
-        print()
-        type_effect(f"Health: {self.health}")
-        print()
-        type_effect(f"Money: {self.money}")
-        print()
-        type_effect(f"Code: {self.code}")
+    def test(self, action='all'): #prints all item descriptions
+        if action == 'all':
+            print()
+            type_effect(f"Name: {self.name}")
+            print()
+            type_effect(f"Player Room: {self.player_room}")
+            print()
+            type_effect(f"Room: {self.room}")
+            print()
+            type_effect(f"Description: {self.description}")
+            print()
+            type_effect(f"Takeable: {self.takeable}")
+            print()
+            type_effect(f"inInventory: {self.inInventory}")
+            print()
+            type_effect(f"Health: {self.health}")
+            print()
+            type_effect(f"Money: {self.money}")
+            print()
+            type_effect(f"Code: {self.code}")
+
+        if action == 'keyList':
+            for i in keyList:
+                print()
+                type_effect(f"{i}: {keyList[i]}")

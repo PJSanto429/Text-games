@@ -6,7 +6,9 @@ from main import *
 from object import Object, player_inventory
 from room import Room
 
-text_input('look at key', 'start')
+#text_input('look at key', 'start')
+
+key.test()
 
 '''while True:
     print()
