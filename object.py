@@ -3,6 +3,7 @@
 import sys
 from time import sleep
 from random import randint, choice
+import gc
 
 player_inventory = []
 
@@ -24,8 +25,10 @@ def type_effect(text = ""): #typewriter effect. idk how it works
         sys.stdout.flush()
 
 class Object: #unfinished - main priority
+    instances = []
     #name, player_room, room, description, takeable, inInventory
     def __init__(self, name = 'void', player_room = 'start', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', genre = 'none', code = .0000, health = 0, money = 0):
+        self.__class__.instances.append(self)
         self.name = name #gives name to object(default is 'void')
         self.player_room = player_room
         self.room = room #default is void(kind of a storage area)
@@ -44,24 +47,26 @@ class Object: #unfinished - main priority
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
 
+        #works, but not needed(i think)
         '''#items with the same type, eg. key, key2, key3; chair, chair2, chair3
         keyList = {}
         chairList = {}'''
 
-        if self.genre == 'key':
+        #doesnt work: probably wont need, like above
+        '''if self.genre == 'key':
             x = self.longName
-            '''y = self.room
-            keyList[x] = y'''
+            y = self.room
+            keyList[x] = y
             keyList[x] = self.room
             #keyList.append(self.longName)
         if self.genre == 'chair':
-            chairList[self.longName] = self.room
+            chairList[self.longName] = self.room'''
 
     def INV_Dict(self):
         pass
         #return{}
 
-    def inventory_change(self, action):
+    def inventory_change(self, action): #i think that this changes what room/inventory this is in
         if action == 'drop':
 
             if self.room == 'void':
@@ -72,7 +77,7 @@ class Object: #unfinished - main priority
         if action == 'take':
             pass
 
-    def item_description(self):
+    def item_description(self): #prints the item's description
         if self.description == 'void':
             print()
             type_effect(self.noDesc)
@@ -82,11 +87,25 @@ class Object: #unfinished - main priority
             type_effect(self.description)
 
     def notTakeable_message(self, message):
-        self.takeable_message = message
-        '''print()      #these two lines were simply for testing
+        #this is for adding more variety to the game => instead of just saying 'you cant take that', it would say 'this is to heavy to take
+        if message == 'heavy':
+            self.takeable_message = 'This is far to heavy to carry, and you are no weightlifter'
+        #add more messages here
+        #elif message == ''
+        #elif message == ''
+        #elif message == ''
+        #elif message == ''
+        #elif message == ''
+        #elif message == ''
+        else:
+            self.takeable_message = message
+
+        #these two lines were simply for testing:
+        '''print()
         type_effect(f'take message has been changed to {self.takeable_message}')'''
 
     def action(self, action):  #redirects the code to either item_description or take_drop
+
         if action == 'take' or action == 'drop':
             self.pick_drop(action)
         elif action == 'look':
@@ -107,7 +126,6 @@ class Object: #unfinished - main priority
     def pick_drop(self, action, inform=True): #either 'take' or 'drop'; WILL BE USED  A LOT
         if action == 'take':
             if self.takeable == True:
-
                 if self.inInventory == True: #checks to see if the item is already in the player inventory
                     if inform:
                         print()
@@ -119,7 +137,6 @@ class Object: #unfinished - main priority
                         player_inventory.append(self.name)
 
                         type_effect(f"You have picked up {self.name}")
-
             elif self.takeable == False:
                 if self.takeable_message != 'void':
                     print()
@@ -139,6 +156,9 @@ class Object: #unfinished - main priority
                 if inform:
                     print()
                     type_effect(f"You don't have {self.name} in your inventory")
+
+    def return_name(self):
+        return self.name
 
     def test(self, action='all'): #prints all item descriptions
         if action == 'all':
@@ -161,7 +181,13 @@ class Object: #unfinished - main priority
             print()
             type_effect(f"Code: {self.code}")
 
-        if action == 'keyList':
-            for i in keyList:
-                print()
-                type_effect(f"{i}: {keyList[i]}")
+        if action == 'keyList': #WORK ON THIS ADFSDAFSAD;SJKLAK
+            keys = []
+            for i in Object.instances:
+                if i.name == 'key':
+                    keys.append(i.longname)
+            #print()
+            #type_effect("not working yet")
+
+        else:
+            pass

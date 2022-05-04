@@ -133,13 +133,6 @@ def text_input(text, player_room='start'): #not done (getting there)
             type_effect(thing)
 
     elif text[x - 1] == 'key':
-        '''if len(keyList) > 1:
-            print()
-            type_effect('key list is greater than 1:')
-            print()
-            for thing in keyList:
-                print()
-                type_effect(thing)'''
         key.action(action)
     elif text[x - 1] == 'cat':
         cat.action(action)
