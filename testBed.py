@@ -7,33 +7,23 @@ from main import *
 from object import Object, player_inventory
 from room import Room
 
+'''from colorama import init
+from termcolor import colored
+
+init()
+print(colored('Hello World', 'black', 'on_white'))'''
+
 #text_input('look at key', 'start')
 
-#Here is a color
-'''
-def colored(r, g, b, text):
-    return "\033[38;2;{};{};{}m{} \033[38;2;255;255;255m".format(r, g, b, text)
-print(colored(0, 255, 0, 'Hello, World'))'''
+#print("This is bold text looks like:",'\033[1m' + 'Python' + '\033[0m')
 
-key.return_name()
+#print("The output is:" + color.PURPLE + 'Python 3!')
 
-'''while True:
+#print(key.return_name('longname'))
+
+#key.test('keyList')
+
+'''while True: #this is a very simple interactive 'window' that allows for text input
     print()
     text = input("Input: ")
     text_input(text)'''
-
-'''import weakref
-
-class A:
-    instances = []
-    def __init__(self, name=None):
-        self.__class__.instances.append(weakref.proxy(self))
-        self.name = name
-
-a1 = A('a1')
-a2 = A('a2')
-a3 = A('a3')
-a4 = A('a4')
-
-for instance in A.instances:
-    print(instance.name)'''

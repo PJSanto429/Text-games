@@ -70,7 +70,24 @@ no = ['no','n']
 cantSee = "Hmm, I can't see that"
 noDesc = "I see nothing special about that"
 
-def type_effect(text = ""): #typewriter effect. idk how it works
+class color: #this allows text to be colored
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+
+def underline(word): #allows text to be underlined
+    return('\033['+word+'\033[0m')
+
+def type_effect(text = "", color='white'): #typewriter effect. idk how it works
+    if color == 'white':
+        pass
     words = text
     for char in words:
         sleep(0.04)
@@ -109,7 +126,7 @@ void_dict = { #stupid/useless
 '''these items are just for testing purposes'''
 #name, player_room, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
 key = Object('key', 'start',  'start', 'this is a large gold key', True, False, 'large gold key', 'key')
-key2 = Object('key', 'start', 'start','this is a tiny gold key', True, False, 'small bronze key', 'key')
+key2 = Object('key', 'start', 'start','this is a small bronze key', True, False, 'small bronze key', 'key')
 
 #lists for items with the same name:
 #keyList = [key, key2]

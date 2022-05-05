@@ -157,8 +157,11 @@ class Object: #unfinished - main priority
                     print()
                     type_effect(f"You don't have {self.name} in your inventory")
 
-    def return_name(self):
-        return self.name
+    def return_name(self, x = 'name'):
+        if x == 'name':
+            return self.name
+        elif x == 'longname':
+            return self.longName
 
     def test(self, action='all'): #prints all item descriptions
         if action == 'all':
@@ -181,13 +184,32 @@ class Object: #unfinished - main priority
             print()
             type_effect(f"Code: {self.code}")
 
-        if action == 'keyList': #WORK ON THIS ADFSDAFSAD;SJKLAK
+        if action == 'keyList':
             keys = []
             for i in Object.instances:
-                if i.name == 'key':
-                    keys.append(i.longname)
-            #print()
-            #type_effect("not working yet")
+                if i.name == 'key' and (i.room == i.player_room or i.inInventory == True):
+                    keys.append(i.longName)
+            if len(keys) > 1:
+                print()
+                type_effect(f'Which did you mean?')
+                for thing in keys:
+                    print()
+                    type_effect(thing)
+                print()
+                choice = input()
+                for i in Object.instances:
+                    if i.longName == choice:
+                        i.test()
+                    
+            elif len(keys) < 1:
+                print()
+                type_effect(keys[0])
+
+            '''print()
+            type_effect("Full list:")
+            for thing in keys:
+                print()
+                type_effect(thing)'''
 
         else:
             pass
