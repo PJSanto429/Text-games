@@ -47,25 +47,6 @@ class Object: #unfinished - main priority
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
 
-        #works, but not needed(i think)
-        '''#items with the same type, eg. key, key2, key3; chair, chair2, chair3
-        keyList = {}
-        chairList = {}'''
-
-        #doesnt work: probably wont need, like above
-        '''if self.genre == 'key':
-            x = self.longName
-            y = self.room
-            keyList[x] = y
-            keyList[x] = self.room
-            #keyList.append(self.longName)
-        if self.genre == 'chair':
-            chairList[self.longName] = self.room'''
-
-    def INV_Dict(self):
-        pass
-        #return{}
-
     def inventory_change(self, action): #i think that this changes what room/inventory this is in
         if action == 'drop':
 
@@ -105,11 +86,31 @@ class Object: #unfinished - main priority
         type_effect(f'take message has been changed to {self.takeable_message}')'''
 
     def action(self, action):  #redirects the code to either item_description or take_drop
+        if self.name == 'key':
+            keys = []
+            for i in Object.instances:
+                if i.name == 'key' and (i.room == i.player_room or i.   inInventory == True):
+                    keys.append(i.longName)
+            if len(keys) > 1:
+                print()
+                type_effect(f'Which did you mean?')
+                for thing in keys:
+                    print()
+                    type_effect(thing)
+                print()
+                choice = input()
+                for i in Object.instances:
+                    if i.longName == choice:
+                        if action == 'take' or action == 'drop':
+                            self.pick_drop(action)
+                        elif action == 'look':
+                            self.item_description()
 
-        if action == 'take' or action == 'drop':
-            self.pick_drop(action)
-        elif action == 'look':
-            self.item_description()
+        else:
+            if action == 'take' or action == 'drop':
+                self.pick_drop(action)
+            elif action == 'look':
+                self.item_description()
 
     def change_name(self, name):
         self.name = name
@@ -136,7 +137,7 @@ class Object: #unfinished - main priority
                         print()
                         player_inventory.append(self.name)
 
-                        type_effect(f"You have picked up {self.name}")
+                        type_effect(f"You have picked up the {self.longName}")
             elif self.takeable == False:
                 if self.takeable_message != 'void':
                     print()

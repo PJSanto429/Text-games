@@ -82,8 +82,14 @@ class color: #this allows text to be colored
    UNDERLINE = '\033[4m'
    END = '\033[0m'
 
+   def color_switch(self):
+       pass
+
 def underline(word): #allows text to be underlined
     return('\033['+word+'\033[0m')
+
+def bold(word): #allows text to be bolded
+    return ('\033[1m' + word + '\033[0m')
 
 def type_effect(text = "", color='white'): #typewriter effect. idk how it works
     if color == 'white':
@@ -128,30 +134,33 @@ void_dict = { #stupid/useless
 key = Object('key', 'start',  'start', 'this is a large gold key', True, False, 'large gold key', 'key')
 key2 = Object('key', 'start', 'start','this is a small bronze key', True, False, 'small bronze key', 'key')
 
-#lists for items with the same name:
-#keyList = [key, key2]
-
 cat = Object('cat', 'start', 'start', 'this is a big dumb cat', False, True, 'big cat')
+
 chair = Object('chair', 'start', 'start', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
 
-def text_input(text, player_room='start'): #not done (getting there)
-    text = text.lower()
+def text_input(text, player_room='start'): #not done (getting there)text = text.lower()
     text = text.split()
     action = text[0]
     x = len(text)
 
-    if player_room == 'start':
-        pass
+    if text[0] == 'quit':
+        print()
+        type_effect('Quitting...')
+        quit()
+    #if player_room == 'start':
+    #    pass
 
-    if action == 'testing':
-        for thing in player_inventory:
-            print()
-            type_effect(thing)
+    #if action == 'testing':
+    #    for thing in player_inventory:
+    #        print()
+    #        type_effect(thing)
 
-    elif text[x - 1] == 'key':
+    if text[x - 1] == 'key':
         key.action(action)
     elif text[x - 1] == 'cat':
+        #print()
+        #type_effect('this is a cat')
         cat.action(action)
     elif text[x - 1] == 'chair':
         chair.action(action)
