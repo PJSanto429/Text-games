@@ -105,9 +105,9 @@ class Object: #unfinished - main priority
                     #print()
                     #type_effect(self.longName)
                     if action == 'take' or action == 'drop':
-                        self.pick_drop(action)
+                        i.pick_drop(action)
                     if action == 'look':
-                        self.item_description()
+                        i.item_description()
 
         elif len(itemList) == 1:
             if action == 'take' or action == 'drop':
