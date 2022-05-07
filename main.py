@@ -61,7 +61,7 @@ from time import sleep
 import sys
 from string import ascii_letters, ascii_lowercase, ascii_uppercase
 from random import randint, choice
-from object import Object, player_inventory, keyList
+from object import Object, player_inventory
 from room import Room
 
 #constants:
@@ -120,21 +120,15 @@ def rand_let(amount=1, choice='all'):  #TOTAL GARBAGE. error = 'str' object is n
 def start_stats(): #health - money - inventory  ALL = 0
     health = 100
     money = 0
-    #player_inventory = []
-
-void_dict = { #stupid/useless
-    'key': .0001,
-    'cat': .0002,
-    'chair': .0003
-}
-#list1 = []
 
 '''these items are just for testing purposes'''
 #name, player_room, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
-key = Object('key', 'start',  'start', 'this is a large gold key', True, False, 'large gold key', 'key')
-key2 = Object('key', 'start', 'start','this is a small bronze key', True, False, 'small bronze key', 'key')
+key = Object('key', 'start',  'start', 'this is a large gold key', True, False, 'large gold key')
+key2 = Object('key', 'start', 'start','this is a small bronze key', True, False, 'small bronze key')
 
-cat = Object('cat', 'start', 'start', 'this is a big dumb cat', False, True, 'big cat')
+cat = Object('cat', 'start', 'start', 'this is a big grey cat, with very long whiskers', False, True, 'big grey cat')
+
+cat2 = Object('cat', 'start', 'start', 'this is a small black cat, with very well kept fur', False, True, 'small black cat')
 
 chair = Object('chair', 'start', 'start', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
@@ -148,13 +142,15 @@ def text_input(text, player_room='start'): #not done (getting there)text = text.
         print()
         type_effect('Quitting...')
         quit()
-    #if player_room == 'start':
-    #    pass
+    
+    '''elif x == 1 and action == 'look':
+        print()
+        type_effect('You can see: ')'''
 
-    #if action == 'testing':
-    #    for thing in player_inventory:
-    #        print()
-    #        type_effect(thing)
+    if action == 'testing':
+        for thing in player_inventory:
+            print()
+            type_effect(thing)
 
     if text[x - 1] == 'key':
         key.action(action)

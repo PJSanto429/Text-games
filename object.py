@@ -13,10 +13,6 @@ starting_room_INV = [] #these are not going to end up in the 'final' product, cu
 RM_1_INV = []
 #item_list = starting_room_INV + RM_1_INV
 
-#items with the same type, eg. key, key2, key3; chair, chair2, chair3
-keyList = []
-chairList = []
-
 def type_effect(text = ""): #typewriter effect. idk how it works
     words = text
     for char in words:
@@ -27,7 +23,7 @@ def type_effect(text = ""): #typewriter effect. idk how it works
 class Object: #unfinished - main priority
     instances = []
     #name, player_room, room, description, takeable, inInventory
-    def __init__(self, name = 'void', player_room = 'start', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', genre = 'none', code = .0000, health = 0, money = 0):
+    def __init__(self, name = 'void', player_room = 'start', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', parent = 'room', code = .0000, health = 0, money = 0):
         self.__class__.instances.append(self)
         self.name = name #gives name to object(default is 'void')
         self.player_room = player_room
@@ -38,7 +34,7 @@ class Object: #unfinished - main priority
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
         self.longName = longName #for if there are multiple items in room/inventory with same name
-        self.genre = genre #for adding items to list(items with similar name/category)
+        self.parent = parent
         self. code = code  #for items that might be special. most will be 000
         self.health = health        #Health and money will be set to 0 as a default
         self.money = money          #most items will not have health or money
@@ -85,28 +81,35 @@ class Object: #unfinished - main priority
         '''print()
         type_effect(f'take message has been changed to {self.takeable_message}')'''
 
-    def action(self, action):  #redirects the code to either item_description or take_drop
+    def action(self, action, player_room = 'start'):  #redirects the code to either item_description or take_drop
+        itemList = []
         if self.name == 'key':
-            keys = []
-            for i in Object.instances:
-                if i.name == 'key' and (i.room == i.player_room or i.   inInventory == True):
-                    keys.append(i.longName)
-            if len(keys) > 1:
-                print()
-                type_effect(f'Which did you mean?')
-                for thing in keys:
-                    print()
-                    type_effect(thing)
-                print()
-                choice = input()
-                for i in Object.instances:
-                    if i.longName == choice:
-                        if action == 'take' or action == 'drop':
-                            self.pick_drop(action)
-                        elif action == 'look':
-                            self.item_description()
+            item = 'key'
+        if self.name == 'cat':
+            item = 'cat'
 
-        else:
+        for i in Object.instances:
+            if i.name == item and (i.room == i.player_room or i.  inInventory == True):
+                itemList.append(i.longName)
+
+        if len(itemList) > 1:
+            print()
+            type_effect(f'Which did you mean?  ')
+            for thing in itemList:
+                print()
+                type_effect(thing)
+            print()
+            choice = input()
+            for i in Object.instances:
+                if i.longName == choice:
+                    #print()
+                    #type_effect(self.longName)
+                    if action == 'take' or action == 'drop':
+                        self.pick_drop(action)
+                    if action == 'look':
+                        self.item_description()
+
+        elif len(itemList) == 1:
             if action == 'take' or action == 'drop':
                 self.pick_drop(action)
             elif action == 'look':
