@@ -69,6 +69,7 @@ yes = ['yes','y'] #these two are for asking the player simple questions: if choi
 no = ['no','n']
 cantSee = "Hmm, I can't see that"
 noDesc = "I see nothing special about that"
+error_message = 'Oops! It seems that something went wrong with what you typed. You will be redirected to make your last decision again.'
 
 class color: #this allows text to be colored
    PURPLE = '\033[95m'
@@ -81,15 +82,6 @@ class color: #this allows text to be colored
    BOLD = '\033[1m'
    UNDERLINE = '\033[4m'
    END = '\033[0m'
-
-   def color_switch(self):
-       pass
-
-def underline(word): #allows text to be underlined
-    return('\033['+word+'\033[0m')
-
-def bold(word): #allows text to be bolded
-    return ('\033[1m' + word + '\033[0m')
 
 def type_effect(text = "", color='white'): #typewriter effect. idk how it works
     if color == 'white':
@@ -124,14 +116,20 @@ def start_stats(): #health - money - inventory  ALL = 0
 '''these items are just for testing purposes'''
 #name, player_room, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
 key = Object('key', 'start',  'start', 'this is a large gold key', True, False, 'large gold key')
-key2 = Object('key', 'start', 'start','this is a small bronze key', True, False, 'small bronze key')
+key2 = Object('key', 'start', 'start', 'this is a small bronze key', True, False, 'small bronze key')
 
-cat = Object('cat', 'start', 'start', 'this is a big grey cat, with very long whiskers', False, True, 'big grey cat')
+wall = Object('wall')
+hat = Object('hat')
 
-cat2 = Object('cat', 'start', 'start', 'this is a small black cat, with very well kept fur', False, True, 'small black cat')
+cat = Object('cat', 'start', 'start', 'this is a big grey cat, with very long whiskers', True, False, 'big grey cat')
+cat2 = Object('cat', 'start', 'start', 'this is a small black cat, with very well kept fur', True, False, 'small black cat')
 
 chair = Object('chair', 'start', 'start', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
+
+
+#starting room stuff:
+note = Object('note', 'start', 'start', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
 
 def text_input(text, player_room='start'): #not done (getting there)text = text.lower()
     text = text.split()
@@ -142,12 +140,10 @@ def text_input(text, player_room='start'): #not done (getting there)text = text.
         print()
         type_effect('Quitting...')
         quit()
-    
-    '''elif x == 1 and action == 'look':
-        print()
-        type_effect('You can see: ')'''
 
     if action == 'testing':
+        print()
+        type_effect('Your inventory consists of:')
         for thing in player_inventory:
             print()
             type_effect(thing)
@@ -155,11 +151,15 @@ def text_input(text, player_room='start'): #not done (getting there)text = text.
     if text[x - 1] == 'key':
         key.action(action)
     elif text[x - 1] == 'cat':
-        #print()
-        #type_effect('this is a cat')
         cat.action(action)
     elif text[x - 1] == 'chair':
         chair.action(action)
+    elif text[x - 1] == 'wall':
+        wall.action(action)
+    elif text[x - 1] == 'hat':
+        hat.action(action)
+    elif text[x - 1] == 'note':
+        note.action(action)
 
     else:
         print()
@@ -167,7 +167,7 @@ def text_input(text, player_room='start'): #not done (getting there)text = text.
 
 #x = Object('key', 'start', 'start', 'this is a large gold key', True, False)
 
-def inventory(player_room, action='look'): #NOT DONE | work on this second - OR NEVER
+'''def inventory(player_room, action='look'): #NOT DONE | work on this second - OR NEVER...
     if player_room == "starting_room":
         room_inv = starting_room_INV
     elif player_room == 'room_one':
@@ -185,9 +185,7 @@ def inventory(player_room, action='look'): #NOT DONE | work on this second - OR 
         print('TAKE')
 
     elif action == 'drop':
-        print('DROP')
-
-error_message = 'Oops! It seems that something went wrong with what you typed. You will be redirected to make your last decision again.'
+        print('DROP')'''
 
 def loading(message): #done
     if message == 'restart':
@@ -349,11 +347,8 @@ def game_begin(): #starts the game, DONE
     starting_room()
 
 def starting_room(): #nothing here yet...
-    #inventory(starting_room)
-    global player_room
-    player_room = 'start'
     print()
-    type_effect("You are in small, dark room")
+    type_effect('This is a super cool room.')
 
 if __name__ != 'main':
     game_begin()

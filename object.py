@@ -8,7 +8,7 @@ import gc
 player_inventory = []
 
 #room inventories:  #i don't think i will need these 
-void_INV = ['chair','cat']
+void_INV = []
 starting_room_INV = [] #these are not going to end up in the 'final' product, currently being used for testing 
 RM_1_INV = []
 #item_list = starting_room_INV + RM_1_INV
@@ -23,7 +23,7 @@ def type_effect(text = ""): #typewriter effect. idk how it works
 class Object: #unfinished - main priority
     instances = []
     #name, player_room, room, description, takeable, inInventory
-    def __init__(self, name = 'void', player_room = 'start', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', parent = 'room', code = .0000, health = 0, money = 0):
+    def __init__(self, name = 'void', player_room = 'start', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', health = 0, money = 0, parent = 'room', code = .0000):
         self.__class__.instances.append(self)
         self.name = name #gives name to object(default is 'void')
         self.player_room = player_room
@@ -33,6 +33,9 @@ class Object: #unfinished - main priority
         self.description = description #mandatory
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
+        if self.inInventory == True:
+            player_inventory.append(self.longName)
+            pass
         self.longName = longName #for if there are multiple items in room/inventory with same name
         self.parent = parent
         self. code = code  #for items that might be special. most will be 000
@@ -42,6 +45,12 @@ class Object: #unfinished - main priority
         self.takeable_message = 'void'
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
+
+        if self.room == 'start':
+            starting_room_INV.append(self.longName)
+        if self.room == 'room1':
+            RM_1_INV.append(self.longName)
+        
 
     def inventory_change(self, action): #i think that this changes what room/inventory this is in
         if action == 'drop':
@@ -57,6 +66,7 @@ class Object: #unfinished - main priority
     def item_description(self): #prints the item's description
         if self.description == 'void':
             print()
+            #type_effect('this is cool')
             type_effect(self.noDesc)
 
         else:
@@ -83,13 +93,18 @@ class Object: #unfinished - main priority
 
     def action(self, action, player_room = 'start'):  #redirects the code to either item_description or take_drop
         itemList = []
-        if self.name == 'key':
+        item = self.name
+        '''if self.name == 'key':
             item = 'key'
         if self.name == 'cat':
             item = 'cat'
+        if self.name == 'chair':
+            item = 'chair'
+        if self.name == 'wall':
+            item = 'wall'''
 
         for i in Object.instances:
-            if i.name == item and (i.room == i.player_room or i.  inInventory == True):
+            if i.name == item and (i.room == i.player_room or i.inInventory == True):
                 itemList.append(i.longName)
 
         if len(itemList) > 1:

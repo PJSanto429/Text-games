@@ -13,9 +13,9 @@ from termcolor import colored
 init()
 print(colored('Hello World', 'black', 'on_white'))'''
 
-#type_effect(color.CYAN) #this is a pretty cool class/function that adds color to text
+#type_effect(color.YELLOW + 'this is super cool') #this is a pretty cool class/function that adds color to text
 
-text_input('look at cat')
+#text_input('look at cat')
 
 #text_input('look at cat')
 
@@ -25,7 +25,7 @@ text_input('look at cat')
 
 #key.test('keyList')
 
-'''while True: #this is a very simple interactive 'window' that allows for text input
+while True: #this is a very simple interactive 'window' that allows for text input
     print()
     text = input("Input: ")
-    text_input(text)'''
+    text_input(text)
