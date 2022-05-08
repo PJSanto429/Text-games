@@ -83,9 +83,7 @@ class color: #this allows text to be colored
    UNDERLINE = '\033[4m'
    END = '\033[0m'
 
-def type_effect(text = "", color='white'): #typewriter effect. idk how it works
-    if color == 'white':
-        pass
+def type_effect(text = ""): #typewriter effect. idk how it works
     words = text
     for char in words:
         sleep(0.04)
@@ -114,58 +112,56 @@ def start_stats(): #health - money - inventory  ALL = 0
     money = 0
 
 '''these items are just for testing purposes'''
-#name, player_room, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
-key = Object('key', 'start',  'start', 'this is a large gold key', True, False, 'large gold key')
-key2 = Object('key', 'start', 'start', 'this is a small bronze key', True, False, 'small bronze key')
+#name, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
+key = Object('key', 'void', 'this is a large gold key', True, True, 'large gold key')
+key2 = Object('key', 'void', 'this is a small bronze key', True, False, 'small bronze key')
 
-wall = Object('wall')
-hat = Object('hat')
+cat = Object('cat', 'void', 'this is a big grey cat, with very long whiskers', False, False, 'big grey cat')
+cat2 = Object('cat', 'void', 'this is a small black cat, with very well kept fur', False, True, 'small black cat')
 
-cat = Object('cat', 'start', 'start', 'this is a big grey cat, with very long whiskers', True, False, 'big grey cat')
-cat2 = Object('cat', 'start', 'start', 'this is a small black cat, with very well kept fur', True, False, 'small black cat')
-
-chair = Object('chair', 'start', 'start', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
+chair = Object('chair', 'void', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
 
 
 #starting room stuff:
-note = Object('note', 'start', 'start', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
+note = Object('note', 'start', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
 
-def text_input(text, player_room='start'): #not done (getting there)text = text.lower()
+chair2 = Object('chair', 'start', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
+
+def text_input(text, player_room='void'): #not done (getting there)text = text.lower()
     text = text.split()
     action = text[0]
     x = len(text)
 
-    if text[0] == 'quit':
+    if text[0] == 'quit' or text[0] == 'quit()':
         print()
         type_effect('Quitting...')
         quit()
 
     if action == 'testing':
         print()
+        #type_effect('testing')
         type_effect('Your inventory consists of:')
-        for thing in player_inventory:
+        if len(player_inventory) > 0:
+            for thing in player_inventory:
+                print()
+                type_effect(thing)
+        else:
             print()
-            type_effect(thing)
+            type_effect('Nothing yet...')
 
-    if text[x - 1] == 'key':
-        key.action(action)
+    elif text[x - 1] == 'key':
+        key.action(action, player_room)
     elif text[x - 1] == 'cat':
-        cat.action(action)
+        cat.action(action, player_room)
     elif text[x - 1] == 'chair':
-        chair.action(action)
-    elif text[x - 1] == 'wall':
-        wall.action(action)
-    elif text[x - 1] == 'hat':
-        hat.action(action)
+        chair.action(action, player_room)
     elif text[x - 1] == 'note':
-        note.action(action)
+        note.action(action, player_room)
 
     else:
         print()
         type_effect("something went wrong")
-
-#x = Object('key', 'start', 'start', 'this is a large gold key', True, False)
 
 '''def inventory(player_room, action='look'): #NOT DONE | work on this second - OR NEVER...
     if player_room == "starting_room":

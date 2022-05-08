@@ -23,22 +23,18 @@ def type_effect(text = ""): #typewriter effect. idk how it works
 class Object: #unfinished - main priority
     instances = []
     #name, player_room, room, description, takeable, inInventory
-    def __init__(self, name = 'void', player_room = 'start', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', health = 0, money = 0, parent = 'room', code = .0000):
+    def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', health = 0, money = 0, parent = 'room', code = .0000):
         self.__class__.instances.append(self)
         self.name = name #gives name to object(default is 'void')
-        self.player_room = player_room
         self.room = room #default is void(kind of a storage area)
-        #self.room.append(self.name)
-        #self.room.append(self.name)  #doesn't work. IDK if it is needed
         self.description = description #mandatory
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
+        self.longName = longName #for if there are multiple items in room/inventory with same name
         if self.inInventory == True:
             player_inventory.append(self.longName)
-            pass
-        self.longName = longName #for if there are multiple items in room/inventory with same name
         self.parent = parent
-        self. code = code  #for items that might be special. most will be 000
+        self.code = code  #for items that might be special. most will be 000
         self.health = health        #Health and money will be set to 0 as a default
         self.money = money          #most items will not have health or money
 
@@ -91,23 +87,21 @@ class Object: #unfinished - main priority
         '''print()
         type_effect(f'take message has been changed to {self.takeable_message}')'''
 
-    def action(self, action, player_room = 'start'):  #redirects the code to either item_description or take_drop
+    def action(self, action, player_room = 'void'):  #redirects the code to either item_description or take_drop
         itemList = []
         item = self.name
-        '''if self.name == 'key':
-            item = 'key'
-        if self.name == 'cat':
-            item = 'cat'
-        if self.name == 'chair':
-            item = 'chair'
-        if self.name == 'wall':
-            item = 'wall'''
 
         for i in Object.instances:
-            if i.name == item and (i.room == i.player_room or i.inInventory == True):
+            if i.name == item and (i.room == player_room or i.inInventory == True):
+                #print()
+                #type_effect('adding to list')
                 itemList.append(i.longName)
 
-        if len(itemList) > 1:
+        if len(itemList) == 0:
+            print()
+            type_effect(self.cantSee)
+
+        elif len(itemList) > 1:
             print()
             type_effect(f'Which did you mean?  ')
             for thing in itemList:
@@ -125,13 +119,19 @@ class Object: #unfinished - main priority
                         i.item_description()
 
         elif len(itemList) == 1:
+            #print()
+            #type_effect(i.longName)
             if action == 'take' or action == 'drop':
-                self.pick_drop(action)
+                i.pick_drop(action)
             elif action == 'look':
-                self.item_description()
+                i.item_description()
 
     def change_name(self, name):
         self.name = name
+
+    def different_actions(self, action):
+        if action == 'read':
+            pass
 
     def change_room(self, room):
         self.room = room
@@ -182,7 +182,7 @@ class Object: #unfinished - main priority
         elif x == 'longname':
             return self.longName
 
-    def test(self, action='all'): #prints all item descriptions
+    def test(self, action='all'): #default action is to print all item descriptions
         if action == 'all':
             print()
             type_effect(f"Name: {self.name}")
@@ -229,6 +229,13 @@ class Object: #unfinished - main priority
             for thing in keys:
                 print()
                 type_effect(thing)'''
+
+        if action == 'inventory':
+            print()
+            type_effect('Your inventory consists of:')
+            for thing in player_inventory:
+                print()
+                type_effect(thing)
 
         else:
             pass

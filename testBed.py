@@ -27,5 +27,6 @@ print(colored('Hello World', 'black', 'on_white'))'''
 
 while True: #this is a very simple interactive 'window' that allows for text input
     print()
+    print()
     text = input("Input: ")
-    text_input(text)
+    text_input(text, 'start')
