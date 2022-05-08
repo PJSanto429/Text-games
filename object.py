@@ -87,15 +87,16 @@ class Object: #unfinished - main priority
         '''print()
         type_effect(f'take message has been changed to {self.takeable_message}')'''
 
-    def action(self, action, player_room = 'void'):  #redirects the code to either item_description or take_drop
+    def action(self, action, player_room = 'none'):  #redirects the code to either item_description or take_drop
         itemList = []
         item = self.name
 
         for i in Object.instances:
             if i.name == item and (i.room == player_room or i.inInventory == True):
-                #print()
-                #type_effect('adding to list')
                 itemList.append(i.longName)
+
+        #print()
+        #print(len(itemList))
 
         if len(itemList) == 0:
             print()
@@ -122,9 +123,9 @@ class Object: #unfinished - main priority
             #print()
             #type_effect(i.longName)
             if action == 'take' or action == 'drop':
-                i.pick_drop(action)
+                self.pick_drop(action)
             elif action == 'look':
-                i.item_description()
+                self.item_description()
 
     def change_name(self, name):
         self.name = name

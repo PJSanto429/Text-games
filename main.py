@@ -113,11 +113,11 @@ def start_stats(): #health - money - inventory  ALL = 0
 
 '''these items are just for testing purposes'''
 #name, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
-key = Object('key', 'void', 'this is a large gold key', True, True, 'large gold key')
+key = Object('key', 'void', 'this is a large gold key', True, False, 'large gold key')
 key2 = Object('key', 'void', 'this is a small bronze key', True, False, 'small bronze key')
 
 cat = Object('cat', 'void', 'this is a big grey cat, with very long whiskers', False, False, 'big grey cat')
-cat2 = Object('cat', 'void', 'this is a small black cat, with very well kept fur', False, True, 'small black cat')
+cat2 = Object('cat', 'void', 'this is a small black cat, with very well kept fur', False, False, 'small black cat')
 
 chair = Object('chair', 'void', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
@@ -128,7 +128,7 @@ note = Object('note', 'start', 'this is a standard sheet of paper, with a bunch 
 
 chair2 = Object('chair', 'start', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
 
-def text_input(text, player_room='void'): #not done (getting there)text = text.lower()
+def text_input(text, player_room='none'): #not done (getting there)text = text.lower()
     text = text.split()
     action = text[0]
     x = len(text)
@@ -158,6 +158,11 @@ def text_input(text, player_room='void'): #not done (getting there)text = text.l
         chair.action(action, player_room)
     elif text[x - 1] == 'note':
         note.action(action, player_room)
+    elif text[x - 1] == 'wall':
+        try:
+            wall.action(action, player_room)
+        except:
+            pass
 
     else:
         print()
