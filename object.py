@@ -141,9 +141,13 @@ class Object: #unfinished - main priority
         elif len(itemList) > 1:
             print()
             type_effect(f'Which did you mean?  ')
-            for thing in itemList:
-                print()
-                type_effect(thing)
+            for i in Object.instances:
+                if i.longName in itemList and i.inInventory == True:
+                    print()
+                    type_effect(f"{i.longName} - inventory")
+                elif i.longName in itemList:
+                    print()
+                    type_effect(f'{i.longName} - {i.room}')
             print()
             choice = input()
             for i in Object.instances:

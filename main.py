@@ -137,6 +137,7 @@ chair2 = Object('chair', 'start', 'this is a rusted folding chair that looks lik
 chair3 = Object('chair', 'room2', 'this is a cool looking dining room chair', False, False, 'dining room chair')
 
 def text_input(text, player_room='none'): #not done (getting there)text = text.lower()
+    text = text.lower()
     text = text.split()
     action = text[0]
     x = len(text)
