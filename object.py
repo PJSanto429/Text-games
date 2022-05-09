@@ -182,7 +182,7 @@ class Object: #unfinished - main priority
                     self.inInventory = True
                     if inform:
                         print()
-                        player_inventory.append(self.name)
+                        player_inventory.append(self.longName)
 
                         type_effect(f"You have picked up the {self.longName}")
             elif self.takeable == False:
@@ -198,7 +198,7 @@ class Object: #unfinished - main priority
                 self.inInventory = False
                 if inform:
                     print()
-                    player_inventory.remove(self.name)
+                    player_inventory.remove(self.longName)
                     type_effect(f"You have dropped {self.name}")
             elif self.inInventory == False:
                 if inform:
@@ -262,9 +262,9 @@ class Object: #unfinished - main priority
         if action == 'inventory':
             print()
             type_effect('Your inventory consists of:')
-            for thing in player_inventory:
-                print()
-                type_effect(thing)
-
+            for i in Object.instances:
+                if i.inInventory == True:
+                    print()
+                    type_effect(i.longName)
         else:
             pass

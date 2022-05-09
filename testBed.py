@@ -31,4 +31,4 @@ while True: #this is a very simple interactive 'window' that allows for text inp
     print()
     print()
     text = input("Input: ")
-    text_input(text, 'room2')
+    text_input(text, 'start')

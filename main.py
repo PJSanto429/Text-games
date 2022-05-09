@@ -122,13 +122,17 @@ cat2 = Object('cat', 'void', 'this is a small black cat, with very well kept fur
 chair = Object('chair', 'void', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
 
+#----------------------------------------------------------------------------------------
 '''most of the items in the '2' rooms are for testing and demonstrations'''
 #starting room stuff:
 note = Object('note', 'start', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
 note.add_attribute('read', "This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
 
+key3 = Object('key', 'start', 'this is a rusty copper key', True, True, 'rusty copper key')
+
 chair2 = Object('chair', 'start', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
 
+#----------------------------------------------------------------------------------------
 #stuff in room 2:
 chair3 = Object('chair', 'room2', 'this is a cool looking dining room chair', False, False, 'dining room chair')
 
@@ -143,14 +147,15 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
         quit()
 
     if action == 'testing':
+        inv = 0
         print()
-        #type_effect('testing')
         type_effect('Your inventory consists of:')
-        if len(player_inventory) > 0:
-            for thing in player_inventory:
+        for i in Object.instances:
+            if i.inInventory == True:
+                inv += 1
                 print()
-                type_effect(thing)
-        else:
+                type_effect(i.longName)
+        if inv == 0:
             print()
             type_effect('Nothing yet...')
 
