@@ -122,11 +122,15 @@ cat2 = Object('cat', 'void', 'this is a small black cat, with very well kept fur
 chair = Object('chair', 'void', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
 
-
+'''most of the items in the '2' rooms are for testing and demonstrations'''
 #starting room stuff:
 note = Object('note', 'start', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
+note.add_attribute('read', "This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
 
 chair2 = Object('chair', 'start', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
+
+#stuff in room 2:
+chair3 = Object('chair', 'room2', 'this is a cool looking dining room chair', False, False, 'dining room chair')
 
 def text_input(text, player_room='none'): #not done (getting there)text = text.lower()
     text = text.split()

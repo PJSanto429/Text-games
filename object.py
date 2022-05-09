@@ -7,6 +7,9 @@ import gc
 
 player_inventory = []
 
+yes = ['yes','y']
+no = ['no','n']
+
 #room inventories:  #i don't think i will need these 
 void_INV = []
 starting_room_INV = [] #these are not going to end up in the 'final' product, currently being used for testing 
@@ -59,6 +62,11 @@ class Object: #unfinished - main priority
         if action == 'take':
             pass
 
+    def add_attribute(self, attribute='void', description='void', locked=False):
+        self.locked = locked
+        if attribute == 'read':
+            self.read = description
+
     def item_description(self): #prints the item's description
         if self.description == 'void':
             print()
@@ -68,6 +76,23 @@ class Object: #unfinished - main priority
         else:
             print()
             type_effect(self.description)
+            if self.name == 'note':
+                print()
+                type_effect('Would you like to read note? ')
+                print()
+                choice = input()
+                if choice in yes:
+                    if self.locked == False:
+                        print()
+                        type_effect('The note reads: ')
+                        print()
+                        type_effect(self.read)
+                    elif self.locked == True:
+                        print()
+                        type_effect('Despite your best attempts, you are unable to read this. It must be in another language or something...')
+                elif choice in no:
+                    print()
+                    type_effect('Ok, your loss')
 
     def notTakeable_message(self, message):
         #this is for adding more variety to the game => instead of just saying 'you cant take that', it would say 'this is to heavy to take
@@ -102,6 +127,17 @@ class Object: #unfinished - main priority
             print()
             type_effect(self.cantSee)
 
+        elif len(itemList) == 1:
+            #print()
+            #type_effect(i.longName)
+            for i in Object.instances:
+                if i.name == item:
+                    if i.name == item and (i.room == player_room or i.inInventory == True):
+                        if action == 'take' or action == 'drop':
+                            i.pick_drop(action)
+                        elif action == 'look':
+                            i.item_description()
+
         elif len(itemList) > 1:
             print()
             type_effect(f'Which did you mean?  ')
@@ -118,14 +154,6 @@ class Object: #unfinished - main priority
                         i.pick_drop(action)
                     if action == 'look':
                         i.item_description()
-
-        elif len(itemList) == 1:
-            #print()
-            #type_effect(i.longName)
-            if action == 'take' or action == 'drop':
-                self.pick_drop(action)
-            elif action == 'look':
-                self.item_description()
 
     def change_name(self, name):
         self.name = name

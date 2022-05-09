@@ -7,6 +7,8 @@ from main import *
 from object import Object, player_inventory
 from room import Room
 
+#idk what all this crap is:
+
 '''from colorama import init
 from termcolor import colored
 
@@ -29,4 +31,4 @@ while True: #this is a very simple interactive 'window' that allows for text inp
     print()
     print()
     text = input("Input: ")
-    text_input(text, 'start')
+    text_input(text, 'room2')
