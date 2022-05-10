@@ -147,7 +147,7 @@ class Object: #unfinished - main priority
                     type_effect(f"{i.longName} - inventory")
                 elif i.longName in itemList:
                     print()
-                    type_effect(f'{i.longName} - {i.room}')
+                    type_effect(i.longName)
             print()
             choice = input()
             for i in Object.instances:

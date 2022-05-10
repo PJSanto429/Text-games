@@ -27,8 +27,6 @@ print(colored('Hello World', 'black', 'on_white'))'''
 
 #key.test('keyList')
 
-#key, key, cat, cat, chair
-
 while True: #this is a very simple interactive 'window' that allows for text input
     print()
     print()

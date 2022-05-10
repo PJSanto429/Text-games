@@ -117,7 +117,10 @@ key = Object('key', 'void', 'this is a large gold key', True, False, 'large gold
 key2 = Object('key', 'void', 'this is a small bronze key', True, False, 'small bronze key')
 
 cat = Object('cat', 'void', 'this is a big grey cat, with very long whiskers', False, False, 'big grey cat')
+cat.notTakeable_message('As you are trying to pick up the big grey cat, it keeps jumping out of your arms. This may not be the best idea')
+
 cat2 = Object('cat', 'void', 'this is a small black cat, with very well kept fur', False, False, 'small black cat')
+cat2.notTakeable_message('As you are trying to pick up the small black, it keeps jumping out of your arms. This may not be the best idea')
 
 chair = Object('chair', 'void', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
@@ -160,6 +163,10 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
             print()
             type_effect('Nothing yet...')
 
+    if action == 'wait':
+        print()
+        type_effect('Time passes...')
+    
     elif text[x - 1] == 'key':
         key.action(action, player_room)
     elif text[x - 1] == 'cat':
@@ -359,7 +366,7 @@ def game_begin(): #starts the game, DONE
 
 def starting_room(): #nothing here yet...
     print()
-    type_effect('This is a super cool room.')
+    type_effect('You are in a kitchen. There is really nothing interesting here, besides the strange looking ')
 
 if __name__ != 'main':
     game_begin()
