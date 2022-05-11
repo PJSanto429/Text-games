@@ -167,21 +167,22 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
         print()
         type_effect('Time passes...')
     
-    try:
-        elif text[x - 1] == 'key':
-            key.action(action, player_room)
-        elif text[x - 1] == 'cat':
-            cat.action(action, player_room)
-        elif text[x - 1] == 'chair':
-            chair.action(action, player_room)
-        elif text[x - 1] == 'note':
-            note.action(action, player_room)
-        elif text[x - 1] == 'wall':
-            wall.action(action, player_room)
-                
     else:
-        print()
-        type_effect("something went wrong")
+        try:
+            if text[x - 1] == 'key':
+                key.action(action, player_room)
+            elif text[x - 1] == 'cat':
+                cat.action(action, player_room)
+            elif text[x - 1] == 'chair':
+                chair.action(action, player_room)
+            elif text[x - 1] == 'note':
+                note.action(action, player_room)
+            elif text[x - 1] == 'wall':
+                wall.action(action, player_room)
+                
+        except:
+            print()
+            type_effect("Thats not a verb I recognize")
 
 '''def inventory(player_room, action='look'): #NOT DONE | work on this second - OR NEVER...
     if player_room == "starting_room":
