@@ -167,20 +167,18 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
         print()
         type_effect('Time passes...')
     
-    elif text[x - 1] == 'key':
-        key.action(action, player_room)
-    elif text[x - 1] == 'cat':
-        cat.action(action, player_room)
-    elif text[x - 1] == 'chair':
-        chair.action(action, player_room)
-    elif text[x - 1] == 'note':
-        note.action(action, player_room)
-    elif text[x - 1] == 'wall':
-        try:
+    try:
+        elif text[x - 1] == 'key':
+            key.action(action, player_room)
+        elif text[x - 1] == 'cat':
+            cat.action(action, player_room)
+        elif text[x - 1] == 'chair':
+            chair.action(action, player_room)
+        elif text[x - 1] == 'note':
+            note.action(action, player_room)
+        elif text[x - 1] == 'wall':
             wall.action(action, player_room)
-        except:
-            pass
-
+                
     else:
         print()
         type_effect("something went wrong")
