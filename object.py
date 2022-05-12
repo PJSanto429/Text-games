@@ -26,7 +26,7 @@ def type_effect(text = ""): #typewriter effect. idk how it works
 class Object: #unfinished - main priority
     instances = []
     #name, player_room, room, description, takeable, inInventory
-    def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', health = 0, money = 0, parent = 'room', code = .0000):
+    def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', seen = False, health = 0, money = 0, parent = 'object', code = .0000):
         self.__class__.instances.append(self)
         self.name = name #gives name to object(default is 'void')
         self.room = room #default is void(kind of a storage area)
@@ -34,6 +34,7 @@ class Object: #unfinished - main priority
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
         self.longName = longName #for if there are multiple items in room/inventory with same name
+        self.seen = seen #for checking if the object has been seen
         if self.inInventory == True:
             player_inventory.append(self.longName)
         self.parent = parent
@@ -76,6 +77,7 @@ class Object: #unfinished - main priority
         else:
             print()
             type_effect(self.description)
+            self.seen = True
             if self.name == 'note':
                 print()
                 type_effect('Would you like to read note? ')
@@ -98,12 +100,7 @@ class Object: #unfinished - main priority
         #this is for adding more variety to the game => instead of just saying 'you cant take that', it would say 'this is to heavy to take
         if message == 'heavy':
             self.takeable_message = 'This is far to heavy to carry, and you are no weightlifter'
-        #add more messages here
-        #elif message == ''
-        #elif message == ''
-        #elif message == ''
-        #elif message == ''
-        #elif message == ''
+        #add more messages here:
         #elif message == ''
         else:
             self.takeable_message = message

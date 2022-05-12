@@ -145,7 +145,7 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
     action = text[0]
     x = len(text)
 
-    if text[0] == 'quit' or text[0] == 'quit()':
+    if text[0] == 'quit' or text[0] == 'quit()' or text[0] == 'stop':
         print()
         type_effect('Quitting...')
         quit()
@@ -167,6 +167,17 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
         print()
         type_effect('Time passes...')
     
+    if len(text) == 1 and action == 'look':
+        print()
+        type_effect('You can see')
+        for i in Object.instances:
+            if i.room == player_room:
+                type_effect(f', {i.longName}')
+
+    if action == 'move' or action == 'go':
+        print()
+        type_effect("You can't go there")
+    
     else:
         try:
             if text[x - 1] == 'key':
@@ -183,6 +194,10 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
         except:
             print()
             type_effect("Thats not a verb I recognize")
+
+    def look(player_room='void'):
+        if player_room == 'void':
+            pass
 
 '''def inventory(player_room, action='look'): #NOT DONE | work on this second - OR NEVER...
     if player_room == "starting_room":
@@ -361,11 +376,20 @@ def game_begin(): #starts the game, DONE
     loading("start")
     start_stats()
     introduction()
-    starting_room()
+    #starting_room()
 
-def starting_room(): #nothing here yet...
+starting_room = Room('kitchen', 'void', 'east south')
+starting_room.change_description('You are in a dark, musty kitchen')
+
+def starting_room1():
     print()
-    type_effect('You are in a kitchen. There is really nothing interesting here, besides the strange looking ')
+    type_effect('You are in a dark, musty kitchen with a humming sound coming from the fridge. It sounds like there might be something wrong with it.')
+    text_input('look', 'start')
+    while True:
+        print()
+        print()
+        text = input(">> ")
+        text_input(text, 'start')
 
 if __name__ != 'main':
     game_begin()
