@@ -3,6 +3,7 @@
 import sys
 from time import sleep
 import gc
+from object import Object
 
 def type_effect(text = ""):
     words = text
@@ -23,15 +24,40 @@ class Room():
         self.east = east
         self.west = west
         
-    def action(self, action = 'none', name = 'none'):
-        roomList = []
-
+    def action(self, action, player_room):
+        #print()
+        #type_effect(f'action: {action} - player room: {player_room}')
         for i in Room.instances:
-            print()         #add same thign as Object.action FJKLSDFJKSDFJKFJWQERWIOQRHEWUN;SDJAFWEUIFBSDJKALFBSDJKLA
-            type_effect(i.name)
+            if i.name == player_room:
+                if action == 'look':
+                    i.room_description(player_room)
+                if action == 'move':
+                    pass
 
-    def room_description(self):
-        return(self.description)
+    def room_description(self, player_room):
+        for i in Room.instances:
+            if i.name == player_room:
+                print()
+                type_effect(i.description)
+                print()
+                type_effect('You can see ')
+                x = 0
+
+        for i in Object.instances:
+            if i.room == player_room:
+                if x == 0:
+                    type_effect(i.longName)
+                    x += 1
+                else:
+                    type_effect(f', {i.longName}')
+                    x += 1
+        
+        if x == 0:
+            print()
+            type_effect('nothing...')
+
+    def move_room(self, player_room):
+        pass
 
     def set_directions(self, north = False, south = False, east = False, west = False):
         self.north = north

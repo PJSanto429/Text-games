@@ -116,10 +116,6 @@ class Object: #unfinished - main priority
             if i.name == name and (i.room == player_room or i.inInventory == True):
                 itemList.append(i.longName)
 
-        '''for thing in itemList:
-            print()
-            type_effect(thing)'''
-
         if len(itemList) == 0:
             print()
             type_effect(self.cantSee)
@@ -129,7 +125,7 @@ class Object: #unfinished - main priority
                 if i.name == name:
                     if i.name == name and (i.room == player_room or i.inInventory == True):
                         if action == 'take' or action == 'drop':
-                            i.pick_drop(action)
+                            i.pick_drop(action, player_room)
                         elif action == 'look':
                             i.item_description()
                         else:
@@ -139,13 +135,27 @@ class Object: #unfinished - main priority
         elif len(itemList) > 1:
             print()
             type_effect(f'Which did you mean?  ')
-            for i in Object.instances:
-                if i.longName in itemList and i.inInventory == True:
-                    print()
-                    type_effect(f"{i.longName} - inventory")
-                elif i.longName in itemList:
-                    print()
-                    type_effect(i.longName)
+
+            if action == 'drop':
+                for i in Object.instances:
+                    if i.inInventory == True:
+                        print()
+                        type_effect(i.longName)
+
+            elif action == 'take':
+                for i in Object.instances:
+                    if i.longName in itemList and i.inInventory == False:
+                        print()
+                        type_effect(i.longName)
+
+            else:
+                for i in Object.instances:
+                    if i.longName in itemList and i.inInventory == True:
+                        print()
+                        type_effect(f"{i.longName} - inventory")
+                    elif i.longName in itemList:
+                        print()
+                        type_effect(i.longName)
             print()
             choice = input()
             for i in Object.instances:
@@ -153,7 +163,7 @@ class Object: #unfinished - main priority
                     #print()
                     #type_effect(self.longName)
                     if action == 'take' or action == 'drop':
-                        i.pick_drop(action)
+                        i.pick_drop(action, player_room)
                     elif action == 'look':
                         i.item_description()
                     else:
@@ -229,7 +239,7 @@ class Object: #unfinished - main priority
     def change_takeable(self, takeable): #either True or False
         self.takeable = takeable
 
-    def pick_drop(self, action, inform=True): #either 'take' or 'drop'; WILL BE USED  A LOT
+    def pick_drop(self, action, player_room, inform=True): #either 'take' or 'drop'; WILL BE USED  A LOT
         if action == 'take':
             if self.takeable == True:
                 if self.inInventory == True: #checks to see if the item is already in the player inventory
@@ -238,6 +248,7 @@ class Object: #unfinished - main priority
                         type_effect(f"You already have {self.name} in your inventory")
                 elif self.inInventory == False:
                     self.inInventory = True
+                    self.room = 'inventory'
                     if inform:
                         print()
                         player_inventory.append(self.longName)
@@ -254,14 +265,14 @@ class Object: #unfinished - main priority
         if action == 'drop':
             if self.inInventory == True:
                 self.inInventory = False
+                self.room = player_room
                 if inform:
                     print()
                     player_inventory.remove(self.longName)
                     type_effect(f"You have dropped {self.name}")
             elif self.inInventory == False:
-                if inform:
-                    print()
-                    type_effect(f"You don't have {self.name} in your inventory")
+                print()
+                type_effect(f"You don't have {self.name} inyour inventory")
 
     def return_name(self, x = 'name'):
         if x == 'name':

@@ -27,10 +27,10 @@ print(colored('Hello World', 'black', 'on_white'))'''
 
 #key.test('keyList')
 
-'''while True: #this is a very simple interactive 'window' that allows for text input
+while True: #this is a very simple interactive 'window' that allows for text input
     print()
     print()
     text = input("Input: ")
-    text_input(text, 'void')'''
+    text_input(text, 'start')
 
-room.action()
+#room.action()

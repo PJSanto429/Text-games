@@ -128,7 +128,7 @@ chair.notTakeable_message('this chair is bolted to the floor, making it unable t
 wall = Object('wall', 'void', 'this is a wall', False, False, 'boring grey wall')
 
 #---------------------THESE ARE HERE SO THE CODE CAN LOOK INTO ALL ROOM/OBJECT INSTANCES-------------------------------------------------------------------
-thing = Object()
+thing = Object('void', 'none')
 room = Room()
 
 def text_input(text, player_room='none'): #not done (getting there)text = text.lower()
@@ -160,11 +160,7 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
         type_effect('Time passes...')
     
     elif len(text) == 1 and action == 'look':
-        print()
-        type_effect('You can see')
-        for i in Object.instances:
-            if i.room == player_room:
-                type_effect(f', {i.longName}')
+        room.action('look', player_room)
 
     elif action == 'move' or action == 'go':
         print()
@@ -172,10 +168,6 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
     
     else:
         thing.action(action, text[x - 1], player_room)
-
-    def look(player_room='void'):
-        if player_room == 'void':
-            pass
 
 def loading(message): #done
     if message == 'restart':
@@ -337,7 +329,7 @@ def game_begin(): #starts the game, DONE
     #starting_room()
     
 #-----------------------STARTING ROOM-----------Room creation-------------------------------------------------------------------------
-starting_room = Room('kitchen')
+starting_room = Room('start')
 starting_room.set_directions(False, 'void', False, False)
 starting_room.change_description('You are in a dark, musty kitchen')
 
@@ -350,9 +342,6 @@ key3 = Object('key', 'start', 'this is a rusty copper key', True, True, 'rusty c
 chair2 = Object('chair', 'start', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
 
 def starting_room1():
-    print()
-    type_effect('You are in a dark, musty kitchen with a humming sound coming from the fridge. It sounds like there might be something wrong with it.')
-    text_input('look', 'start')
     while True:
         print()
         print()
