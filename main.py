@@ -125,19 +125,11 @@ cat2.notTakeable_message('As you are trying to pick up the small black, it keeps
 chair = Object('chair', 'void', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
 
-#----------------------------------------------------------------------------------------
-'''most of the items in the '2' rooms are for testing and demonstrations'''
-#starting room stuff:
-note = Object('note', 'start', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
-note.add_attribute('read', "This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
+wall = Object('wall', 'void', 'this is a wall', False, False, 'boring grey wall')
 
-key3 = Object('key', 'start', 'this is a rusty copper key', True, True, 'rusty copper key')
-
-chair2 = Object('chair', 'start', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
-
-#----------------------------------------------------------------------------------------
-#stuff in room 2:
-chair3 = Object('chair', 'room2', 'this is a cool looking dining room chair', False, False, 'dining room chair')
+#---------------------THESE ARE HERE SO THE CODE CAN LOOK INTO ALL ROOM/OBJECT INSTANCES-------------------------------------------------------------------
+thing = Object()
+room = Room()
 
 def text_input(text, player_room='none'): #not done (getting there)text = text.lower()
     text = text.lower()
@@ -150,7 +142,7 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
         type_effect('Quitting...')
         quit()
 
-    if action == 'testing':
+    elif action == 'testing':
         inv = 0
         print()
         type_effect('Your inventory consists of:')
@@ -163,61 +155,27 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
             print()
             type_effect('Nothing yet...')
 
-    if action == 'wait':
+    elif action == 'wait':
         print()
         type_effect('Time passes...')
     
-    if len(text) == 1 and action == 'look':
+    elif len(text) == 1 and action == 'look':
         print()
         type_effect('You can see')
         for i in Object.instances:
             if i.room == player_room:
                 type_effect(f', {i.longName}')
 
-    if action == 'move' or action == 'go':
+    elif action == 'move' or action == 'go':
         print()
         type_effect("You can't go there")
     
     else:
-        try:
-            if text[x - 1] == 'key':
-                key.action(action, player_room)
-            elif text[x - 1] == 'cat':
-                cat.action(action, player_room)
-            elif text[x - 1] == 'chair':
-                chair.action(action, player_room)
-            elif text[x - 1] == 'note':
-                note.action(action, player_room)
-            elif text[x - 1] == 'wall':
-                wall.action(action, player_room)
-                
-        except:
-            print()
-            type_effect("Thats not a verb I recognize")
+        thing.action(action, text[x - 1], player_room)
 
     def look(player_room='void'):
         if player_room == 'void':
             pass
-
-'''def inventory(player_room, action='look'): #NOT DONE | work on this second - OR NEVER...
-    if player_room == "starting_room":
-        room_inv = starting_room_INV
-    elif player_room == 'room_one':
-        room_inv = RM_1_INV
-    else:
-        ok=input('error')
-        quit()
-    
-    if action == 'look': #pretty good, maybe done
-        for thing in room_inv:
-            print()
-            type_effect(thing)
-    
-    elif action == 'take': #add 
-        print('TAKE')
-
-    elif action == 'drop':
-        print('DROP')'''
 
 def loading(message): #done
     if message == 'restart':
@@ -377,9 +335,19 @@ def game_begin(): #starts the game, DONE
     start_stats()
     introduction()
     #starting_room()
-
-starting_room = Room('kitchen', 'void', 'east south')
+    
+#-----------------------STARTING ROOM-----------Room creation-------------------------------------------------------------------------
+starting_room = Room('kitchen')
+starting_room.set_directions(False, 'void', False, False)
 starting_room.change_description('You are in a dark, musty kitchen')
+
+#room items ______________________
+note = Object('note', 'start', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
+note.add_attribute('read', "This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
+
+key3 = Object('key', 'start', 'this is a rusty copper key', True, True, 'rusty copper key')
+
+chair2 = Object('chair', 'start', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
 
 def starting_room1():
     print()

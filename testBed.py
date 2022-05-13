@@ -33,4 +33,4 @@ print(colored('Hello World', 'black', 'on_white'))'''
     text = input("Input: ")
     text_input(text, 'void')'''
 
-starting_room.test()
+room.action()

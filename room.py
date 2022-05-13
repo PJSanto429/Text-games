@@ -2,8 +2,9 @@
 
 import sys
 from time import sleep
+import gc
 
-def type_effect(text = ""): #typewriter effect
+def type_effect(text = ""):
     words = text
     for char in words:
         sleep(0.04)
@@ -11,47 +12,32 @@ def type_effect(text = ""): #typewriter effect
         sys.stdout.flush()
 
 class Room():
-    def __init__(self, name = 'void', description = 'void', directions = 'none'):
+    instances = []
+    def __init__(self, name = 'void', description = 'void', north = False, south = False, east = False, west = False):
+        self.__class__.instances.append(self)
         self.name = name
         self.description = description
-        self.directions = directions
+
+        self.north = north
+        self.south = south
+        self.east = east
+        self.west = west
         
-        self.set_directions()
+    def action(self, action = 'none', name = 'none'):
+        roomList = []
+
+        for i in Room.instances:
+            print()         #add same thign as Object.action FJKLSDFJKSDFJKFJWQERWIOQRHEWUN;SDJAFWEUIFBSDJKALFBSDJKLA
+            type_effect(i.name)
 
     def room_description(self):
-        pass
+        return(self.description)
 
-    def set_directions(self, test = False):
-        if test == False:
-            self.directions = self.directions.split()
-            if 'north' in self.directions:
-                self.north = True
-            else:
-                self.north = False
-
-            if 'south' in self.directions:
-                self.south = True
-            else:
-                self.south = False
-
-            if 'east' in self.directions:
-                self.east = True
-            else:
-                self.east = False
-
-            if 'west' in self.directions:
-                self.west = True
-            else:
-                self.west = False
-        elif test == True:
-            if self.north == True:
-                type_effect(' north >>')
-            if self.south == True:
-                type_effect(' south >>')
-            if self.east == True:
-                type_effect(' east >>')
-            if self.west == True:
-                type_effect(' west >>')
+    def set_directions(self, north = False, south = False, east = False, west = False):
+        self.north = north
+        self.south = south
+        self.east = east
+        self.west = west
 
     def change_description(self, description = 'void'):
         self.description = description
@@ -63,5 +49,15 @@ class Room():
             print()
             type_effect(f"Description: {self.description}")
             print()
-            type_effect('Directions: ')
-            self.set_directions(True)
+            type_effect(f'north: {self.north}')
+            print()
+            type_effect(f'south: {self.south}')
+            print()
+            type_effect(f'east: {self.east}')
+            print()
+            type_effect(f'west: {self.west}')
+
+        elif action == 'every':
+            for i in Room.instances:
+                print()
+                type_effect(i.name)
