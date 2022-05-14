@@ -12,6 +12,13 @@ def type_effect(text = ""):
         sys.stdout.write(char)
         sys.stdout.flush()
 
+
+class Player():
+    def __init__(self, room):
+        self.room = room
+
+player = Player('kitchen')
+
 class Room():
     instances = []
     def __init__(self, name = 'void', description = 'void', north = False, south = False, east = False, west = False):
@@ -28,7 +35,7 @@ class Room():
         #print()
         #type_effect(f'action: {action} - player room: {player_room}')
         for i in Room.instances:
-            if i.name == player_room:
+            if i.name == player.room:
                 if action == 'look':
                     i.room_description(player_room)
                 if action == 'move':
@@ -51,13 +58,58 @@ class Room():
                 else:
                     type_effect(f', {i.longName}')
                     x += 1
-        
+
         if x == 0:
             print()
             type_effect('nothing...')
 
-    def move_room(self, player_room):
-        pass
+        print()
+        type_effect('You can go:')
+        
+        for i in Room.instances:
+            if i.name == player_room:
+                if i.north != False:
+                    print()
+                    type_effect('north')
+                if i.south != False:
+                    print()
+                    type_effect('south')
+                if i.east != False:
+                    print()
+                    type_effect('east')
+                if i.west != False:
+                    print()
+                    type_effect('west')
+
+    def move_room(self, player_room, direction):
+        for i in Room.instances:
+            if i.name == player_room:
+                if direction == 'north':
+                    if i.north != False:
+                        player_room = i.north
+                        print()
+                        type_effect('You have moved North')
+
+                if direction == 'south':
+                    if i.south != False:
+                        player_room = i.south
+                        print()
+                        type_effect('You have moved South')
+
+                if direction == 'east':
+                    if i.east != False:
+                        player_room = i.east
+                        print()
+                        type_effect('You have moved East')
+
+                if direction == 'west':
+                    if i.west != False:
+                        player_room =i.west
+                        print()
+                        type_effect('You have moved West')
+
+    def change_room(self, player_room):
+        player_room = player_room
 
     def set_directions(self, north = False, south = False, east = False, west = False):
         self.north = north

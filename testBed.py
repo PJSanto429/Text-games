@@ -26,11 +26,10 @@ print(colored('Hello World', 'black', 'on_white'))'''
 #print(key.return_name('longname'))
 
 #key.test('keyList')
+player_room = 'start'
 
 while True: #this is a very simple interactive 'window' that allows for text input
     print()
     print()
     text = input("Input: ")
-    text_input(text, 'start')
-
-#room.action()
+    text_input(text, player_room)

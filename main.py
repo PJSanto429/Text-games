@@ -142,7 +142,7 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
         type_effect('Quitting...')
         quit()
 
-    elif action == 'testing':
+    elif action == 'testing' or action =='inv' or action == 'inventory':
         inv = 0
         print()
         type_effect('Your inventory consists of:')
@@ -163,10 +163,9 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
         room.action('look', player_room)
 
     elif action == 'move' or action == 'go':
-        print()
-        type_effect("You can't go there")
+        room.move_room(player_room, text[x - 1])
     
-    else:
+    elif action == 'pick' or action == 'drop' or action == 'look':
         thing.action(action, text[x - 1], player_room)
 
 def loading(message): #done
