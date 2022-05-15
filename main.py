@@ -127,11 +127,11 @@ chair.notTakeable_message('this chair is bolted to the floor, making it unable t
 
 wall = Object('wall', 'void', 'this is a wall', False, False, 'boring grey wall')
 
-#---------------------THESE ARE HERE SO THE CODE CAN LOOK INTO ALL ROOM/OBJECT INSTANCES-------------------------------------------------------------------
+#---------------------THESE ARE HERE SO THE CODE CAN LOOK INTO ALL ROOM/OBJECT INSTANCES -------------------------------------------------------------------
 thing = Object('void', 'none')
 room = Room()
 
-def text_input(text, player_room='none'): #not done (getting there)text = text.lower()
+def text_input(text, player_room='none'): #pretty much done
     text = text.lower()
     text = text.split()
     action = text[0]
@@ -159,13 +159,13 @@ def text_input(text, player_room='none'): #not done (getting there)text = text.l
         print()
         type_effect('Time passes...')
     
-    elif len(text) == 1 and action == 'look':
+    elif len(text) == 1 and action == 'look' :
         room.action('look', player_room)
 
     elif action == 'move' or action == 'go':
-        room.move_room(player_room, text[x - 1])
+        room.action('move', player_room, text[x - 1])
     
-    elif action == 'pick' or action == 'drop' or action == 'look':
+    elif action == 'take' or action == 'drop' or action == 'look':
         thing.action(action, text[x - 1], player_room)
 
 def loading(message): #done
@@ -327,18 +327,28 @@ def game_begin(): #starts the game, DONE
     introduction()
     #starting_room()
     
-#-----------------------STARTING ROOM-----------Room creation-------------------------------------------------------------------------
+#-----------------------STARTING ROOM----------- Room creation -------------------------------------------------------------------------
 starting_room = Room('start')
-starting_room.set_directions(False, 'void', False, False)
+starting_room.set_directions(False, 'second', False, False)
 starting_room.change_description('You are in a dark, musty kitchen')
 
 #room items ______________________
 note = Object('note', 'start', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
 note.add_attribute('read', "This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
 
-key3 = Object('key', 'start', 'this is a rusty copper key', True, True, 'rusty copper key')
+key3 = Object('key', 'start', 'this is a rusty copper key', True, False, 'rusty copper key')
 
 chair2 = Object('chair', 'start', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
+
+#----------------------- ROOM TWO ----------- Room creation -------------------------------------------------------------------------
+room2 = Room('second')
+room2.change_description('You are in test room')
+room2.set_directions('kitchen', False, False, False)
+
+#room items ______________________
+key4 = Object('key', 'second', 'this is a normal house key, with all the accommodating notches', True, False, 'normal house key')
+
+hat = Object('hat', 'second', 'this is a sun hat', True, False, 'sun hat')
 
 def starting_room1():
     while True:

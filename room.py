@@ -17,7 +17,7 @@ class Player():
     def __init__(self, room):
         self.room = room
 
-player = Player('kitchen')
+player = Player('start')
 
 class Room():
     instances = []
@@ -31,21 +31,19 @@ class Room():
         self.east = east
         self.west = west
         
-    def action(self, action, player_room):
-        #print()
-        #type_effect(f'action: {action} - player room: {player_room}')
+    def action(self, action, player_room, direction = 'none'):
         for i in Room.instances:
             if i.name == player.room:
                 if action == 'look':
-                    i.room_description(player_room)
+                    i.room_description(player.room)
                 if action == 'move':
-                    pass
+                    i.move_room(player_room, direction)
 
     def room_description(self, player_room):
         for i in Room.instances:
             if i.name == player_room:
                 print()
-                type_effect(i.description)
+                type_effect(f'{i.description} - {i.name}')
                 print()
                 type_effect('You can see ')
                 x = 0
@@ -65,46 +63,54 @@ class Room():
 
         print()
         type_effect('You can go:')
+        x = 0
         
         for i in Room.instances:
             if i.name == player_room:
                 if i.north != False:
                     print()
                     type_effect('north')
+                    x += 1
                 if i.south != False:
                     print()
                     type_effect('south')
+                    x += 1
                 if i.east != False:
                     print()
                     type_effect('east')
+                    x += 1
                 if i.west != False:
                     print()
                     type_effect('west')
+                    x += 1
+                if x == 0:
+                    print()
+                    type_effect('nowhere...')
 
     def move_room(self, player_room, direction):
         for i in Room.instances:
             if i.name == player_room:
                 if direction == 'north':
                     if i.north != False:
-                        player_room = i.north
+                        player.room = i.north
                         print()
                         type_effect('You have moved North')
 
                 if direction == 'south':
                     if i.south != False:
-                        player_room = i.south
+                        player.room = i.south
                         print()
                         type_effect('You have moved South')
 
                 if direction == 'east':
                     if i.east != False:
-                        player_room = i.east
+                        player.room = i.east
                         print()
                         type_effect('You have moved East')
 
                 if direction == 'west':
                     if i.west != False:
-                        player_room =i.west
+                        player.room = i.west
                         print()
                         type_effect('You have moved West')
 

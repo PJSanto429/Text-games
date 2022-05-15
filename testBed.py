@@ -5,7 +5,7 @@ from time import sleep
 from gc import get_objects
 from main import *
 from object import Object, player_inventory
-from room import Room
+from room import Room, player
 
 #idk what all this crap is:
 
@@ -26,10 +26,10 @@ print(colored('Hello World', 'black', 'on_white'))'''
 #print(key.return_name('longname'))
 
 #key.test('keyList')
-player_room = 'start'
+player.room = 'start'
 
 while True: #this is a very simple interactive 'window' that allows for text input
     print()
     print()
     text = input("Input: ")
-    text_input(text, player_room)
+    text_input(text, player.room)
