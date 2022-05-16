@@ -1,49 +1,7 @@
-#This 'game' is less of a game and more of a pet project type thing. it is nowhere close to being done it is just fun to work on
-
-'''Last edited: 4/30/22 @ 10:46 PM ==> Last worked on:
-In order of newest to oldest:
-
-=> worked on object class some more
-    => in testBed.py there is a useable 'live' simulation for looking, taking and dropping items.
-
-=>fixed look at and take and drop. DO NOT IMPORT FROM TESTBED. IDK why, but it will print stuff twice. very annoying
-
-=> Worked on Object class a little more. => change name, description, isTakeable, item description should work(add descriptions)
-    => rearanged objectpropertie to what will be best (less used stuff with be at the end and vice versa)
-=> Changed typeWrite.py to testBed.py (makes more sense to have new name)
-'''
+#This 'game' is less of a game and more of a pet project type thing. it is somewhat close to being done it is just fun to work on
 
 #To-Do list(In order of most to least importance):
-'''
-            1. Work on Object class  ###MOST IMPORTANT: Game will mostly not function without this
-                A. picking up and dropping stuff
-                    I. Inventory system: still pretty bare bones and incomplete
-                        1. add stuff to player_inventory while taking it from room inventory and vice versa
-                    II. Make sure that item is in player room
-                        1. maybe check if the item room and player room are the same as a first step?
-
-                B. Item Descriptions
-                    I. For stuff with no description, put: "I see nothing special about (item)"
-                    II. For stuff not in room, put: "Hmm, I can't see that'
-
-            2. Work on Room class #Most recent addidion => not good yet
-                A. room descriptions
-                B. room inventories
-                C. to make a room, make a def that creates the room and all the fun stuff, and then tell ths player what to do, etc.
-
-            3. Text Input  ###VERY IMPORTANT: should be 1, but I don't want to work on it because it is quite boring. Also it will be much easier to do once previous stuff is done
-                A. get it working. it pretty much does nothing
-                B. When more complete, integrate with Object class(item descriptions, inventory, etc)
-
-                    stuff up here is the bones and meat of the project, CAN  be transfered to another game.
----------------------------------------------------------------------------------------------------------------
-                    stuff down here is more specific to the game, this is the creative part
-                    (#4 - player movement is pretty simple to change for another game)
-                    (#5 - stuff to do is the most creative part and would change most for a new project)
-
-            4. Player movement(room to room)   ##Pretty Important: not nearly as important as 1, but still vital to making the game work. game won't work at all past the starting room without this
-                A. maybe add different 'look' directions 
-            
+'''        
             5. Stuff to do/get    #fun stuff(for player), wrap up
                 A. Find treasure/trophies
                 B. Solve puzzles
@@ -54,7 +12,7 @@ In order of newest to oldest:
                         2. characters that help you occasionally
                     III. Shopkeepers/merchants
                         1. Buy stuff - set object money to negative initially, then set it to zero after taking it
-                '''
+'''
 
 #imports
 from time import sleep
@@ -63,6 +21,7 @@ from string import ascii_letters, ascii_lowercase, ascii_uppercase
 from random import randint, choice
 from object import Object, player_inventory
 from room import Room
+from items import *
 
 #constants:
 yes = ['yes','y'] #these two are for asking the player simple questions: if choice in yes:
@@ -111,23 +70,7 @@ def start_stats(): #health - money - inventory  ALL = 0
     health = 100
     money = 0
 
-'''these items are just for testing purposes'''
-#name, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
-key = Object('key', 'void', 'this is a large gold key', True, False, 'large gold key')
-key2 = Object('key', 'void', 'this is a small bronze key', True, False, 'small bronze key')
-
-cat = Object('cat', 'void', 'this is a big grey cat, with very long whiskers', False, False, 'big grey cat')
-cat.notTakeable_message('As you are trying to pick up the big grey cat, it keeps jumping out of your arms. This may not be the best idea')
-
-cat2 = Object('cat', 'void', 'this is a small black cat, with very well kept fur', False, False, 'small black cat')
-cat2.notTakeable_message('As you are trying to pick up the small black, it keeps jumping out of your arms. This may not be the best idea')
-
-chair = Object('chair', 'void', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
-chair.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
-
-wall = Object('wall', 'void', 'this is a wall', False, False, 'boring grey wall')
-
-#---------------------THESE ARE HERE SO THE CODE CAN LOOK INTO ALL ROOM/OBJECT INSTANCES -------------------------------------------------------------------
+#---------------------THESE ARE HERE SO THE CODE CAN LOOK INTO ALL ROOM/OBJECT INSTANCES
 thing = Object('void', 'none')
 room = Room()
 
@@ -325,30 +268,6 @@ def game_begin(): #starts the game, DONE
     loading("start")
     start_stats()
     introduction()
-    #starting_room()
-    
-#-----------------------STARTING ROOM----------- Room creation -------------------------------------------------------------------------
-starting_room = Room('start')
-starting_room.set_directions(False, 'second', False, False)
-starting_room.change_description('You are in a dark, musty kitchen')
-
-#room items ______________________
-note = Object('note', 'start', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
-note.add_attribute('read', "This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
-
-key3 = Object('key', 'start', 'this is a rusty copper key', True, False, 'rusty copper key')
-
-chair2 = Object('chair', 'start', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
-
-#----------------------- ROOM TWO ----------- Room creation -------------------------------------------------------------------------
-room2 = Room('second')
-room2.change_description('You are in test room')
-room2.set_directions('kitchen', False, False, False)
-
-#room items ______________________
-key4 = Object('key', 'second', 'this is a normal house key, with all the accommodating notches', True, False, 'normal house key')
-
-hat = Object('hat', 'second', 'this is a sun hat', True, False, 'sun hat')
 
 def starting_room1():
     while True:

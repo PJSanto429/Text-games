@@ -30,6 +30,7 @@ class Room():
         self.south = south
         self.east = east
         self.west = west
+        self.x = 0
         
     def action(self, action, player_room, direction = 'none'):
         for i in Room.instances:
@@ -89,33 +90,37 @@ class Room():
 
     def move_room(self, player_room, direction):
         for i in Room.instances:
-            if i.name == player_room:
+            if i.name == player.room:
                 if direction == 'north':
                     if i.north != False:
                         player.room = i.north
                         print()
                         type_effect('You have moved North')
-
+                        i.room_description(player.room)
+                
                 if direction == 'south':
                     if i.south != False:
                         player.room = i.south
                         print()
                         type_effect('You have moved South')
+                        i.room_description(player.room)
 
                 if direction == 'east':
                     if i.east != False:
                         player.room = i.east
                         print()
                         type_effect('You have moved East')
+                        i.room_description(player.room)
 
                 if direction == 'west':
                     if i.west != False:
                         player.room = i.west
                         print()
                         type_effect('You have moved West')
+                        i.room_description(player.room)
 
     def change_room(self, player_room):
-        player_room = player_room
+        player.room = player_room
 
     def set_directions(self, north = False, south = False, east = False, west = False):
         self.north = north
