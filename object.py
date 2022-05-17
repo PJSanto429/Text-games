@@ -252,8 +252,14 @@ class Object: #unfinished - main priority
                     if inform:
                         print()
                         player_inventory.append(self.longName)
-
                         type_effect(f"You have picked up the {self.longName}")
+                        print()
+                        '''type_effect(f"Would you like to look at {self.longName}?")
+                        choice = input()
+                        if choice in yes:
+                            pass
+                        elif choice in no:
+                            pass'''
             elif self.takeable == False:
                 if self.takeable_message != 'void':
                     print()

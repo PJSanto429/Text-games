@@ -1,7 +1,6 @@
 from object import Object
 from room import Room
 
-
 '''these items are just for testing purposes'''
 #name, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
 key1 = Object('key', 'void', 'this is a large gold key', True, False, 'large gold key')
