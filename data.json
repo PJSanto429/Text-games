@@ -1,27 +1,10 @@
 {
-    "emp_details":[
-        {
-            "emp_name": "steve",
-            "email": "steve@gmail.com",
-            "room": "kitchen"
-        },
-        {
-            "emp_name": "joe",
-            "email": "joe@gmail.com",
-            "room": "library"
-        },
-        {
-          "emp_name": "maria",
-          "email": "maria@gmail.com",
-          "room": "bedroom"
-        }
-    ],
-
     "players":[
         {
             "name": "peyton",
             "room": "kitchen",
-            "score": 500
+            "score": 500,
+            "access": "super-admin"
         }
     ]
 }

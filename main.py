@@ -12,11 +12,12 @@
                         2. characters that help you occasionally
                     III. Shopkeepers/merchants
                         1. Buy stuff - set object money to negative initially, then set it to zero after taking it
+                    IV. use faker to create fake names for these character
+                        1. Documentation: https://faker.readthedocs.io/en/master/
             
             6. Add graphics? --last thing to do
                 A. use pygame
-                    I. https://www.101computing.net/getting-started-with-pygame/
-                    II. maybe turtle, but that is terrible'''
+                    I. https://www.101computing.net/getting-started-with-pygame/'''
 
 #imports
 from time import sleep

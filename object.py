@@ -347,3 +347,4 @@ class Object: #unfinished - main priority
 
         else:
             pass
+        #print('nothing')
