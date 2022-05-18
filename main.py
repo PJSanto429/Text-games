@@ -12,7 +12,11 @@
                         2. characters that help you occasionally
                     III. Shopkeepers/merchants
                         1. Buy stuff - set object money to negative initially, then set it to zero after taking it
-'''
+            
+            6. Add graphics? --last thing to do
+                A. use pygame
+                    I. https://www.101computing.net/getting-started-with-pygame/
+                    II. maybe turtle, but that is terrible'''
 
 #imports
 from time import sleep

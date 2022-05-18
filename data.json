@@ -15,5 +15,13 @@
           "email": "maria@gmail.com",
           "room": "bedroom"
         }
+    ],
+
+    "players":[
+        {
+            "name": "peyton",
+            "room": "kitchen",
+            "score": 500
+        }
     ]
 }
