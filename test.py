@@ -52,13 +52,15 @@ data2 = {
     ]
 }
 
-json.dumps(data2)
+#json.dumps(data2)
 
-#x = json.dumps(data)
-#y = json.dumps(data2)
+x = json.dumps(data)
+y = json.dumps(data2)
 
 with open('data2.json', 'w') as outfile:
-    outfile.dump(data2)
+    json.dump(x, outfile)
+
+
 
 #with open ('data2.json', 'r') as infile:
 #    data = json.load(infile)
