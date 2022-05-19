@@ -24,7 +24,7 @@ def Merge(dict1, dict2):
     return(dict2.update(dict1))
 
 data = {
-    "players":[
+    "player1":[
         {
             "name": "peyton",
             "room": "kitchen",
@@ -34,13 +34,6 @@ data = {
     ]
 }
 
-'''choice = input('Would you like to save game? ')
-if choice == 'yes':
-    name = input('Enter a name for the new save slot: ')
-    room = input('enter room for save slot: ')
-    score = input('enter score for save slot: ')
-    access = 'user'''
-
 def write_json(new_data, filename='data2.json'):
     with open(filename,'r+') as file:
         file_data = json.load(file)
@@ -48,8 +41,8 @@ def write_json(new_data, filename='data2.json'):
         file.seek(0)
         json.dump(file_data, file, indent = 4)
 
-test2 = {
-    "players":[
+data2 = {
+    "player2":[
         {
             "name": 'steve',
             "room": 'library',
@@ -59,14 +52,13 @@ test2 = {
     ]
 }
 
-write_json(test2)
+json.dumps(data2)
 
 #x = json.dumps(data)
 #y = json.dumps(data2)
 
-#with open('data2.json', 'w') as outfile:
-#    outfile.update(y)
-#    outfile.write(x)
+with open('data2.json', 'w') as outfile:
+    outfile.dump(data2)
 
 #with open ('data2.json', 'r') as infile:
 #    data = json.load(infile)
