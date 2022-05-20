@@ -1,5 +1,3 @@
-#This 'game' is less of a game and more of a pet project type thing. it is somewhat close to being done it is just fun to work on
-
 #To-Do list(In order of most to least importance):
 '''        
             5. Stuff to do/get    #fun stuff(for player), wrap up
@@ -27,6 +25,7 @@ from random import randint, choice
 from object import Object, player_inventory
 from room import Room
 from items import *
+import json
 
 #constants:
 yes = ['yes','y'] #these two are for asking the player simple questions: if choice in yes:
@@ -115,6 +114,12 @@ def text_input(text, player_room='none'): #pretty much done
     
     elif action == 'take' or action == 'drop' or action == 'look':
         thing.action(action, text[x - 1], player_room)
+
+    elif action == 'save':
+        pass
+
+    elif action == 'load':
+        pass
 
 def loading(message): #done
     if message == 'restart':
