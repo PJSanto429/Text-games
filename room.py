@@ -1,17 +1,8 @@
-'''Room class. extremely bare bones and unfinished.'''
-
 import sys
 from time import sleep
 import gc
 from object import Object
-
-def type_effect(text = ""):
-    words = text
-    for char in words:
-        sleep(0.04)
-        sys.stdout.write(char)
-        sys.stdout.flush()
-
+from typeEffect import type_effect
 
 class Player():
     def __init__(self, room):
@@ -44,7 +35,7 @@ class Room():
         for i in Room.instances:
             if i.name == player_room:
                 print()
-                type_effect(f'{i.description} - {i.name}')
+                type_effect(i.description)
                 print()
                 type_effect('You can see ')
                 x = 0

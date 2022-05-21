@@ -4,6 +4,7 @@ import sys
 from time import sleep
 from random import randint, choice
 import gc
+from typeEffect import type_effect
 
 player_inventory = []
 
@@ -15,13 +16,6 @@ void_INV = []
 starting_room_INV = [] #these are not going to end up in the 'final' product, currently being used for testing 
 RM_1_INV = []
 #item_list = starting_room_INV + RM_1_INV
-
-def type_effect(text = ""): #typewriter effect. idk how it works
-    words = text
-    for char in words:
-        sleep(0.04)
-        sys.stdout.write(char)
-        sys.stdout.flush()
 
 class Object: #unfinished - main priority
     instances = []
