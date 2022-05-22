@@ -46,5 +46,3 @@ def game_begin(): #starts the game - probably not needed
 
 if __name__ != 'main':
     game_begin()
-    print()
-    ok=input('STILL TESTING. GAME END')

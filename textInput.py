@@ -24,7 +24,7 @@ def text_input(text, player_room='none'): #pretty much done
         type_effect('Quitting...')
         quit()
 
-    elif action == 'testing' or action =='inv' or action == 'inventory':
+    elif action =='inv' or action == 'inventory':
         inv = 0
         print()
         type_effect('Your inventory consists of:')
@@ -54,8 +54,11 @@ def text_input(text, player_room='none'): #pretty much done
         saveGame(player_room)
 
     elif action == 'load':
-        inventory, room1 = loadGame()
+        code = loadGame()
+        player_room = getRoom(code)
+        room.go(player_room)
+
+        inventory = getInventory(code)
         for i in Object.instances:
             if i.longName in inventory:
                 i.inInventory = True
-        player.room = room1

@@ -30,6 +30,13 @@ class Room():
                     i.room_description(player.room)
                 if action == 'move':
                     i.move_room(player_room, direction)
+                if action == 'go':
+                    #i.go(player_room)
+                    pass
+
+    def go(self, player_room):
+        player.room = player_room
+        print(player.room)
 
     def room_description(self, player_room):
         for i in Room.instances:

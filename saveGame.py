@@ -10,7 +10,7 @@ from loading import loading
 def saveGame(player_room = 'none', code = 1234): #pretty much done I THINK
     if code == 0000:
         pass
-    else:
+    elif code == 1234:
         code = randint(1111, 9999)
     print()
     type_effect("Please enter a name for this save file: ")
@@ -49,6 +49,7 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done I THINK
 def loadGame(): #close to being done
     print()
     type_effect('Please type your savecode now: ')
+    global code
     code = input()
     try:
         with open(f'players/{code}.json', 'r') as infile:
@@ -62,24 +63,25 @@ def loadGame(): #close to being done
             x = input()
 
             if x == password:
-                name = data[code][0]['name']
-                player_room = data[code][0]['room']
-                inventory = data[code][0]['inventory']
-                
-                with open(f'players/{code}.json', 'r') as infile:
-                    data = json.load(infile)
-                inventory = data[code][0]['inventory']
-                room1 = data[code][0]['room']
                 loading('loading')
-                return inventory, room1
+                return code
 
             else:
                 print()
                 type_effect('Incorrect password')
+
+        else:
+            loading('loading')
+            return code
     except:
         print()
         type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
 
+def getRoom(code):
+    with open(f'players/{code}.json', 'r') as infile:
+        data = json.load(infile)
+    room1 = data[code][0]['room']
+    return room1
 
 def getInventory(code):
     with open(f'players/{code}.json', 'r') as infile:
@@ -87,6 +89,7 @@ def getInventory(code):
     inventory = data[code][0]['inventory']
     return inventory
 
+'''
 data = {
     "player1":[
         {
@@ -112,7 +115,7 @@ file1 = 'player1'
 
 with open(f'players/{file1}.json', 'w') as outfile:
     outfile.write(y)
-
+'''
 
 #with open (f'players/{file1}.json', 'r') as infile:
 #    data = json.load(infile)
