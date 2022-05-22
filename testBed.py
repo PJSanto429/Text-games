@@ -7,6 +7,7 @@ from object import Object, player_inventory
 from room import Room, player
 from saveGame import *
 from loading import loading
+from typeEffect import *
 from datetime import datetime
 
 '''

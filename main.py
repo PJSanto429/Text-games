@@ -10,7 +10,7 @@
                         2. characters that help you occasionally
                     III. Shopkeepers/merchants
                         1. Buy stuff - set object money to negative initially, then set it to zero after taking it
-                    IV. use faker to create fake names for these character
+                    IV. use faker to create fake names for these characters
                         1. Documentation: https://faker.readthedocs.io/en/master/
             
             6. Add graphics? --last thing to do
@@ -43,6 +43,12 @@ def game_begin(): #starts the game - probably not needed
     loading("start")
     start_stats()
     introduction()
+    player.room = 'first'
+    text_input('look', player.room)
+    while True:
+        print()
+        text = input("Input: ")
+        text_input(text, player.room)
 
 if __name__ != 'main':
     game_begin()

@@ -1,7 +1,7 @@
 #text input
 
 from typeEffect import type_effect
-from object import Object
+from object import Object, player_inventory
 from room import *
 from saveGame import *
 
@@ -62,3 +62,4 @@ def text_input(text, player_room='none'): #pretty much done
         for i in Object.instances:
             if i.longName in inventory:
                 i.inInventory = True
+                player_inventory.append(i.longName)

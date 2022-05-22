@@ -4,7 +4,7 @@ import gc
 from object import Object
 from typeEffect import type_effect
 
-class Player():
+class Player(): #this is simply so the player can move rooms and it actually work.
     def __init__(self, room):
         self.room = room
 

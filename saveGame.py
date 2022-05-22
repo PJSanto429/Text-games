@@ -8,22 +8,34 @@ from typeEffect import type_effect
 from loading import loading
 
 def saveGame(player_room = 'none', code = 1234): #pretty much done I THINK
-    if code == 0000:
-        pass
-    elif code == 1234:
-        code = randint(1111, 9999)
     print()
-    type_effect("Please enter a name for this save file: ")
-    name = input()
-    print()
-    type_effect(f"Your save code is {code}. Don't forget this, or you will not be able to get this save file.")
-    print()
-    type_effect("If you would like to add a password to this save file, please type it now. Otherwise, type NONE: ")
-    password = input()
-    password2 = password.lower()
-    if password2 == 'none':
-        password = 'none'
+    type_effect('Would you like to create a new save file(1) or save to existing file(2)? ')
+    choice = input()
+    if choice == '2':
+        print()
+        type_effect('Please enter the code of the save file you would like to save to: ')
+        code = input()
+        writeFile(player_room, code)
 
+    elif choice == '1':
+        if code == 0000:
+            pass
+        elif code == 1234:
+            code = randint(1111, 9999)
+        print()
+        type_effect("Please enter a name for this save file: ")
+        name = input()
+        print()
+        type_effect(f"Your save code is {code}. Don't forget this, or you will not be able to get this save file.")
+        print()
+        type_effect("If you would like to add a password to this save file, please type it now. Otherwise, type NONE: ")
+        password = input()
+        password2 = password.lower()
+        if password2 == 'none':
+            password = 'none'
+        writeFile(name, player_room, code, password)
+
+def writeFile(player_room, code, name = 'none', password = 'none'):
     inventory = []
     for i in Object.instances:  #adds to inventory list 
         if i.inInventory == True:
@@ -44,12 +56,12 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done I THINK
         with open(f'players/{code}.json', 'w') as outfile:
             outfile.write(x)
     except:
-        pass
+        print()
+        type_effect('ERROR. Something went wrong...')
 
 def loadGame(): #close to being done
     print()
     type_effect('Please type your savecode now: ')
-    global code
     code = input()
     try:
         with open(f'players/{code}.json', 'r') as infile:
@@ -63,7 +75,7 @@ def loadGame(): #close to being done
             x = input()
 
             if x == password:
-                loading('loading')
+                #loading('loading')
                 return code
 
             else:
@@ -71,7 +83,7 @@ def loadGame(): #close to being done
                 type_effect('Incorrect password')
 
         else:
-            loading('loading')
+            #loading('loading')
             return code
     except:
         print()
@@ -88,45 +100,3 @@ def getInventory(code):
         data = json.load(infile)
     inventory = data[code][0]['inventory']
     return inventory
-
-'''
-data = {
-    "player1":[
-        {
-            "name": 'btuh',
-            "room": '2',
-            "score": 'none',
-        }
-    ]
-}
-
-data2 = {
-    "player2":[
-        {
-            "inventory": ['cat', 'house', 'chair']
-        }
-    ]
-}
-
-x = json.dumps(data)
-y = json.dumps(data2)
-
-file1 = 'player1'
-
-with open(f'players/{file1}.json', 'w') as outfile:
-    outfile.write(y)
-'''
-
-#with open (f'players/{file1}.json', 'r') as infile:
-#    data = json.load(infile)
-#x = data['player1'][0]['name']
-#print(x)
-
-    #getting items from a list in a dicitonary
-    # https://pythonexamples.org/python-list-of-dictionaries/
-
-    #python dictionaries and how to use them(refresher)
-    # https://www.w3schools.com/python/python_dictionaries.asp
-    
-    # reading and writing to a json file
-    # https://stackabuse.com/reading-and-writing-json-to-a-file-in-python/
