@@ -10,9 +10,15 @@ from loading import loading
 from typeEffect import *
 from datetime import datetime
 
+x = 1
+match x:
+    case 1:
+        print('hello')
+
+'''
 player.room = 'first'
 text_input('look', player.room)
 while True: #this is a very simple interactive 'window' that allows for text input
     print()
     text = input("Input: ")
-    text_input(text, player.room)
+    text_input(text, player.room)'''

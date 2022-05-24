@@ -51,4 +51,14 @@ def game_begin(): #starts the game - probably not needed
         text_input(text, player.room)
 
 if __name__ != 'main':
-    game_begin()
+    #game_begin()
+    #start_stats()
+    loading("start")
+    start_stats()
+    introduction()
+    player.room = 'first'
+    text_input('look', player.room)
+    while True:
+        print()
+        text = input("Input: ")
+        text_input(text, player.room)

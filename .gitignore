@@ -5,3 +5,4 @@ test.py
 players
 .vscode
 .gitattributes
+__pycache__/

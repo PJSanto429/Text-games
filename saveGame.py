@@ -7,7 +7,7 @@ from object import Object
 from typeEffect import type_effect
 from loading import loading
 
-def saveGame(player_room = 'none', code = 1234): #pretty much done I THINK
+def saveGame(player_room = 'none', code = 1234): #pretty much done
     print()
     type_effect('Would you like to create a new save file(1) or save to existing file(2)? ')
     choice = input()
@@ -15,6 +15,23 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done I THINK
         print()
         type_effect('Please enter the code of the save file you would like to save to: ')
         code = input()
+
+        try:
+            with open(f'players/{code}.json', 'r') as infile:
+                data = json.load(infile)
+            if data[code][0]['password'] != 'none':
+                #add a way to check if there is a password when overwriting a save file
+                print()
+                type_effect('Please enter the password for this save file: ')
+                choice = input()
+                if choice == data[code][0]['password']:
+                    pass
+            else:
+                pass
+        except:
+            pass
+        loading('saving')
+
         writeFile(player_room, code)
 
     elif choice == '1':
@@ -36,6 +53,7 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done I THINK
         writeFile(name, player_room, code, password)
 
 def writeFile(player_room, code, name = 'none', password = 'none'):
+
     inventory = []
     for i in Object.instances:  #adds to inventory list 
         if i.inInventory == True:
@@ -54,6 +72,7 @@ def writeFile(player_room, code, name = 'none', password = 'none'):
     try:
         x = json.dumps(data)
         with open(f'players/{code}.json', 'w') as outfile:
+            
             outfile.write(x)
     except:
         print()
@@ -75,7 +94,7 @@ def loadGame(): #close to being done
             x = input()
 
             if x == password:
-                #loading('loading')
+                #loading('loading') #uncomment this for it to look better, but it takes too long during testing (same on line ~86)
                 return code
 
             else:
