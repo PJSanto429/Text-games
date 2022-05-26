@@ -3,6 +3,7 @@
 from typeEffect import type_effect
 from time import sleep
 from textInput import *
+from loading import error_message
 
 #tutorial
 def tutorial(): #done
@@ -63,9 +64,9 @@ def tutorial(): #done
     type_effect("Flashlight")
     print()
     type_effect("Rose")
-    print()
-    print()
-    type_effect("There are a various amount of things that you can do with items in your inventory, such as Throw, kick, Use, etc.")
+    #print()
+    #print()
+    #type_effect("There are a various amount of things that you can do with items in your inventory, such as Throw, kick, Use, etc.")
     print()
     print()
     type_effect("In this game, spelling is very important, as a mistake will lead to an error message like this:")
