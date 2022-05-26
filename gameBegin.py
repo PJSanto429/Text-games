@@ -4,6 +4,8 @@ from typeEffect import type_effect
 from time import sleep
 from textInput import *
 
+error_message = 'Oops! It seems that something went wrong with what you typed. You will be redirected to make your last decision again.'
+
 #tutorial
 def tutorial(): #done
     type_effect("In this game, you will be presented with information including the room you are in. The room information will look like this:")
