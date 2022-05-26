@@ -115,8 +115,10 @@ def loadGame(): #close to being done
             x = input()
 
             if x == password:
-                #loading('loading') #uncomment this for it to look better, but it takes too long during testing (same on line ~86)
-                return code
+                #loading('loading') #uncomment this for it to look better, but it takes too long during testing (same on line ~126)
+                room1 = data[code][0]['room']
+                inventory = data[code][0]['inventory']
+                return code, room1, inventory
 
             else:
                 print()
@@ -124,19 +126,22 @@ def loadGame(): #close to being done
 
         else:
             #loading('loading')
-            return code
+            room1 = data[code][0]['room']
+            inventory = data[code][0]['inventory']
+            return room1, inventory
     except:
         print()
         type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
 
+'''
 def getRoom(code):
     with open(f'players/{code}.json', 'r') as infile:
         data = json.load(infile)
-    room1 = data[code][0]['room']
-    return room1
+        room1 = data[code][0]['room']
+        return room1
 
 def getInventory(code):
     with open(f'players/{code}.json', 'r') as infile:
         data = json.load(infile)
-    inventory = data[code][0]['inventory']
-    return inventory
+        inventory = data[code][0]['inventory']
+        return inventory'''

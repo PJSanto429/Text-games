@@ -34,6 +34,7 @@ from typeEffect import *
 from textInput import *
 from textColor import *
 from gameBegin import *
+from firstStartup import *
 
 def start_stats(): #health - money - inventory  ALL = 0
     health = 100
@@ -49,6 +50,11 @@ def game_begin(): #starts the game - probably not needed
         print()
         text = input("Input: ")
         text_input(text, player.room)
+
+try:
+    startup()
+except:
+    pass
 
 if __name__ != 'main':
     #game_begin()
