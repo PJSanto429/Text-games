@@ -38,7 +38,25 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
         if code == 0000:
             pass
         elif code == 1234:
-            code = randint(1111, 9999)
+            goodCode = False
+            while goodCode == False:
+                code = randint(1111, 9999)
+                code = str(code)
+
+                try:
+                    with open('players/saveCode.txt', 'r') as infile:
+                        data = infile.read()
+
+                    data = data.split()
+                    for x in data:
+                        if x != code:
+                            with open ('players/saveCode.txt', 'a') as outfile:
+                                outfile.write(f' {code}')
+                            goodCode = True
+                except:
+                    with open ('players/saveCode.txt', 'w') as outfile:
+                        outfile.write('testCode')
+
         print()
         type_effect("Please enter a name for this save file: ")
         name = input()
@@ -50,7 +68,11 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
         password2 = password.lower()
         if password2 == 'none':
             password = 'none'
-        writeFile(name, player_room, code, password)
+        else:
+            pass
+        #print(f'{name} {player_room} {code} {password}')
+        writeFile(player_room, code, name, password)
+        loading('saving')
 
 def writeFile(player_room, code, name = 'none', password = 'none'):
 
@@ -72,7 +94,6 @@ def writeFile(player_room, code, name = 'none', password = 'none'):
     try:
         x = json.dumps(data)
         with open(f'players/{code}.json', 'w') as outfile:
-            
             outfile.write(x)
     except:
         print()

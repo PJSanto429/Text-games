@@ -1,4 +1,4 @@
-#adds grahics to the game
+#adds grahics to the game #DOESNT WORK YET...
 import pygame
 
 pygame.init() #this will show up as an error, but the code actually works. idk why

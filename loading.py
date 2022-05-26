@@ -37,8 +37,8 @@ def loading(message = 'loading'):
         message2 = 'SYSTEM LOAD SUCCESSFUL'
 
     elif message == 'saving':
-        message1 = 'SYSTEM SAVING... PLEASE STAND BY'
-        message2 = 'SYSTEM SAVE SUCCESSFUL'
+        message1 = 'GAME SAVING... PLEASE STAND BY'
+        message2 = 'GAME SAVE SUCCESSFUL'
 
     else:
         print('error')
