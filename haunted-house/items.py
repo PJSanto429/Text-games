@@ -35,6 +35,8 @@ chair2 = Object('chair', 'first', 'this is a rusted folding chair that looks lik
 
 chair3 = Object('chair', 'first', 'this is a very comfortable looking adirondack chair. did i spell that right?', False, False, 'adirondack chair')
 
+cat3 = Object('cat', 'first', 'this is a fat tabby cat, with very long fur', False, False, 'fat tabby cat')
+
 #===================================================================
 #----------------------- ROOM TWO ----------- Room creation
 room2 = Room('second')
