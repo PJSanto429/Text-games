@@ -56,7 +56,7 @@ class Object: #unfinished - main priority
         if action == 'take':
             pass
 
-    def add_attribute(self, attribute='void', description='void', locked=False):
+    def add_attribute(self, attribute = 'void', description = 'void', locked = False):
         self.locked = locked
         if attribute == 'read':
             self.read = description
@@ -102,154 +102,151 @@ class Object: #unfinished - main priority
         '''print()
         type_effect(f'take message has been changed to {self.takeable_message}')'''
 
-    def action(self, action, name, player_room = 'none', fullName = False):
-        if fullName == True:
-            if self.room == player_room:
-                if action == 'take' or action == 'drop':
-                    self.pick_drop(action, player_room)    
-                elif action == 'look':
-                    self.item_description()
-                else:
-                    print()
-                    type_effect('Thats not a verb I recognize')
+    def fullName_action(self, action, name, player_room):
+        if self.room == player_room:
+            if action == 'take' or action == 'drop':
+                self.pick_drop(action, player_room)    
+            elif action == 'look':
+                self.item_description()
             else:
-                pass
-
-        elif fullName == False:
-            itemList = []
-            
-            for i in Object.instances:
-                if i.name == name and (i.room == player_room or i.inInventory == True):
-                    itemList.append(i.longName)
-
-            if len(itemList) == 0:
                 print()
-                type_effect(self.cantSee)
-
-            elif len(itemList) == 1:
-                for i in Object.instances:
-                    if i.name == name:
-                        if i.name == name and (i.room == player_room or i.inInventory == True):
-                            if action == 'take' or action == 'drop':
-                                i.pick_drop(action, player_room)
-                            elif action == 'look':
-                                i.item_description()
-                            else:
-                                print()
-                                type_effect('Thats not a verb I recognize')
-
-            elif len(itemList) > 1:
-                if action == 'take' or action =='drop':
-                    if action == 'drop':
-                        x = 0
-                        inventory = []
-                        for i in Object.instances:
-                            if i.inInventory == True:
-                                inventory.append(i.longName)
-                                x += 1
-                        if len(inventory) > 1:
-                            print()
-                            type_effect(f'Which did you mean?  ')
-                            for i in inventory:
-                                print()
-                                type_effect(i)
-                        elif len(inventory) == 1:
-                            i.pick_drop(action, player_room)
-
-                    elif action == 'take':
-                        x = 0
-                        inventory = []
-                        for i in Object.instances:
-                            if i.longName in itemList and i.inInventory == False:
-                                inventory.append(i.longName)
-                                x += 1
-                        if len(inventory) > 1:
-                            print()
-                            type_effect(f'Which did you mean?  ')
-                            for i in inventory:
-                                print()
-                                type_effect(i)
-                        elif len(inventory) == 1:
-                            i.pick_drop(action, player_room)
-
-                if action == 'look':
-                    print()
-                    type_effect(f'Which did you mean?  ')
-                    for i in Object.instances:
-                        if i.longName in itemList and i.inInventory == True:
-                            print()
-                            type_effect(f"{i.longName} - inventory")
-                        elif i.longName in itemList:
-                            print()
-                            type_effect(i.longName)
-
-                print()
-                choice = input()
-                print()
-                for i in Object.instances:
-                    if i.longName == choice:
-                        #print()
-                        #type_effect(self.longName)
-                        if action == 'take' or action == 'drop':
-                            i.pick_drop(action, player_room)
-                        elif action == 'look':
-                            i.item_description()
-                        else:
-                            print()
-                            type_effect('Thats not a verb I recognize')
-
-    '''def action2(self, action, name, player_room = 'none'):  #not being used anymore, renamed to action2()
+                type_effect('Thats not a verb I recognize')
+        else:
+            print()
+            type_effect("Hmm, I can't see that")
+    
+    #rewrite ALL of action. maybe split it into 2+ in order for multiple things to work.   
+    def action(self, action, name, player_room = 'none'):
         itemList = []
-        item = self.name
-
+        
         for i in Object.instances:
-            if i.name == item and (i.room == player_room or i.inInventory == True):
+            if i.name == name and (i.room == player_room or i.inInventory == True):
                 itemList.append(i.longName)
-
-        #print()
-        #print(len(itemList))
 
         if len(itemList) == 0:
             print()
             type_effect(self.cantSee)
 
         elif len(itemList) == 1:
-            #print()
-            #type_effect(i.longName)
             for i in Object.instances:
-                if i.name == item:
-                    if i.name == item and (i.room == player_room or i.inInventory == True):
+                if i.name == name:
+
+                    if i.name == name and i.room == player_room and i.inInventory == False:
+                        if action == 'take':
+                            i.pick_drop(action, player_room)
+                        if action == 'look':
+                            i.item_description()
+
+                    elif i.name == name and i.inInventory == True:
+                        if action == 'drop':
+                            i.pick_drop(action, player_room)
+                        elif action == 'look':
+                            i.item_description()
+
+                    '''if i.name == name and (i.room == player_room or i.inInventory == True):
                         if action == 'take' or action == 'drop':
-                            i.pick_drop(action)
+                            i.pick_drop(action, player_room)
                         elif action == 'look':
                             i.item_description()
                         else:
                             print()
-                            type_effect('Thats not a verb I recognize')
+                            type_effect('Thats not a verb I recognize')'''
 
         elif len(itemList) > 1:
-            print()
-            type_effect(f'Which did you mean?  ')
-            for i in Object.instances:
-                if i.longName in itemList and i.inInventory == True:
+
+            if action == 'drop':
+                x = 0
+                inventory = []
+                for i in Object.instances:
+                    if i.inInventory == True:
+                        inventory.append(i.longName)
+                        x += 1
+
+                if len(inventory) > 1:
                     print()
-                    type_effect(f"{i.longName} - inventory")
-                elif i.longName in itemList:
-                    print()
-                    type_effect(i.longName)
-            print()
-            choice = input()
-            for i in Object.instances:
-                if i.longName == choice:
-                    #print()
-                    #type_effect(self.longName)
-                    if action == 'take' or action == 'drop':
-                        i.pick_drop(action)
-                    if action == 'look':
-                        i.item_description()
-                    else:
+                    type_effect(f'Which did you mean?  ')
+                    for i in inventory:
                         print()
-                        type_effect('Thats not a verb I recognize')'''
+                        type_effect(i)
+
+                    print()
+                    choice = input()
+                    print()
+                    for i in Object.instances:
+                        if (i.longName == choice) and (i.inInventory == True) and (i.longName in inventory):
+                            i.pick_drop(action, player_room)
+                            x = True
+
+                    if x != True:
+                        print()
+                        type_effect("You don't have that!")
+                
+                elif len(inventory) == 1:
+                    for i in Object.instances:
+                        if i.longName in itemList and i.inInventory == True:
+                            i.pick_drop(action, player_room)
+
+            elif action == 'take':
+                x = 0
+                inventory = []
+                for i in Object.instances:
+                    if i.longName in itemList and i.inInventory == False:
+                        inventory.append(i.longName)
+                        x += 1
+
+                if len(inventory) > 1:
+                    print()
+                    type_effect(f'Which did you mean?  ')
+                    for i in inventory:
+                        print()
+                        type_effect(i)
+
+                    print()
+                    choice = input()
+                    print()
+                    for i in Object.instances:
+                        if (i.longName == choice) and (i.inInventory == False) and (i.longName in inventory):
+                            i.pick_drop(action, player_room)
+                            x = True
+
+                    if x != True:
+                        print()
+                        type_effect(self.cantSee)
+                
+                elif len(inventory) == 1:
+                    for i in Object.instances:
+                        if i.longName in itemList and i.inInventory == False:
+                            #print()
+                            #type_effect(i.longName)
+                            i.pick_drop(action, player_room)
+
+            elif action == 'look':
+                x = 0
+                inventory = []
+                print()
+                type_effect(f'Which did you mean?  ')
+                for i in Object.instances:
+                    if i.longName in itemList and i.inInventory == True:
+                        print()
+                        type_effect(f"{i.longName} - inventory")
+                        inventory.append(i.longName)
+                        x += 1
+                    elif i.longName in itemList:
+                        print()
+                        type_effect(i.longName)
+
+                print()
+                choice = input()
+                print()
+                for i in Object.instances: # and i.longName in itemList and i.inInventory == True
+                    if i.longName == choice and i.longName in itemList and i.inInventory == True:
+                        #print()
+                        #type_effect(i.longName)
+                        i.item_description()
+                        x = True
+                    if x != True:
+                        print()
+                        type_effect(self.cantSee)
 
     def change_name(self, name):
         self.name = name
@@ -304,7 +301,7 @@ class Object: #unfinished - main priority
                     player_inventory.remove(self.longName)
             elif self.inInventory == False:
                 print()
-                type_effect(f"You don't have {self.name} inyour inventory")
+                type_effect(f"You don't have {self.name} in your inventory")
 
     def return_name(self, x = 'name'):
         if x == 'name':

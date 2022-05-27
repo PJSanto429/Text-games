@@ -28,10 +28,12 @@ room1.change_description('You are in a dark, musty kitchen')
 note1 = Object('note', 'first', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
 note1.add_attribute('read', "This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
 
-key3 = Object('key', 'first', 'this is a rusty copper key', True, False, 'rusty copper key')
+key3 = Object('key', 'first', 'this is a rusty copper key', True, True, 'rusty copper key')
 key4 = Object('key', 'first', 'this is a bent car key', True, False, 'bent car key')
 
 chair2 = Object('chair', 'first', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
+
+chair3 = Object('chair', 'first', 'this is a very comfortable looking adirondack chair. did i spell that right?', False, False, 'adirondack chair')
 
 #===================================================================
 #----------------------- ROOM TWO ----------- Room creation

@@ -49,14 +49,6 @@ def text_input(text, player_room='none'): #pretty much done
         elif action == 'move' or action == 'go':
             room.action('move', player_room, text[x - 1])
 
-        elif action == 'take' or action == 'drop' or action == 'look':
-            x = 0
-            for i in Object.instances:
-                if i.longName in fullText:
-                    i.action(action, i.longName, player_room, True)
-                    x = 1
-            if x == 0:
-                thing.action(action, text[x - 1], player_room)
 
         elif action == 'save':
             saveGame(player_room)
@@ -71,6 +63,16 @@ def text_input(text, player_room='none'): #pretty much done
                 if i.longName in inventory:
                     i.inInventory = True
                     player_inventory.append(i.longName)
+    
+        #elif action == 'take' or action == 'drop' or action == 'look':
+        else:
+            x = 0
+            for i in Object.instances:
+                if i.longName in fullText:
+                    i.fullName_action(action, i.longName, player_room)
+                    x = 1
+            if x == 0:
+                thing.action(action, text[x - 1], player_room)
     
     except:
         pass
