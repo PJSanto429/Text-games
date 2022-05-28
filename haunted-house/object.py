@@ -231,22 +231,22 @@ class Object: #unfinished - main priority
                         type_effect(f"{i.longName} - inventory")
                         inventory.append(i.longName)
                         x += 1
-                    elif i.longName in itemList:
+                    elif i.longName in itemList and i.room == player_room:
                         print()
                         type_effect(i.longName)
 
                 print()
                 choice = input()
                 print()
-                for i in Object.instances: # and i.longName in itemList and i.inInventory == True
-                    if i.longName == choice and i.longName in itemList and i.inInventory == True:
+                for i in Object.instances:
+                    if i.longName == choice and (i.longName in itemList) and (i.inInventory == True or i.room == player_room):
                         #print()
                         #type_effect(i.longName)
                         i.item_description()
                         x = True
-                    if x != True:
-                        print()
-                        type_effect(self.cantSee)
+                if x != True:
+                    print()
+                    type_effect(self.cantSee)
 
     def change_name(self, name):
         self.name = name
@@ -306,7 +306,7 @@ class Object: #unfinished - main priority
     def return_name(self, x = 'name'):
         if x == 'name':
             return self.name
-        elif x == 'longname':
+        elif x == 'longName':
             return self.longName
 
     def test(self, action='all'): #default action is to print all item descriptions

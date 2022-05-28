@@ -65,7 +65,7 @@ def text_input(text, player_room='none'): #pretty much done
                     player_inventory.append(i.longName)
     
         #elif action == 'take' or action == 'drop' or action == 'look':
-        else:
+        elif action == 'take' or action == 'drop' or action == 'look':
             x = 0
             for i in Object.instances:
                 if i.longName in fullText:

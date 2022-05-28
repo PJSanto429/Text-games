@@ -10,7 +10,7 @@ cat1 = Object('cat', 'void', 'this is a big grey cat, with very long whiskers', 
 cat1.notTakeable_message('As you are trying to pick up the big grey cat, it keeps jumping out of your arms. This may not be the best idea')
 
 cat2 = Object('cat', 'void', 'this is a small black cat, with very well kept fur', False, False, 'small black cat')
-cat2.notTakeable_message('As you are trying to pick up the small black, it keeps jumping out of your arms. This may not be the best idea')
+cat2.notTakeable_message('As you are trying to pick up the small black cat, it keeps jumping out of your arms. This may not be the best idea')
 
 chair1 = Object('chair', 'void', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair1.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
@@ -30,12 +30,14 @@ note1.add_attribute('read', "This is a note! I can't believe that I wrote a note
 
 key3 = Object('key', 'first', 'this is a rusty copper key', True, True, 'rusty copper key')
 key4 = Object('key', 'first', 'this is a bent car key', True, False, 'bent car key')
+key5 = Object('key', 'first', 'this is a fancy jade key', True, False, 'fancy jade key')
 
 chair2 = Object('chair', 'first', 'this is a rusted folding chair that looks like it has been welded to the floor', False, False, 'rusty folding chair')
 
-chair3 = Object('chair', 'first', 'this is a very comfortable looking adirondack chair. did i spell that right?', False, False, 'adirondack chair')
+chair3 = Object('chair', 'first', 'this is a very comfortable looking aderondac chair. adirondach. adorondack. adirondack. did i spell that right?', False, False, 'adirondack chair')
 
 cat3 = Object('cat', 'first', 'this is a fat tabby cat, with very long fur', False, False, 'fat tabby cat')
+cat3.notTakeable_message('As you are trying to pick up the fat tabby it keeps jumping out of your arms. This may not be the best idea')
 
 #===================================================================
 #----------------------- ROOM TWO ----------- Room creation
