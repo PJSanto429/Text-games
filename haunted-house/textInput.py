@@ -42,13 +42,12 @@ def text_input(text, player_room='none'): #pretty much done
         elif action == 'wait':
             print()
             type_effect('Time passes...')
-
+        
         elif len(text) == 1 and (action == 'look' or action == 'l'):
             room.action('look', player_room)
 
         elif action == 'move' or action == 'go':
             room.action('move', player_room, text[x - 1])
-
 
         elif action == 'save':
             saveGame(player_room)
@@ -62,9 +61,17 @@ def text_input(text, player_room='none'): #pretty much done
             for i in Object.instances:
                 if i.longName in inventory:
                     i.inInventory = True
+                    i.room = 'inventory'
                     player_inventory.append(i.longName)
-    
-        #elif action == 'take' or action == 'drop' or action == 'look':
+                else:
+                    i.inInventory = False
+                    try:
+                        player_inventory.remove(i.longName)
+                    except:
+                        pass
+
+            room.action('look', player_room)
+
         elif action == 'take' or action == 'drop' or action == 'look':
             x = 0
             for i in Object.instances:

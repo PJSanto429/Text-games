@@ -103,7 +103,7 @@ class Object: #unfinished - main priority
         type_effect(f'take message has been changed to {self.takeable_message}')'''
 
     def fullName_action(self, action, name, player_room):
-        if self.room == player_room:
+        if self.room == player_room or self.inInventory == True:
             if action == 'take' or action == 'drop':
                 self.pick_drop(action, player_room)    
             elif action == 'look':
@@ -114,8 +114,7 @@ class Object: #unfinished - main priority
         else:
             print()
             type_effect("Hmm, I can't see that")
-    
-    #rewrite ALL of action. maybe split it into 2+ in order for multiple things to work.   
+       
     def action(self, action, name, player_room = 'none'):
         itemList = []
         
@@ -309,7 +308,7 @@ class Object: #unfinished - main priority
         elif x == 'longName':
             return self.longName
 
-    def test(self, action='all'): #default action is to print all item descriptions
+    def test(self, action='all'): #default action is to print all item description
         if action == 'all':
             print()
             type_effect(f"Name: {self.name}")
@@ -327,47 +326,8 @@ class Object: #unfinished - main priority
             type_effect(f"Money: {self.money}")
             print()
             type_effect(f"Code: {self.code}")
-
-        if action == 'keyList':
-            keys = []
-            for i in Object.instances:
-                if i.name == 'key' and (i.room == i.player_room or i.inInventory == True):
-                    keys.append(i.longName)
-            if len(keys) > 1:
-                print()
-                type_effect(f'Which did you mean?')
-                for thing in keys:
-                    print()
-                    type_effect(thing)
-                print()
-                choice = input()
-                for i in Object.instances:
-                    if i.longName == choice:
-                        i.test()
-                    
-            elif len(keys) < 1:
-                print()
-                type_effect(keys[0])
-
-            '''print()
-            type_effect("Full list:")
-            for thing in keys:
-                print()
-                type_effect(thing)'''
-
-        if action == 'inventory':
-            print()
-            type_effect('Your inventory consists of:')
-            for i in Object.instances:
-                if i.inInventory == True:
-                    print()
-                    type_effect(i.longName)
         
         if action == 'every':
             for i in Object.instances:
                 print()
                 type_effect(i.longName)
-
-        else:
-            pass
-        #print('nothing')

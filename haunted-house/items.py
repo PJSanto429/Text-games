@@ -1,6 +1,9 @@
 from object import Object
 from room import Room
 
+#constants:
+#none...
+
 '''these items are just for testing purposes'''
 #name, room = 'void', description = 'void', takeable = False, inInventory = False, health = 0, money = 0, longName = 'void', code = 000
 key1 = Object('key', 'void', 'this is a large gold key', True, False, 'large gold key')
@@ -37,7 +40,7 @@ chair2 = Object('chair', 'first', 'this is a rusted folding chair that looks lik
 chair3 = Object('chair', 'first', 'this is a very comfortable looking aderondac chair. adirondach. adorondack. adirondack. did i spell that right?', False, False, 'adirondack chair')
 
 cat3 = Object('cat', 'first', 'this is a fat tabby cat, with very long fur', False, False, 'fat tabby cat')
-cat3.notTakeable_message('As you are trying to pick up the fat tabby it keeps jumping out of your arms. This may not be the best idea')
+cat3.notTakeable_message('As you are trying to pick up the fat tabby cat it keeps jumping out of your arms. This may not be the best idea')
 
 #===================================================================
 #----------------------- ROOM TWO ----------- Room creation

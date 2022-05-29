@@ -115,7 +115,7 @@ def loadGame(): #close to being done
             x = input()
 
             if x == password:
-                loading('loading') #uncomment this for it to look better, but it takes too long during testing (same on line ~126)
+                #loading('loading') #uncomment this for it to look better, but it takes too long during testing (same on line ~128)
                 room1 = data[code][0]['room']
                 inventory = data[code][0]['inventory']
                 return code, room1, inventory
@@ -125,7 +125,7 @@ def loadGame(): #close to being done
                 type_effect('Incorrect password')
 
         else:
-            loading('loading')
+            #loading('loading')
             room1 = data[code][0]['room']
             inventory = data[code][0]['inventory']
             return room1, inventory
