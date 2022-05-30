@@ -24,6 +24,7 @@ class Object: #unfinished - main priority
         self.__class__.instances.append(self)
         self.name = name #gives name to object(default is 'void')
         self.room = room #default is void(kind of a storage area)
+        self.homeRoom = room #this is going to work as a way to reset objects when saving and loading
         self.description = description #mandatory
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
@@ -31,6 +32,7 @@ class Object: #unfinished - main priority
         self.seen = seen #for checking if the object has been seen
         if self.inInventory == True:
             player_inventory.append(self.longName)
+            self.room = 'inventory'
         self.parent = parent
         self.code = code  #for items that might be special. most will be 000
         self.health = health        #Health and money will be set to 0 as a default
@@ -39,11 +41,6 @@ class Object: #unfinished - main priority
         self.takeable_message = 'void'
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
-
-        if self.room == 'start':
-            starting_room_INV.append(self.longName)
-        if self.room == 'room1':
-            RM_1_INV.append(self.longName)
         
     def inventory_change(self, action): #i think that this changes what room/inventory this is in
         if action == 'drop':
@@ -64,7 +61,6 @@ class Object: #unfinished - main priority
     def item_description(self): #prints the item's description
         if self.description == 'void':
             print()
-            #type_effect('this is cool')
             type_effect(self.noDesc)
 
         else:
@@ -129,7 +125,6 @@ class Object: #unfinished - main priority
         elif len(itemList) == 1:
             for i in Object.instances:
                 if i.name == name:
-
                     if i.name == name and i.room == player_room and i.inInventory == False:
                         if action == 'take':
                             i.pick_drop(action, player_room)
@@ -141,15 +136,6 @@ class Object: #unfinished - main priority
                             i.pick_drop(action, player_room)
                         elif action == 'look':
                             i.item_description()
-
-                    '''if i.name == name and (i.room == player_room or i.inInventory == True):
-                        if action == 'take' or action == 'drop':
-                            i.pick_drop(action, player_room)
-                        elif action == 'look':
-                            i.item_description()
-                        else:
-                            print()
-                            type_effect('Thats not a verb I recognize')'''
 
         elif len(itemList) > 1:
 
@@ -187,16 +173,16 @@ class Object: #unfinished - main priority
 
             elif action == 'take':
                 x = 0
-                inventory = []
+                roomInventory = []
                 for i in Object.instances:
                     if i.longName in itemList and i.inInventory == False:
-                        inventory.append(i.longName)
+                        roomInventory.append(i.longName)
                         x += 1
 
-                if len(inventory) > 1:
+                if len(roomInventory) > 1:
                     print()
                     type_effect(f'Which did you mean?  ')
-                    for i in inventory:
+                    for i in roomInventory:
                         print()
                         type_effect(i)
 
@@ -204,7 +190,7 @@ class Object: #unfinished - main priority
                     choice = input()
                     print()
                     for i in Object.instances:
-                        if (i.longName == choice) and (i.inInventory == False) and (i.longName in inventory):
+                        if (i.longName == choice) and (i.inInventory == False) and (i.longName in roomInventory):
                             i.pick_drop(action, player_room)
                             x = True
 
@@ -212,7 +198,7 @@ class Object: #unfinished - main priority
                         print()
                         type_effect(self.cantSee)
                 
-                elif len(inventory) == 1:
+                elif len(roomInventory) == 1:
                     for i in Object.instances:
                         if i.longName in itemList and i.inInventory == False:
                             #print()
@@ -295,12 +281,12 @@ class Object: #unfinished - main priority
                 if inform == True:
                     print()
                     player_inventory.remove(self.longName)
-                    type_effect(f"You have dropped {self.name}")
+                    type_effect(f"You have dropped {self.longName}")
                 else:
                     player_inventory.remove(self.longName)
             elif self.inInventory == False:
                 print()
-                type_effect(f"You don't have {self.name} in your inventory")
+                type_effect(f"You don't have {self.longName} in your inventory")
 
     def return_name(self, x = 'name'):
         if x == 'name':
@@ -326,8 +312,3 @@ class Object: #unfinished - main priority
             type_effect(f"Money: {self.money}")
             print()
             type_effect(f"Code: {self.code}")
-        
-        if action == 'every':
-            for i in Object.instances:
-                print()
-                type_effect(i.longName)

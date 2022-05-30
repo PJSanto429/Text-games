@@ -1,5 +1,16 @@
 #To-Do list(In order of most to least importance):
-'''        
+'''        4. Work on save/load system more
+                A. add all items and the room that they are in
+                    I. this will most likely get more complicated when there are puzzles that need to stay solved during save states
+                B. when multiple save states are loaded, some items are lost
+                    I. add a self.homeRoom to objects
+                    II. move all objects back to home room and then load
+
+                C. add a time to each save file
+                    I. when quitting, check all save files => if too much time has passed between last save, ask if player would like to save before quitting
+
+                D. maybe add auto-save(more for player convenience)
+
             5. Stuff to do/get    #fun stuff(for player), wrap up
                 A. Find treasure/trophies
                 B. Solve puzzles
@@ -36,7 +47,7 @@ from textColor import *
 from gameBegin import *
 from firstStartup import *
 
-def start_stats(): #health - money - inventory  ALL = 0
+def start_stats(): #health - money  ALL = 0
     health = 100
     money = 0
 
@@ -56,7 +67,7 @@ try:
 except:
     pass
 
-if __name__ != 'main':
+if __name__ == '__main__':
     #game_begin()
     #start_stats()
     loading("start")

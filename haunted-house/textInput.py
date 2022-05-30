@@ -23,6 +23,8 @@ def text_input(text, player_room='none'): #pretty much done
 
         if text[0] == 'quit' or text[0] == 'quit()' or text[0] == 'stop':
             print()
+            #type_effect('Would you like to save ') #work on this more(4C)
+
             type_effect('Quitting...')
             quit()
 

@@ -42,6 +42,7 @@ class Room():
         for i in Room.instances:
             if i.name == player_room:
                 print()
+                print('-----------------------------------------------------------------------------------------------')
                 type_effect(i.description)
                 print()
                 type_effect('You can see ')
@@ -129,7 +130,7 @@ class Room():
     def change_description(self, description = 'void'):
         self.description = description
 
-    def test(self, action = 'all'):
+    def test(self, action = 'all'): #all of these are just for testing purposes
         if action == 'all':
             print()
             type_effect(f"Name: {self.name}")

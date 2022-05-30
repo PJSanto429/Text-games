@@ -15,26 +15,27 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
         print()
         type_effect('Please enter the code of the save file you would like to save to: ')
         code = input()
-
         try:
             with open(f'players/{code}.json', 'r') as infile:
                 data = json.load(infile)
+
             if data[code][0]['password'] != 'none':
-                #add a way to check if there is a password when overwriting a save file
                 print()
                 type_effect('Please enter the password for this save file: ')
                 choice = input()
                 if choice == data[code][0]['password']:
-                    pass
+                    writeFile(player_room, code, (data[code][0]['name']))
+                else:
+                    print()
+                    type_effect('ERROR. Incorrect password. Please try again.')
+
             else:
-                pass
+                writeFile(player_room, code, (data[code][0]['name']))
         except:
-            pass
-        loading('saving')
+            print()
+            type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
 
-        writeFile(player_room, code)
-
-    elif choice == '1':
+    if choice == '1':
         if code == 0000:
             pass
         elif code == 1234:
@@ -42,7 +43,6 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
             while goodCode == False:
                 code = randint(1111, 9999)
                 code = str(code)
-
                 try:
                     with open('players/saveCode.txt', 'r') as infile:
                         data = infile.read()
@@ -56,7 +56,6 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
                 except:
                     with open ('players/saveCode.txt', 'w') as outfile:
                         outfile.write('testCode')
-
         print()
         type_effect("Please enter a name for this save file: ")
         name = input()
@@ -70,12 +69,9 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
             password = 'none'
         else:
             pass
-        #print(f'{name} {player_room} {code} {password}')
         writeFile(player_room, code, name, password)
-        loading('saving')
 
 def writeFile(player_room, code, name = 'none', password = 'none'):
-
     inventory = []
     for i in Object.instances:  #adds to inventory list 
         if i.inInventory == True:
@@ -95,6 +91,7 @@ def writeFile(player_room, code, name = 'none', password = 'none'):
         x = json.dumps(data)
         with open(f'players/{code}.json', 'w') as outfile:
             outfile.write(x)
+            loading('saving')
     except:
         print()
         type_effect('ERROR. Something went wrong...')
@@ -115,17 +112,15 @@ def loadGame(): #close to being done
             x = input()
 
             if x == password:
-                loading('loading') #uncomment this for it to look better, but it takes too long during testing (same on line ~128)
+                #loading('loading') #uncomment this for it to look better, but it takes too long during testing (same on line ~128)
                 room1 = data[code][0]['room']
                 inventory = data[code][0]['inventory']
                 return code, room1, inventory
-
             else:
                 print()
                 type_effect('Incorrect password')
-
         else:
-            loading('loading')
+            #loading('loading')
             room1 = data[code][0]['room']
             inventory = data[code][0]['inventory']
             return room1, inventory
@@ -133,13 +128,13 @@ def loadGame(): #close to being done
         print()
         type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
 
-def getRoom(code):
+def getRoom(code): #not currently bing used(i think)
     with open(f'players/{code}.json', 'r') as infile:
         data = json.load(infile)
         room1 = data[code][0]['room']
         return room1
 
-def getInventory(code):
+def getInventory(code): #not currently bing used(i think)
     with open(f'players/{code}.json', 'r') as infile:
         data = json.load(infile)
         inventory = data[code][0]['inventory']
