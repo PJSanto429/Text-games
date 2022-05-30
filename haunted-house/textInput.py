@@ -13,7 +13,7 @@ noDesc = "I see nothing special about that"
 thing = Object('void', 'none')
 room = Room()
 
-def text_input(text, player_room='none'): #pretty much done
+def text_input(text, player_room = 'none', version = 'main'): #pretty much done
     text = text.lower()
     fullText = text
     text = text.split()
@@ -52,27 +52,36 @@ def text_input(text, player_room='none'): #pretty much done
             room.action('move', player_room, text[x - 1])
 
         elif action == 'save':
-            saveGame(player_room)
+            if version == 'dev':
+                saveGame(player_room)
+            elif version == 'main':
+                print()
+                type_effect('Sorry, but the the save function is currently unavailable. Please try again in a later version.')
 
         elif action == 'load':
-            player_room, inventory = loadGame()
-            #player_room = getRoom(code)
-            room.go(player_room)
+            if version == 'dev':
+                player_room, inventory = loadGame()
+                #player_room = getRoom(code)
+                room.go(player_room)
 
-            #inventory = getInventory(code)
-            for i in Object.instances:
-                if i.longName in inventory:
-                    i.inInventory = True
-                    i.room = 'inventory'
-                    player_inventory.append(i.longName)
-                else:
-                    i.inInventory = False
-                    try:
-                        player_inventory.remove(i.longName)
-                    except:
-                        pass
+                #inventory = getInventory(code)
+                for i in Object.instances:
+                    if i.longName in inventory:
+                        i.inInventory = True
+                        i.room = 'inventory'
+                        player_inventory.append(i.longName)
+                    else:
+                        i.inInventory = False
+                        try:
+                            player_inventory.remove(i.longName)
+                        except:
+                            pass
 
-            room.action('look', player_room)
+                room.action('look', player_room)
+
+            elif action == 'main':
+                print()
+                type_effect('Sorry, but the the load function is currently unavailable. Please try again in a later version.')
 
         elif action == 'take' or action == 'drop' or action == 'look':
             x = 0

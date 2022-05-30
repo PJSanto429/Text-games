@@ -11,8 +11,8 @@ from typeEffect import *
 from datetime import datetime
 
 player.room = 'first'
-text_input('look', player.room)
+text_input('look', player.room, 'dev')
 while True: #this is a very simple interactive 'window' that allows for text input
     print()
     text = input("Input: ")
-    text_input(text, player.room)
+    text_input(text, player.room, 'dev')
