@@ -24,13 +24,14 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
                 type_effect('Please enter the password for this save file: ')
                 choice = input()
                 if choice == data[code][0]['password']:
-                    writeFile(player_room, code, (data[code][0]['name']))
+                    name = data[code][0]['name']
+                    writeFile(player_room, code, name, choice)
                 else:
                     print()
                     type_effect('ERROR. Incorrect password. Please try again.')
-
             else:
-                writeFile(player_room, code, (data[code][0]['name']))
+                name = data[code][0]['name']
+                writeFile(player_room, code, name)
         except:
             print()
             type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
@@ -73,11 +74,26 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
 
 def writeFile(player_room, code, name = 'none', password = 'none'):
     inventory = []
+    items = []
     for i in Object.instances:  #adds to inventory list 
         if i.inInventory == True:
             inventory.append(i.longName)
+        else:
+            items.append(f'{i.longName}: {i.room}')
 
     data = {
+        code:[
+        {
+            "name": name,
+            "room": player_room,
+            "password": password,
+            "inventory": inventory,
+            "items": items
+            }
+        ]
+    }
+
+    data2 = {
         code:[
         {
             "name": name,
@@ -128,13 +144,13 @@ def loadGame(): #close to being done
         print()
         type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
 
-def getRoom(code): #not currently bing used(i think)
+def getRoom(code): #not currently being used(i think)
     with open(f'players/{code}.json', 'r') as infile:
         data = json.load(infile)
         room1 = data[code][0]['room']
         return room1
 
-def getInventory(code): #not currently bing used(i think)
+def getInventory(code): #not currently being used(i think)
     with open(f'players/{code}.json', 'r') as infile:
         data = json.load(infile)
         inventory = data[code][0]['inventory']

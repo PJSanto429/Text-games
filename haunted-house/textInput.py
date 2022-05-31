@@ -56,7 +56,7 @@ def text_input(text, player_room = 'none', version = 'main'): #pretty much done
                 saveGame(player_room)
             elif version == 'main':
                 print()
-                type_effect('Sorry, but the the save function is currently unavailable. Please try again in a later version.')
+                type_effect('Sorry, the the save function is currently unavailable. Please try again in a later version of the game.')
 
         elif action == 'load':
             if version == 'dev':
@@ -79,9 +79,9 @@ def text_input(text, player_room = 'none', version = 'main'): #pretty much done
 
                 room.action('look', player_room)
 
-            elif action == 'main':
+            elif version == 'main':
                 print()
-                type_effect('Sorry, but the the load function is currently unavailable. Please try again in a later version.')
+                type_effect('Sorry, the the load function is currently unavailable. Please try again in a later version of the game.')
 
         elif action == 'take' or action == 'drop' or action == 'look':
             x = 0
