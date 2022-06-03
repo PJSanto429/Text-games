@@ -103,7 +103,7 @@ def writeFile(player_room, code, name = 'none', password = 'none'):
         print()
         type_effect('ERROR. Something went wrong...')
 
-def loadGame(): #not close to being done :(
+def loadGame(): #done
     print()
     type_effect('Please type your savecode now: ')
     code = input()
