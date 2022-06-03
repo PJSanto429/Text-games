@@ -38,11 +38,12 @@ class Room():
         player.room = player_room
         #print(player.room)
 
-    def room_description(self, player_room):
+    def room_description(self, player_room, moved = False):
         for i in Room.instances:
             if i.name == player_room:
                 print()
-                print('-----------------------------------------------------------------------------------------------')
+                if moved == True:
+                    print('-----------------------------------------------------------------------------------------------')
                 type_effect(i.description)
                 print()
                 type_effect('You can see ')

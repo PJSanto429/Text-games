@@ -3,9 +3,10 @@ import json
 from time import sleep
 import sys
 from random import randint
-from object import Object
+from object import *
 from typeEffect import type_effect
 from loading import loading
+from room import *
 
 def saveGame(player_room = 'none', code = 1234): #pretty much done
     print()
@@ -78,8 +79,8 @@ def writeFile(player_room, code, name = 'none', password = 'none'):
     for i in Object.instances:  #adds to inventory list 
         if i.inInventory == True:
             inventory.append(i.longName)
-        else:
-            items.append(f'{i.longName}: {i.room}')
+        if i.longName != 'void':
+            items.append(f'{i.longName}: {i.room}') #add more attributes to this(score, health, seen, etc.)
 
     data = {
         code:[
@@ -91,18 +92,8 @@ def writeFile(player_room, code, name = 'none', password = 'none'):
             "items": items
             }
         ]
-    }
+        }
 
-    data2 = {
-        code:[
-        {
-            "name": name,
-            "room": player_room,
-            "password": password,
-            "inventory": inventory
-            }
-        ]
-    }
     try:
         x = json.dumps(data)
         with open(f'players/{code}.json', 'w') as outfile:
@@ -112,7 +103,7 @@ def writeFile(player_room, code, name = 'none', password = 'none'):
         print()
         type_effect('ERROR. Something went wrong...')
 
-def loadGame(): #close to being done
+def loadGame(): #not close to being done :(
     print()
     type_effect('Please type your savecode now: ')
     code = input()
@@ -128,19 +119,69 @@ def loadGame(): #close to being done
             x = input()
 
             if x == password:
-                #loading('loading') #uncomment this for it to look better, but it takes too long during testing (same on line ~128)
-                room1 = data[code][0]['room']
+                loading('loading') #uncomment this for it to look better, but it takes too long during testing (same on line ~99 and ~129)
+                room = data[code][0]['room']
                 inventory = data[code][0]['inventory']
-                return code, room1, inventory
+                items = data[code][0]['items']
+                load = True
+                #return code, room, inventory, items
             else:
                 print()
                 type_effect('Incorrect password')
+                load = False
+
         else:
-            #loading('loading')
-            room1 = data[code][0]['room']
+            loading('loading')
+            print()
+            type_effect('load = good')
+            room = data[code][0]['room']
             inventory = data[code][0]['inventory']
-            return room1, inventory
-    except:
+            items = data[code][0]['items']
+            load = True
+            #return room, inventory, items
+
+        if load == True:
+            items2 = []
+
+            for i in items:
+                i = i.split(':')
+                i[1] = i[1].strip()
+                items2.append(i)
+                #print(i)
+            item = items2
+
+            print()
+            for x, y in item:
+                try:
+                    for i in Object.instances:
+                        if i.longName == x:
+                            i.room = y
+                            if y == 'inventory':
+                                i.inInventory = True
+                            else:
+                                i.inInventory = False
+                        else:
+                            i.room = i.homeRoom
+                except Exception as err:
+                    #print(err)
+                    pass
+
+            '''for i in Object.instances:
+                if i.longName in inventory:
+                    i.inInventory = True
+                    i.room = 'inventory'
+                    player_inventory.append(i.longName)
+                if i.longName in items: #work on this more
+                    pass
+                    #i.inInventory = False
+                    #try:
+                    #    player_inventory.remove(i.longName)
+                    #except:
+                    #    pass'''
+            return room
+
+    except Exception as err:
+        #print(err)
         print()
         type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
 

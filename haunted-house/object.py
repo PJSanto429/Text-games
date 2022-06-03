@@ -42,14 +42,12 @@ class Object: #unfinished - main priority
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
         
-    def inventory_change(self, action): #i think that this changes what room/inventory this is in
+    def inventory_change(self, action): #not being used
         if action == 'drop':
-
             if self.room == 'void':
                 void_INV.append(self.name)
             elif self.room == 'start':
                 starting_room_INV.append(self.name)
-
         if action == 'take':
             pass
 
@@ -67,6 +65,7 @@ class Object: #unfinished - main priority
             print()
             type_effect(self.description)
             self.seen = True
+            
             if self.name == 'note':
                 print()
                 type_effect('Would you like to read note? ')
@@ -225,13 +224,15 @@ class Object: #unfinished - main priority
                 print()
                 for i in Object.instances:
                     if i.longName == choice and (i.longName in itemList) and (i.inInventory == True or i.room == player_room):
-                        #print()
-                        #type_effect(i.longName)
                         i.item_description()
                         x = True
                 if x != True:
                     print()
                     type_effect(self.cantSee)
+
+            else:
+                print()
+                type_effect('Thats not a verb I recognize')
 
     def change_name(self, name):
         self.name = name

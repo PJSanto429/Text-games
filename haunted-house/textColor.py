@@ -1,7 +1,5 @@
 #this adds color to text
 
-#to use, type
-
 class color:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'

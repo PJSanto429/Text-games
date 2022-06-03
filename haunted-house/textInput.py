@@ -52,38 +52,23 @@ def text_input(text, player_room = 'none', version = 'main'): #pretty much done
             room.action('move', player_room, text[x - 1])
 
         elif action == 'save':
-            if version == 'dev':
+            if version == 'dev' or version == 'main':
                 saveGame(player_room)
-            elif version == 'main':
-                print()
-                type_effect('Sorry, the the save function is currently unavailable. Please try again in a later version of the game.')
+            #elif version == 'main':
+                #print()
+                #type_effect('Sorry, the save function is currently unavailable. Please try again in a later version of the game.')
 
         elif action == 'load':
-            if version == 'dev':
-                player_room, inventory = loadGame()
-                #player_room = getRoom(code)
+            if version == 'dev' or version == 'main':
+                player_room = loadGame()
                 room.go(player_room)
+                room.action('look', player_room) #cleaned up a lot
 
-                #inventory = getInventory(code)
-                for i in Object.instances:
-                    if i.longName in inventory:
-                        i.inInventory = True
-                        i.room = 'inventory'
-                        player_inventory.append(i.longName)
-                    else:
-                        i.inInventory = False
-                        try:
-                            player_inventory.remove(i.longName)
-                        except:
-                            pass
+            #elif version == 'main':
+                #print()
+                #type_effect('Sorry, the load function is currently unavailable. Please try again in a later version of the game.')
 
-                room.action('look', player_room)
-
-            elif version == 'main':
-                print()
-                type_effect('Sorry, the the load function is currently unavailable. Please try again in a later version of the game.')
-
-        elif action == 'take' or action == 'drop' or action == 'look':
+        elif action == 'take' or action == 'drop' or (action == 'look' or action == 'l'):
             x = 0
             for i in Object.instances:
                 if i.longName in fullText:
@@ -91,6 +76,9 @@ def text_input(text, player_room = 'none', version = 'main'): #pretty much done
                     x = 1
             if x == 0:
                 thing.action(action, text[x - 1], player_room)
+
+        #elif action in action.list:
+            #do something
     
     except:
         pass

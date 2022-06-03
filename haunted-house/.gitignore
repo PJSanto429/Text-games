@@ -6,3 +6,5 @@ players
 .gitattributes
 __pycache__/
 map.jpg
+pdfOtter.py
+result.pdf

@@ -1,5 +1,21 @@
 #To-Do list(In order of most to least importance):
-'''        4. Work on save/load system more
+'''
+        https://pypi.org/project/hanging-threads/
+            ~use this to debug(hopefully the same as js debugger)
+
+        3. Add other thing to do with items:
+            example:
+                in object class add:
+                    self.otherActions = [] #maybe change name
+                    def add_action(self, actionName, description) #other stuff, like take, drop, etc
+
+                in text input:
+                    elif action in object.actions: #still need to figure out how this will work
+                        *do action here
+
+            add room.object => adding and removing objects from room(not just a string)
+
+        4. Work on save/load system more
                 A. add all items and the room that they are in
                     I. this will most likely get more complicated when there are puzzles that need to stay solved during save states
                 B. when multiple save states are loaded, some items are lost
@@ -26,7 +42,14 @@
             
             6. Add graphics? --last thing to do
                 A. use pygame
-                    I. https://www.101computing.net/getting-started-with-pygame/'''
+                    I. https://www.101computing.net/getting-started-with-pygame/
+                B. OR... change text color - mush simpler
+                    >>> from colorama import init
+                    >>> from termcolor import colored
+                    >>> init()
+                    >>> print(colored('hello', 'green', 'on_red'))
+                    I. https://pypi.org/project/colorama/
+                    '''
 
 #imports---------------------
 #python built in imports
@@ -37,10 +60,10 @@ from string import ascii_letters, ascii_lowercase, ascii_uppercase
 from random import randint, choice
 
 # my imports - files I made
-from object import Object, player_inventory
-from room import Room
+from object import *
+from room import *
 from items import *
-from loading import loading
+from loading import *
 from typeEffect import *
 from textInput import *
 from textColor import *
@@ -51,18 +74,7 @@ def start_stats(): #health - money  ALL = 0
     health = 100
     money = 0
 
-def game_begin(): #starts the game - probably not needed
-    loading("start")
-    start_stats()
-    introduction()
-    player.room = 'first'
-    text_input('look', player.room)
-    while True:
-        print()
-        text = input("Input: ")
-        text_input(text, player.room)
-
-try:
+try: #if os.path.exists #change to this later(better)
     startup()
 except:
     pass
@@ -70,12 +82,14 @@ except:
 if __name__ == '__main__':
     #game_begin()
     #start_stats()
+    #start_stats() #might not be needed
+
+    introduction() #needs to be changed(i think)    
     loading("start")
-    start_stats()
-    introduction()
     player.room = 'first'
     text_input('look', player.room)
+    #live version of the mat
     while True:
         print()
-        text = input("Input: ")
+        text = input(">> ")
         text_input(text, player.room)

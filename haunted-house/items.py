@@ -18,7 +18,7 @@ cat2.notTakeable_message('As you are trying to pick up the small black cat, it k
 chair1 = Object('chair', 'void', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair1.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
 
-wall = Object('wall', 'void', 'this is a wall', False, False, 'boring grey wall')
+#wall = Object('wall', 'void', 'this is a wall', False, False, 'boring grey wall')
 
 #===================================================================
 
@@ -31,7 +31,7 @@ room1.change_description('You are in a dark, musty kitchen')
 note1 = Object('note', 'first', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
 note1.add_attribute('read', "This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
 
-key3 = Object('key', 'first', 'this is a rusty copper key', True, True, 'rusty copper key')
+key3 = Object('key', 'first', 'this is a rusty copper key', True, False, 'rusty copper key')
 key4 = Object('key', 'first', 'this is a bent car key', True, False, 'bent car key')
 key5 = Object('key', 'first', 'this is a fancy jade key', True, False, 'fancy jade key')
 
