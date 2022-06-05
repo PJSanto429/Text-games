@@ -5,6 +5,11 @@ from time import sleep
 from textInput import *
 from loading import error_message
 
+#start stats
+def start_stats(): #health - money  ALL = 0
+    health = 100 #probably not needed yet
+    money = 0
+
 #tutorial
 def tutorial(): #done
     type_effect("In this game, you will be presented with information including the room you are in. The room information will look like this:")

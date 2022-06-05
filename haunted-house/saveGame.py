@@ -7,8 +7,9 @@ from object import *
 from typeEffect import type_effect
 from loading import loading
 from room import *
+from encryptFile import fileCryption
 
-def saveGame(player_room = 'none', code = 1234): #pretty much done
+def saveGame(player_room = 'none', code = 1234, version = 'main'): #pretty much done
     print()
     type_effect('Would you like to create a new save file(1) or save to existing file(2)? ')
     choice = input()
@@ -17,6 +18,11 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
         type_effect('Please enter the code of the save file you would like to save to: ')
         code = input()
         try:
+            fileCryption('decrypt', code)
+        except:
+            pass
+
+        try:            
             with open(f'players/{code}.json', 'r') as infile:
                 data = json.load(infile)
 
@@ -26,13 +32,15 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
                 choice = input()
                 if choice == data[code][0]['password']:
                     name = data[code][0]['name']
-                    writeFile(player_room, code, name, choice)
+                    writeFile(player_room, code, name, choice, version)
+
                 else:
                     print()
                     type_effect('ERROR. Incorrect password. Please try again.')
+
             else:
                 name = data[code][0]['name']
-                writeFile(player_room, code, name)
+                writeFile(player_room, code, name, version)
         except:
             print()
             type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
@@ -71,9 +79,9 @@ def saveGame(player_room = 'none', code = 1234): #pretty much done
             password = 'none'
         else:
             pass
-        writeFile(player_room, code, name, password)
+        writeFile(player_room, code, name, password, version)
 
-def writeFile(player_room, code, name = 'none', password = 'none'):
+def writeFile(player_room, code, name = 'none', password = 'none', newFile = True, version = 'main'):
     inventory = []
     items = []
     for i in Object.instances:  #adds to inventory list 
@@ -98,16 +106,19 @@ def writeFile(player_room, code, name = 'none', password = 'none'):
         x = json.dumps(data)
         with open(f'players/{code}.json', 'w') as outfile:
             outfile.write(x)
-            loading('saving')
+            if version == 'main':
+                loading('saving')
+        fileCryption('encrypt', code)
     except:
         print()
         type_effect('ERROR. Something went wrong...')
 
-def loadGame(): #done
+def loadGame(version = 'main'): #done
     print()
     type_effect('Please type your savecode now: ')
     code = input()
     try:
+        fileCryption('decrypt', code)
         with open(f'players/{code}.json', 'r') as infile:
             data = json.load(infile)
             #print(data['player1'][0]['name'])
@@ -119,7 +130,8 @@ def loadGame(): #done
             x = input()
 
             if x == password:
-                loading('loading') #uncomment this for it to look better, but it takes too long during testing (same on line ~99 and ~129)
+                if version == 'main':
+                    loading('loading')
                 room = data[code][0]['room']
                 inventory = data[code][0]['inventory']
                 items = data[code][0]['items']
@@ -131,7 +143,8 @@ def loadGame(): #done
                 load = False
 
         else:
-            loading('loading')
+            if version == 'main':
+                loading('loading')
             print()
             type_effect('load = good')
             room = data[code][0]['room']

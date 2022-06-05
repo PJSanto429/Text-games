@@ -19,6 +19,7 @@ RM_1_INV = []
 
 class Object: #unfinished - main priority
     instances = []
+    otherActions = []
     #name, player_room, room, description, takeable, inInventory
     def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', seen = False, health = 0, money = 0, parent = 'object', code = .0000):
         self.__class__.instances.append(self)
@@ -33,6 +34,7 @@ class Object: #unfinished - main priority
         if self.inInventory == True:
             player_inventory.append(self.longName)
             self.room = 'inventory'
+        self.otherActions = {}
         self.parent = parent
         self.code = code  #for items that might be special. most will be 000
         self.health = health        #Health and money will be set to 0 as a default

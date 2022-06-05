@@ -52,21 +52,12 @@ def text_input(text, player_room = 'none', version = 'main'): #pretty much done
             room.action('move', player_room, text[x - 1])
 
         elif action == 'save':
-            if version == 'dev' or version == 'main':
-                saveGame(player_room)
-            #elif version == 'main':
-                #print()
-                #type_effect('Sorry, the save function is currently unavailable. Please try again in a later version of the game.')
+            saveGame(player_room, 1234, version)
 
         elif action == 'load':
-            if version == 'dev' or version == 'main':
-                player_room = loadGame()
-                room.go(player_room)
-                room.action('look', player_room) #cleaned up a lot
-
-            #elif version == 'main':
-                #print()
-                #type_effect('Sorry, the load function is currently unavailable. Please try again in a later version of the game.')
+            player_room = loadGame(version)
+            room.go(player_room)
+            room.action('look', player_room) #cleaned up a lot
 
         elif action == 'take' or action == 'drop' or (action == 'look' or action == 'l'):
             x = 0
