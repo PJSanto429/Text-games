@@ -20,15 +20,14 @@ from firstStartup import *
 if __name__ == '__main__':
     #start_stats() #might not be needed
 
-    introduction() #needs to be changed(i think)
-    firstStartup()  
+    #introduction() #needs to be changed
+    print('---------------------main build-(v 0.2.0)--------------------')
+    firstStartup()
     loading("start")
     player.room = 'first'
     text_input('look', player.room)
-    #print('---------------------main---------------------')
-
-    #live version of the game in version main
-    while True:
+    
+    while True: #live version of the game in version main
         print()
         text = input(">> ")
         text_input(text, player.room)

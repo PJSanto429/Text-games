@@ -35,7 +35,7 @@ class Object: #unfinished - main priority
             player_inventory.append(self.longName)
             self.room = 'inventory'
         self.otherActions = {}
-        self.parent = parent
+        self.parent = parent #will be used for things like fridges, shests, etc.
         self.code = code  #for items that might be special. most will be 000
         self.health = health        #Health and money will be set to 0 as a default
         self.money = money          #most items will not have health or money
@@ -43,20 +43,22 @@ class Object: #unfinished - main priority
         self.takeable_message = 'void'
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
-        
-    def inventory_change(self, action): #not being used
-        if action == 'drop':
-            if self.room == 'void':
-                void_INV.append(self.name)
-            elif self.room == 'start':
-                starting_room_INV.append(self.name)
-        if action == 'take':
-            pass
 
-    def add_attribute(self, attribute = 'void', description = 'void', locked = False):
-        self.locked = locked
-        if attribute == 'read':
-            self.read = description
+    def add_attribute(self, attribute = 'void', description = 'void', inventoryNeed = False, locked = False):
+        Object.otherActions.append(attribute)
+        self.otherActions.update({attribute: description})
+
+    def other_action(self, name, action):
+        for i in Object.instances:
+            if i.longName == name:
+                if action in i.otherActions:
+                    x = i.otherActions
+                    if type(x[action]) == str:
+                        print()
+                        type_effect(x[action])
+                else:
+                    print()
+                    type_effect('Thats not a verb I recognize')
 
     def item_description(self): #prints the item's description
         if self.description == 'void':
@@ -68,7 +70,7 @@ class Object: #unfinished - main priority
             type_effect(self.description)
             self.seen = True
             
-            if self.name == 'note':
+            '''if self.name == 'note': #this will be the basis for other action, just more streamlined
                 print()
                 type_effect('Would you like to read note? ')
                 print()
@@ -84,20 +86,16 @@ class Object: #unfinished - main priority
                         type_effect('Despite your best attempts, you are unable to read this. It must be in another language or something...')
                 elif choice in no:
                     print()
-                    type_effect('Ok, your loss')
+                    type_effect('Ok, your loss')'''
 
     def notTakeable_message(self, message):
-        #this is for adding more variety to the game => instead of just saying 'you cant take that', it would say 'this is to heavy to take
+        #this is for adding more variety to the game => instead of just saying 'you cant take that', it would say 'this is too heavy to take
         if message == 'heavy':
             self.takeable_message = 'This is far to heavy to carry, and you are no weightlifter'
         #add more messages here:
         #elif message == ''
         else:
             self.takeable_message = message
-
-        #these two lines were simply for testing:
-        '''print()
-        type_effect(f'take message has been changed to {self.takeable_message}')'''
 
     def fullName_action(self, action, name, player_room):
         if self.room == player_room or self.inInventory == True:
@@ -106,8 +104,7 @@ class Object: #unfinished - main priority
             elif action == 'look':
                 self.item_description()
             else:
-                print()
-                type_effect('Thats not a verb I recognize')
+                self.other_action(name, action)
         else:
             print()
             type_effect("Hmm, I can't see that")
@@ -126,17 +123,16 @@ class Object: #unfinished - main priority
         elif len(itemList) == 1:
             for i in Object.instances:
                 if i.name == name:
-                    if i.name == name and i.room == player_room and i.inInventory == False:
-                        if action == 'take':
+                    if i.room == player_room or i.inInventory == True:
+                        if action == 'take' or action == 'drop':
                             i.pick_drop(action, player_room)
                         if action == 'look':
                             i.item_description()
-
-                    elif i.name == name and i.inInventory == True:
-                        if action == 'drop':
-                            i.pick_drop(action, player_room)
-                        elif action == 'look':
-                            i.item_description()
+                        if action in Object.otherActions:
+                            i.other_action(i.longName, action)
+                            #print()
+                            #type_effect(action)
+                        #add a way to get to otherAction
 
         elif len(itemList) > 1:
 
@@ -206,7 +202,7 @@ class Object: #unfinished - main priority
                             #type_effect(i.longName)
                             i.pick_drop(action, player_room)
 
-            elif action == 'look':
+            elif action == 'look' or action in Object.otherActions:
                 x = 0
                 inventory = []
                 print()
@@ -226,18 +222,20 @@ class Object: #unfinished - main priority
                 print()
                 for i in Object.instances:
                     if i.longName == choice and (i.longName in itemList) and (i.inInventory == True or i.room == player_room):
-                        i.item_description()
+                        if action == 'look':
+                            i.item_description()
+                        else:
+                            i.other_action(i.longName, action)
                         x = True
                 if x != True:
                     print()
                     type_effect(self.cantSee)
 
-            else:
-                print()
-                type_effect('Thats not a verb I recognize')
-
-    def change_name(self, name):
-        self.name = name
+    def change_name(self, nameType, name):
+        if nameType == 'longName':
+            self.longName = name
+        if nameType == 'name':
+            self.name = name
 
     def different_actions(self, action):
         if action == 'read':
@@ -258,7 +256,7 @@ class Object: #unfinished - main priority
                 if self.inInventory == True: #checks to see if the item is already in the player inventory
                     if inform:
                         print()
-                        type_effect(f"You already have {self.name} in your inventory")
+                        type_effect(f"You already have {self.longName} in your inventory")
                 elif self.inInventory == False:
                     self.inInventory = True
                     self.room = 'inventory'

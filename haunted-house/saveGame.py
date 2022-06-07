@@ -9,7 +9,7 @@ from loading import loading
 from room import *
 from encryptFile import fileCryption
 
-def saveGame(player_room = 'none', code = 1234, version = 'main'): #pretty much done
+def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much done
     print()
     type_effect('Would you like to create a new save file(1) or save to existing file(2)? ')
     choice = input()

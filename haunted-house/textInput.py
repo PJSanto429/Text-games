@@ -21,7 +21,7 @@ def text_input(text, player_room = 'none', version = 'main'): #pretty much done
         action = text[0]
         x = len(text)
 
-        if text[0] == 'quit' or text[0] == 'quit()' or text[0] == 'stop':
+        if text[0] == 'quit' or text[0] == 'exit' or text[0] == 'stop':
             print()
             #type_effect('Would you like to save ') #work on this more(4C)
 
@@ -50,16 +50,16 @@ def text_input(text, player_room = 'none', version = 'main'): #pretty much done
 
         elif action == 'move' or action == 'go':
             room.action('move', player_room, text[x - 1])
-
+        
         elif action == 'save':
-            saveGame(player_room, 1234, version)
+            saveGame(player_room, version)
 
         elif action == 'load':
             player_room = loadGame(version)
             room.go(player_room)
             room.action('look', player_room) #cleaned up a lot
 
-        elif action == 'take' or action == 'drop' or (action == 'look' or action == 'l'):
+        elif action == 'take' or action == 'drop' or (action == 'look' or action == 'l' ) or (action in Object.otherActions):
             x = 0
             for i in Object.instances:
                 if i.longName in fullText:
@@ -67,9 +67,6 @@ def text_input(text, player_room = 'none', version = 'main'): #pretty much done
                     x = 1
             if x == 0:
                 thing.action(action, text[x - 1], player_room)
-
-        #elif action in action.list:
-            #do something
     
     except:
         pass

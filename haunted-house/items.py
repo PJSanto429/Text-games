@@ -29,7 +29,10 @@ room1.change_description('You are in a dark, musty kitchen')
 
 #room items ______________________
 note1 = Object('note', 'first', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
-note1.add_attribute('read', "This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
+note1.add_attribute('read', "the note reads: This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
+
+note2 = Object('note', 'first', 'this is a crazy looking note. Read it maybe?', True, False, 'awesome note')
+note2.add_attribute('read', 'this note is too crazy to comprehend. Try later maybe?')
 
 key3 = Object('key', 'first', 'this is a rusty copper key', True, False, 'rusty copper key')
 key4 = Object('key', 'first', 'this is a bent car key', True, False, 'bent car key')
