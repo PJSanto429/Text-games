@@ -311,5 +311,3 @@ class Object: #unfinished - main priority
             type_effect(f"Health: {self.health}")
             print()
             type_effect(f"Money: {self.money}")
-            print()
-            type_effect(f"Code: {self.code}")
