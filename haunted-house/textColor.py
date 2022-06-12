@@ -1,5 +1,10 @@
 #this adds color to text
 
+'''
+from termcolor import colored, cprint
+cprint('\njoe mama', 'white', attrs=['blink', 'bold'])
+'''
+
 class color:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'

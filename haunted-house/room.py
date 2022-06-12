@@ -36,7 +36,6 @@ class Room():
 
     def go(self, player_room):
         player.room = player_room
-        #print(player.room)
 
     def room_description(self, player_room, moved = False):
         for i in Room.instances:

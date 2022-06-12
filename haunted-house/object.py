@@ -8,8 +8,8 @@ from typeEffect import type_effect
 
 player_inventory = []
 
-yes = ['yes','y']
-no = ['no','n']
+yes = ['yes', 'y']
+no = ['no', 'n']
 
 #room inventories:  #i don't think i will need these 
 void_INV = []
@@ -21,22 +21,24 @@ class Object: #unfinished - main priority
     instances = []
     otherActions = []
     #name, player_room, room, description, takeable, inInventory
-    def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', seen = False, health = 0, money = 0, parent = 'object', code = .0000):
+    def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', seen = False, open = False, health = 0, money = 0, parent = 'object'):
         self.__class__.instances.append(self)
         self.name = name #gives name to object(default is 'void')
         self.room = room #default is void(kind of a storage area)
         self.homeRoom = room #this is going to work as a way to reset objects when saving and loading
         self.description = description #mandatory
+        self.closedDescription = description
+        self.openDescription = 'void'
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
         self.longName = longName #for if there are multiple items in room/inventory with same name
         self.seen = seen #for checking if the object has been seen
+        self.open = open
         if self.inInventory == True:
             player_inventory.append(self.longName)
             self.room = 'inventory'
         self.otherActions = {}
         self.parent = parent #will be used for things like fridges, shests, etc.
-        self.code = code  #for items that might be special. most will be 000
         self.health = health        #Health and money will be set to 0 as a default
         self.money = money          #most items will not have health or money
 
@@ -44,16 +46,32 @@ class Object: #unfinished - main priority
         self.cantSee = "Hmm, I can't see that"
         self.noDesc = "I see nothing special about that"
 
-    def add_attribute(self, attribute = 'void', description = 'void', inventoryNeed = False, locked = False):
+    def add_attribute(self, attribute = 'void', description = 'void', action = 'none', inventoryNeed = False, locked = False):
         Object.otherActions.append(attribute)
         self.otherActions.update({attribute: description})
+
+    def open_message(self, message):
+        self.openMessage = message
+
+    def see_inventory(self):
+        inv = 0
+        print()
+        type_effect('Your inventory consists of:')
+        for i in Object.instances:
+            if i.inInventory == True:
+                inv += 1
+                print()
+                type_effect(i.longName)
+        if inv == 0:
+            print()
+            type_effect('Nothing yet...')
 
     def other_action(self, name, action):
         for i in Object.instances:
             if i.longName == name:
                 if action in i.otherActions:
                     x = i.otherActions
-                    if type(x[action]) == str:
+                    if type(x[action]) == str: #this is for simply printing something => there will be more stuff(if the type is not a string, it will do something else)
                         print()
                         type_effect(x[action])
                 else:
@@ -69,24 +87,6 @@ class Object: #unfinished - main priority
             print()
             type_effect(self.description)
             self.seen = True
-            
-            '''if self.name == 'note': #this will be the basis for other action, just more streamlined
-                print()
-                type_effect('Would you like to read note? ')
-                print()
-                choice = input()
-                if choice in yes:
-                    if self.locked == False:
-                        print()
-                        type_effect('The note reads: ')
-                        print()
-                        type_effect(self.read)
-                    elif self.locked == True:
-                        print()
-                        type_effect('Despite your best attempts, you are unable to read this. It must be in another language or something...')
-                elif choice in no:
-                    print()
-                    type_effect('Ok, your loss')'''
 
     def notTakeable_message(self, message):
         #this is for adding more variety to the game => instead of just saying 'you cant take that', it would say 'this is too heavy to take

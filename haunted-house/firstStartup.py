@@ -6,8 +6,8 @@ def firstStartup():
     isExist = path.exists('players') #dont change this or save/load will not work
     if isExist == False:
         mkdir('players')
-    isExist = path.exists('key.key')
 
+    isExist = path.exists('key.key')
     if isExist == False:
         key = Fernet.generate_key()
         with open('key.key', 'wb') as file: #DONT UNCOMMENT THIS OR THE KEY WILL CHANGE
