@@ -23,7 +23,7 @@ chair1.notTakeable_message('this chair is bolted to the floor, making it unable 
 #-----------------------ROOM ONE ----------- Room creation
 room1 = Room('first')
 room1.set_directions(False, 'second', False, False)
-room1.change_description('You are in a dark, musty kitchen with peeling wallpaper and gross looking fridge. there is really nothing else in here')
+room1.change_description('You are in a dark, musty kitchen with peeling wallpaper and a gross looking fridge. there is really nothing else in here')
 
 #room items ______________________
 fridge1 = Object('fridge', 'first', 'this is a very old, very large, and very gross fridge. the smell coming off of it makes you wonder what could possibly be in it', False, False, 'gross fridge')

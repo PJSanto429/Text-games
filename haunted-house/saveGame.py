@@ -196,12 +196,9 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
             writeFile(player_room, code, name, version, password)
 
 def writeFile(player_room, code, name = 'none', version = 'main', password = 'none'):
-    inventory = []
     items = []
     time = get_current_time()
-    for i in Object.instances:  #adds to inventory list 
-        if i.inInventory == True:
-            inventory.append(i.longName)
+    for i in Object.instances:  #adds to inventory list
         if i.longName != 'void':
             items.append(f'{i.longName}: {i.room}') #add more attributes to this(score, health, seen, etc.)
 
@@ -212,7 +209,6 @@ def writeFile(player_room, code, name = 'none', version = 'main', password = 'no
             "room": player_room,
             "time": time,
             "password": password,
-            "inventory": inventory,
             "items": items
             }
         ]
@@ -251,7 +247,6 @@ def loadGame(version = 'main'): #done
                 if version == 'main':
                     loading('loading')
                 room = data[code][0]['room']
-                inventory = data[code][0]['inventory']
                 items = data[code][0]['items']
                 load = True
                 #return code, room, inventory, items
@@ -263,10 +258,10 @@ def loadGame(version = 'main'): #done
         else:
             if version == 'main':
                 loading('loading')
-            print()
-            type_effect('load = good')
+            else:
+                print()
+                type_effect('load = good')
             room = data[code][0]['room']
-            inventory = data[code][0]['inventory']
             items = data[code][0]['items']
             load = True
             #return room, inventory, items
@@ -293,14 +288,12 @@ def loadGame(version = 'main'): #done
                                 i.inInventory = False
                         else:
                             i.room = i.homeRoom
-                except Exception as err:
-                    #print(err)
+                except:
                     pass
 
             return room
 
-    except Exception as err:
-        #print(err)
+    except:
         print()
         type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
 
@@ -309,9 +302,3 @@ def getRoom(code):
         data = json.load(infile)
         room1 = data[code][0]['room']
         return room1
-
-def getInventory(code):
-    with open(f'players/{code}.json', 'r') as infile:
-        data = json.load(infile)
-        inventory = data[code][0]['inventory']
-        return inventory
