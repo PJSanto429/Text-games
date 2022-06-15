@@ -1,6 +1,6 @@
 #imports---------------------
 #python built in imports
-from time import sleep
+from time import sleep, time
 import sys
 import json
 from string import ascii_letters, ascii_lowercase, ascii_uppercase

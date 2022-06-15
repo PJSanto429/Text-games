@@ -34,4 +34,3 @@ def fileCryption(cryptionType, fileName):
         decryptFile(fileName)
     if cryptionType == 'encrypt':
         encryptFile(fileName)
-#fileCryption('encrypt', '8083')

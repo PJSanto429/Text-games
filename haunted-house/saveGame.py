@@ -20,10 +20,7 @@ def quit_save(player_room, version):
 
     for i in range(len(currentTime)):
         if i != 4 and i != 5:
-            if currentTime[i] > recentSaveTime[i]: #work on this more to make sure that enough time has passed
-                #print(f'different: {currentTime[i]} - {recentSaveTime[i]}')
-                #print(f'break - {i}')
-                #debug('current is larger')
+            if currentTime[i] > recentSaveTime[i]:
                 do_quit_save(code, player_room, version)
                 break
             #else:
@@ -53,10 +50,8 @@ def do_quit_save(code, player_room, version):
             quit()
 
 def get_current_time(): #this gets the current time
-    time = strftime("%Y %m %d %H %M %S", gmtime())
+    time = strftime("%Y %m %d %H %M %S", gmtime()) #change this to another way(in todo.txt)
     time = time.split()
-    #time[3] = (int(time[3]) - 4)
-    #return (f'{time[3]}:{time[4]}:{time[5]}') #shows the full date/time
     return time
 
 def get_save_time(code):
@@ -89,7 +84,6 @@ def get_recent_save():
         except:
             pass
 
-#this is for logging how many times the game has been run #not being used yet => could be used for making sure that the game is being run in the same instance as before (todo.txt => 4.C.4)
 def times_played():
     with open('players/saveCode.txt', 'r') as infile:
         data = infile.read()
@@ -108,8 +102,8 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
         name = data[code][0]['name']
         password = data[code][0]['password']
         if password != 'none':
-            x = False
-            while x == False:
+            #x = False
+            while True:
                 print()
                 type_effect('Please enter the password for this save file: ')
                 choice = input()
@@ -118,7 +112,7 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
                     type_effect('ERROR. Incorrect password. Please try again, or type EXIT to contiue the game where you left off')
                 elif choice == password:
                     writeFile(player_room, code, name, version, password)
-                    x = True
+                    break
                 elif choice == 'EXIT':
                     pass
         else:
@@ -163,20 +157,18 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
             if code == 0000:
                 pass
             elif code == 1234:
-                goodCode = False
-                while goodCode == False:
+                #goodCode = False
+                while True:
                     code = randint(1111, 9999)
                     code = str(code)
                     try:
                         with open('players/saveCode.txt', 'r') as infile:
                             data = infile.read()
-
                         data = data.split()
-                        for x in data:
-                            if x != code:
-                                with open ('players/saveCode.txt', 'a') as outfile:
-                                    outfile.write(f' {code}')
-                                goodCode = True
+                        if code not in data:
+                            with open ('players/saveCode.txt', 'a') as outfile:
+                                outfile.write(f' {code}')
+                            break
                     except:
                         with open ('players/saveCode.txt', 'w') as outfile:
                             outfile.write('testCode')
