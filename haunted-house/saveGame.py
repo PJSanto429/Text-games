@@ -36,7 +36,6 @@ def quit_save(player_room, version):
     quit()
 
 def do_quit_save(code, player_room, version):
-        #debug('wowee')
         print()
         type_effect(f'Would you like to save your game to file {code} before quitting? yes/no: ')
         choice = input()
@@ -61,6 +60,7 @@ def get_save_time(code):
         pass
     with open(f'players/{code}.json', 'r') as infile:
         data = json.load(infile)
+        infile.close()
     return data[code][0]['time']
 
 def get_recent_save(): 
@@ -68,6 +68,7 @@ def get_recent_save():
     codes = []
     with open('players/saveCode.txt' ,'r') as saveCodes:
         data = saveCodes.read()
+        saveCodes.close()
     data = data.split()
     for code in data:
         try:
@@ -87,6 +88,7 @@ def get_recent_save():
 def times_played():
     with open('players/saveCode.txt', 'r') as infile:
         data = infile.read()
+        infile.close()
     print(data[1])
 
 def auto_save(player_room = 'none', version = 'main', code = 1234):
@@ -95,10 +97,12 @@ def auto_save(player_room = 'none', version = 'main', code = 1234):
 def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much done
     with open('players/saveCode.txt', 'r') as infile:
         data = infile.read()
+        infile.close()
     data = data.split()
     if code in data:
         with open(f'players/{code}.json', 'r') as infile:
             data = json.load(infile)
+            infile.close()
         name = data[code][0]['name']
         password = data[code][0]['password']
         if password != 'none':
@@ -133,6 +137,7 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
             try:            
                 with open(f'players/{code}.json', 'r') as infile:
                     data = json.load(infile)
+                    infile.close()
 
                 if data[code][0]['password'] != 'none':
                     print()
@@ -164,14 +169,17 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
                     try:
                         with open('players/saveCode.txt', 'r') as infile:
                             data = infile.read()
+                            infile.close()
                         data = data.split()
                         if code not in data:
                             with open ('players/saveCode.txt', 'a') as outfile:
                                 outfile.write(f' {code}')
+                                outfile.close()
                             break
                     except:
                         with open ('players/saveCode.txt', 'w') as outfile:
                             outfile.write('testCode')
+                            outfile.close()
             print()
             type_effect("Please enter a name for this save file: ")
             name = input()
@@ -210,10 +218,11 @@ def writeFile(player_room, code, name = 'none', version = 'main', password = 'no
         x = json.dumps(data)
         with open(f'players/{code}.json', 'w') as outfile:
             outfile.write(x)
-            if version == 'main':
-                loading('saving')
-            if version == 'dev':
-                print('save successful')
+            outfile.close()
+        if version == 'main':
+            loading('saving')
+        if version == 'dev':
+            print('save successful')
         fileCryption('encrypt', code)
     except:
         print()
@@ -227,6 +236,7 @@ def loadGame(version = 'main'): #done
         fileCryption('decrypt', code)
         with open(f'players/{code}.json', 'r') as infile:
             data = json.load(infile)
+            infile.close()
             #print(data['player1'][0]['name'])
         password = data[code][0]['password']
         
@@ -292,5 +302,6 @@ def loadGame(version = 'main'): #done
 def getRoom(code):
     with open(f'players/{code}.json', 'r') as infile:
         data = json.load(infile)
-        room1 = data[code][0]['room']
-        return room1
+        infile.close()
+    room1 = data[code][0]['room']
+    return room1

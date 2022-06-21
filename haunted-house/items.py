@@ -27,7 +27,9 @@ room1.change_description('You are in a dark, musty kitchen with peeling wallpape
 
 #room items ______________________
 fridge1 = Object('fridge', 'first', 'this is a very old, very large, and very gross fridge. the smell coming off of it makes you wonder what could possibly be in it', False, False, 'gross fridge')
-fridge1.add_attribute('open', 'with some effort, you are able to open the fridge. surprisingly, there is nothing inside, so where could the smell be coming from?')
+fridge1.open_description('this is a great big stinky fridge with nothing in it')
+fridge1.add_attribute('open', 'with some effort, you are able to open the fridge. surprisingly, there is nothing inside, so where could the smell be coming from?', 'open')
+fridge1.add_attribute('close', 'you shut the fridge, hoping to get rid of some of the awful smell, but no luck', 'close')
 fridge1.add_attribute('smell', 'Yuck!')
 
 note1 = Object('note', 'first', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')

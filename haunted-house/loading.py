@@ -6,19 +6,6 @@ error_message = 'Oops! It seems that something went wrong with what you typed. Y
 yes = ['yes','y']
 no = ['no','n']
 
-def ask_quit(): #done
-    print()
-    type_effect('Are you sure that you would like to quit? You will lose all progress. ')
-    choice = input()
-    choice = choice.lower()
-    if choice in yes:
-        print()
-        loading('quit')
-        quit()
-    else:
-        print()
-        type_effect('Good choice. You will be redirected to make your last decision again')
-
 def loading(message = 'loading'):
     if message == 'restart':
         message1 = 'SYSTEM RESTARTING... PLEASE STAND BY'

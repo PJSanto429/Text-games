@@ -43,7 +43,7 @@ def text_input(text, player_room, version = 'main'): #pretty much done
         elif action == 'load':
             player_room = loadGame(version)
             room.go(player_room)
-            room.action('look', player_room) #cleaned up a lot 
+            room.action('look', player_room)
 
         elif action == 'take' or action == 'drop' or (action == 'look' or action == 'l' ) or (action in Object.otherActions):
             x = 0
@@ -61,11 +61,6 @@ def text_input(text, player_room, version = 'main'): #pretty much done
             if version == 'main':
                 print()
                 type_effect('Sorry, but this function is not available yet. Please try in a later version of the game')
-
-        elif action == 'seeobject':
-            if version == 'dev':
-                for i in enumerate(Object.instances):
-                    print(i)
 
         else:
             print()

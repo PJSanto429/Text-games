@@ -5,6 +5,7 @@ from time import sleep
 from random import randint, choice
 import gc
 from typeEffect import type_effect
+from debugger import *
 
 player_inventory = []
 
@@ -20,20 +21,25 @@ RM_1_INV = []
 class Object: #unfinished - main priority
     instances = []
     otherActions = []
-    #name, player_room, room, description, takeable, inInventory
-    def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', seen = False, open = False, health = 0, money = 0, parent = 'object'):
+    #name, player_room, room, description, takeable, inInventory #this is the most basic stuff
+    def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', open = False, seen = False, health = 0, money = 0, parent = 'void'):
         self.__class__.instances.append(self)
         self.name = name #gives name to object(default is 'void')
         self.room = room #default is void(kind of a storage area)
         self.homeRoom = room #this is going to work as a way to reset objects when saving and loading
-        self.description = description #mandatory
-        self.closedDescription = description
-        self.openDescription = 'void'
+        self.open = open
+        if self.open == False:
+            self.description = description #mandatory
+            self.closedDescription = description
+            self.openDescription = 'void' #this will need to be set
+        elif self.open == True:
+            self.description = description
+            self.closedDescription = 'void'
+            self.openDescription = description
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
         self.longName = longName #for if there are multiple items in room/inventory with same name
-        self.seen = seen #for checking if the object has been seen
-        self.open = open
+        self.seen = seen #for checking if the object has been seen(not currently being used)
         if self.inInventory == True:
             player_inventory.append(self.longName)
             self.room = 'inventory'
@@ -48,11 +54,34 @@ class Object: #unfinished - main priority
 
     def add_attribute(self, attribute = 'void', description = 'void', action = 'none', inventoryNeed = False, locked = False):
         Object.otherActions.append(attribute)
-        self.otherActions.update({attribute: description})
+        self.otherActions.update({attribute: f'{description}|{action}'})
 
-    def open_message(self, message):
-        self.openMessage = message
+    def see_open_message(self):
+        for i in Object.instances: #wow this is cool
+            if i.name == 'fridge1':
+                return i.open_message
+    
+    def open_close(self, action, message = 'none'):
+        if action == 'open':
+            if self.open == False:
+                self.open = True
+                self.description = self.openDescription
+                print()
+                type_effect(message)
+            else:
+                print()
+                type_effect(f'{self.longName} is already open')
 
+        if action == 'close':
+            if self.open == True:
+                self.open = False
+                self.description = self.closedDescription
+                print()
+                type_effect(message)
+            else:
+                print()
+                type_effect(f'{self.longName} is already closed')
+            
     def see_inventory(self):
         inv = 0
         print()
@@ -70,19 +99,21 @@ class Object: #unfinished - main priority
         for i in Object.instances:
             if i.longName == name:
                 if action in i.otherActions:
-                    x = i.otherActions
-                    if type(x[action]) == str: #this is for simply printing something => there will be more stuff(if the type is not a string, it will do something else)
+                    x = i.otherActions[action]
+                    x = x.split('|')
+                    if x[1] == 'open' or x[1] == 'close':
+                        i.open_close(x[1], x[0])
+                    else:
                         print()
-                        type_effect(x[action])
+                        type_effect(x[0])
                 else:
                     print()
-                    type_effect('Thats not a verb I recognize')
+                    type_effect(f"You can't do that to the {i.longName}")
 
     def item_description(self): #prints the item's description
         if self.description == 'void':
             print()
             type_effect(self.noDesc)
-
         else:
             print()
             type_effect(self.description)
@@ -130,9 +161,6 @@ class Object: #unfinished - main priority
                             i.item_description()
                         if action in Object.otherActions:
                             i.other_action(i.longName, action)
-                            #print()
-                            #type_effect(action)
-                        #add a way to get to otherAction
 
         elif len(itemList) > 1:
 
@@ -237,20 +265,22 @@ class Object: #unfinished - main priority
         if nameType == 'name':
             self.name = name
 
-    def different_actions(self, action):
-        if action == 'read':
-            pass
-
     def change_room(self, room):
         self.room = room
 
     def change_description(self, description):
         self.description = description
+    
+    def open_description(self, description):
+        self.openDescription = description
 
-    def change_takeable(self, takeable): #either True or False
+    def closed_description(self, description):
+        self.closedDescription = description
+
+    def change_takeable(self, takeable = False): #either True or False
         self.takeable = takeable
 
-    def pick_drop(self, action, player_room, inform=True): #either 'take' or 'drop'; WILL BE USED  A LOT
+    def pick_drop(self, action, player_room, inform = True): #either 'take' or 'drop'; WILL BE USED  A LOT
         if action == 'take':
             if self.takeable == True:
                 if self.inInventory == True: #checks to see if the item is already in the player inventory
@@ -294,20 +324,3 @@ class Object: #unfinished - main priority
             return self.name
         elif x == 'longName':
             return self.longName
-
-    def test(self, action='all'): #default action is to print all item description
-        if action == 'all':
-            print()
-            type_effect(f"Name: {self.name}")
-            print()
-            type_effect(f"Room: {self.room}")
-            print()
-            type_effect(f"Description: {self.description}")
-            print()
-            type_effect(f"Takeable: {self.takeable}")
-            print()
-            type_effect(f"inInventory: {self.inInventory}")
-            print()
-            type_effect(f"Health: {self.health}")
-            print()
-            type_effect(f"Money: {self.money}")

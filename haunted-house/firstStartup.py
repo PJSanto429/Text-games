@@ -12,3 +12,4 @@ def firstStartup():
         key = Fernet.generate_key()
         with open('key.key', 'wb') as file: #DONT UNCOMMENT THIS OR THE KEY WILL CHANGE
             file.write(key)
+            file.close()
