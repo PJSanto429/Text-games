@@ -3,6 +3,7 @@ from time import sleep
 import gc
 from object import Object
 from typeEffect import type_effect
+from debugger import debug
 
 class Player(): #this is simply so the player can move rooms and it actually work.
     def __init__(self, room):
@@ -50,12 +51,22 @@ class Room():
 
         for i in Object.instances:
             if i.room == player_room:
-                if x == 0:
-                    type_effect(i.longName)
-                    x += 1
+                if i.parent == 'void':
+                    if x == 0:
+                        type_effect(i.longName)
+                        x += 1
+                    else:
+                        type_effect(f', {i.longName}')
+                        x += 1
                 else:
-                    type_effect(f', {i.longName}')
-                    x += 1
+                    if i.get_parent_open(i.parent):
+                        if x == 0:
+                            type_effect(i.longName)
+                            x += 1
+                        else:
+                            #debug(i.longName)
+                            type_effect(f', {i.longName}')
+                            x += 1
 
         if x == 0:
             print()
@@ -144,8 +155,3 @@ class Room():
             type_effect(f'east: {self.east}')
             print()
             type_effect(f'west: {self.west}')
-
-        elif action == 'every':
-            for i in Room.instances:
-                print()
-                type_effect(i.name)

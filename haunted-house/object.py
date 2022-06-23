@@ -5,7 +5,7 @@ from time import sleep
 from random import randint, choice
 import gc
 from typeEffect import type_effect
-from debugger import *
+from debugger import debug
 
 player_inventory = []
 
@@ -22,12 +22,13 @@ class Object: #unfinished - main priority
     instances = []
     otherActions = []
     #name, player_room, room, description, takeable, inInventory #this is the most basic stuff
-    def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', open = False, seen = False, health = 0, money = 0, parent = 'void'):
+    def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', parent = 'void', open = False, hidden = False, seen = False, health = 0, money = 0):
         self.__class__.instances.append(self)
         self.name = name #gives name to object(default is 'void')
         self.room = room #default is void(kind of a storage area)
         self.homeRoom = room #this is going to work as a way to reset objects when saving and loading
         self.open = open
+        self.isContainer = False
         if self.open == False:
             self.description = description #mandatory
             self.closedDescription = description
@@ -50,11 +51,11 @@ class Object: #unfinished - main priority
 
         self.takeable_message = 'void'
         self.cantSee = "Hmm, I can't see that"
-        self.noDesc = "I see nothing special about that"
+        self.noDesc = "I see nothing out of the ordinary..."
 
     def add_attribute(self, attribute = 'void', description = 'void', action = 'none', inventoryNeed = False, locked = False):
         Object.otherActions.append(attribute)
-        self.otherActions.update({attribute: f'{description}|{action}'})
+        self.otherActions.update({attribute: f'{description}|{action}|{inventoryNeed}|{locked}'})
 
     def see_open_message(self):
         for i in Object.instances: #wow this is cool
@@ -110,6 +111,11 @@ class Object: #unfinished - main priority
                     print()
                     type_effect(f"You can't do that to the {i.longName}")
 
+    def get_parent_open(self, parent): #this is used for making sure that an object's parent is open
+        for i in Object.instances:
+            if i.longName == parent and i.open == True:
+                return True
+
     def item_description(self): #prints the item's description
         if self.description == 'void':
             print()
@@ -129,23 +135,51 @@ class Object: #unfinished - main priority
             self.takeable_message = message
 
     def fullName_action(self, action, name, player_room):
-        if self.room == player_room or self.inInventory == True:
-            if action == 'take' or action == 'drop':
-                self.pick_drop(action, player_room)    
-            elif action == 'look':
-                self.item_description()
+        if self.room == player_room or self.inInventory == True and (self.parent == 'void' or (self.get_parent_open(self.parent))):
+            if self.parent == 'void' or (self.get_parent_open(self.parent)):
+                if action == 'take' or action == 'drop':
+                    self.pick_drop(action, player_room)
+                elif action == 'look':
+                    self.item_description()
+                else:
+                    self.other_action(name, action)
+       
             else:
-                self.other_action(name, action)
+                print()
+                type_effect("Hmm, I can't see that")
         else:
             print()
             type_effect("Hmm, I can't see that")
-       
+
+    def create_container(self, itemLimit = 'none'):
+        self.isContainer = True
+        self.containerLimit = itemLimit
+
+    def put_into_container(self, container):
+        if self.takeable == True:
+            for i in Object.instances:
+                if i.longName == container and i.isContainer:
+                    x = 0
+                    for x in Object.instances:
+                        if x.parent == i.longName:
+                            x += 1
+                    if i.containerLimit > x:
+                        self.parent = i.longName
+                        print(self.parent)
+                    elif i.containerLimit == x:
+                        print()
+                        type_effect(f'There are already {i.containerLimit} items in {i.longName}')
+                elif i.longName == container and not i.isContainer:
+                    print()
+                    type_effect(f'You cannot put {self.longName} into {i.longName}')
+
     def action(self, action, name, player_room = 'none'):
         itemList = []
         
         for i in Object.instances:
             if i.name == name and (i.room == player_room or i.inInventory == True):
-                itemList.append(i.longName)
+                if i.parent == 'void' or (i.get_parent_open(i.parent)):
+                    itemList.append(i.longName)
 
         if len(itemList) == 0:
             print()
@@ -259,7 +293,7 @@ class Object: #unfinished - main priority
                     print()
                     type_effect(self.cantSee)
 
-    def change_name(self, nameType, name):
+    def change_name(self, nameType, name): #name type is which name are you changing(name or longName)
         if nameType == 'longName':
             self.longName = name
         if nameType == 'name':
@@ -288,8 +322,9 @@ class Object: #unfinished - main priority
                         print()
                         type_effect(f"You already have {self.longName} in your inventory")
                 elif self.inInventory == False:
-                    self.inInventory = True
-                    self.room = 'inventory'
+                    self.inInventory, self.room, self.parent = True, 'inventory', 'void'
+                    #self.room = 'inventory'
+                    #self.parent = ''
                     if inform == True:
                         print()
                         player_inventory.append(self.longName)
@@ -297,6 +332,7 @@ class Object: #unfinished - main priority
                         print()
                     elif inform == False:
                         player_inventory.append(self.longName)
+
             elif self.takeable == False:
                 if self.takeable_message != 'void':
                     print()

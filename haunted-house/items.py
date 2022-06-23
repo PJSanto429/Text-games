@@ -31,6 +31,13 @@ fridge1.open_description('this is a great big stinky fridge with nothing in it')
 fridge1.add_attribute('open', 'with some effort, you are able to open the fridge. surprisingly, there is nothing inside, so where could the smell be coming from?', 'open')
 fridge1.add_attribute('close', 'you shut the fridge, hoping to get rid of some of the awful smell, but no luck', 'close')
 fridge1.add_attribute('smell', 'Yuck!')
+fridge1.create_container(10)
+
+ketchup1 = Object('ketchup', 'first', 'this is a bottle of ketchup', True, False, 'ketchup bottle', 'gross fridge')
+
+mustard1 = Object('mustard', 'first', 'this is a bottle of mustard', True, False, 'mustard bottle', 'gross fridge')
+
+wallpaper1 =Object('wallpaper', 'first', 'void', False, False, 'peeling wallpaper')
 
 note1 = Object('note', 'first', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
 note1.add_attribute('read', "the note reads: This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
