@@ -27,17 +27,23 @@ room1.change_description('You are in a dark, musty kitchen with peeling wallpape
 
 #room items ______________________
 fridge1 = Object('fridge', 'first', 'this is a very old, very large, and very gross fridge. the smell coming off of it makes you wonder what could possibly be in it', False, False, 'gross fridge')
-fridge1.open_description('this is a great big stinky fridge with nothing in it')
-fridge1.add_attribute('open', 'with some effort, you are able to open the fridge. surprisingly, there is nothing inside, so where could the smell be coming from?', 'open')
+fridge1.open_description('this is a great big stinky fridge with a broken light, so it is hard to see what it inside')
+fridge1.add_attribute('open', 'with some effort, you are able to open the fridge. there is really nothing special about it when it is open.', 'open')
 fridge1.add_attribute('close', 'you shut the fridge, hoping to get rid of some of the awful smell, but no luck', 'close')
 fridge1.add_attribute('smell', 'Yuck!')
-fridge1.create_container(10)
+fridge1.create_container(True, 'rusty copper key')
+
+fridge2 = Object('fridge', 'first', 'this is a clean fridge that looks brand new', False, False, 'clean fridge')
+fridge2.open_description('the inside of this fridge is somehow even cleaner than the outside')
+fridge2.add_attribute('open', 'this fridge opens with no effort', 'open')
+fridge2.add_attribute('close', 'this fridge closes very nicely and it practically silent', 'close')
+fridge2.create_container(False)
 
 ketchup1 = Object('ketchup', 'first', 'this is a bottle of ketchup', True, False, 'ketchup bottle', 'gross fridge')
 
 mustard1 = Object('mustard', 'first', 'this is a bottle of mustard', True, False, 'mustard bottle', 'gross fridge')
 
-wallpaper1 =Object('wallpaper', 'first', 'void', False, False, 'peeling wallpaper')
+wallpaper1 = Object('wallpaper', 'first', 'void', False, False, 'peeling wallpaper')
 
 note1 = Object('note', 'first', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
 note1.add_attribute('read', "the note reads: This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
@@ -45,9 +51,9 @@ note1.add_attribute('read', "the note reads: This is a note! I can't believe tha
 note2 = Object('note', 'first', 'this is a crazy looking note. Read it maybe?', True, False, 'awesome note')
 note2.add_attribute('read', 'this note is too crazy to comprehend. Try later maybe?')
 
-key3 = Object('key', 'first', 'this is a rusty copper key. parts of it are turning green, so it is pretty old', True, False, 'rusty copper key')
+key3 = Object('key', 'first', 'this is a rusty copper key. parts of it are turning green, so it is pretty old', True, True, 'rusty copper key')
 key4 = Object('key', 'first', 'this is a bent car key,. it is hard to tell what type of car it went with, but it obviously would not work in its current condition', True, False, 'bent car key')
-key5 = Object('key', 'first', 'this is a fancy jade key, with a very shiny handle. i wonder what it might unlock?', True, False, 'fancy jade key')
+key5 = Object('key', 'first', 'this is a fancy jade key, with a very shiny handle. i wonder what it might unlock?', True, True, 'fancy jade key')
 
 chair2 = Object('chair', 'first', 'this is a rusted folding chair that looks like it has been welded to the floor. why would someone do that?', False, False, 'rusty folding chair')
 

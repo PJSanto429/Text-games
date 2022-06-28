@@ -54,6 +54,19 @@ def text_input(text, player_room, version = 'main'): #pretty much done
             if x == 0:
                 thing.action(action, text[x - 1], player_room)
 
+        elif action == 'putinto': # this needs to be worked on
+                    #right now all it does is makes sure that the function works properly
+            if version == 'dev':
+                print()
+                type_effect('this function needs to be added(check todo 3.III for an idea of how to do it)...')
+                #for i in Object.instances:
+                #    if i.longName == 'standard note':
+                #        i.put_into_container('gross fridge')
+
+            if version == 'main':
+                print()
+                type_effect('invalid input.')
+
         elif action == 'help()':
             if version == 'dev':
                 print()

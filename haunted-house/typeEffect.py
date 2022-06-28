@@ -10,5 +10,5 @@ def type_effect(text = ""):
     for char in text:
         sleep(0.04)
         #sys.stdout.write(char)
-        sys.stdout.write(colored(char, 'grey', 'on_white'))
+        sys.stdout.write(colored(char, 'red'))
         sys.stdout.flush()

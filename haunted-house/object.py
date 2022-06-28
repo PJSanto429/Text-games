@@ -37,13 +37,21 @@ class Object: #unfinished - main priority
             self.description = description
             self.closedDescription = 'void'
             self.openDescription = description
+        #----------------------------------
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
+        #----------------------------------
         self.longName = longName #for if there are multiple items in room/inventory with same name
         self.seen = seen #for checking if the object has been seen(not currently being used)
         if self.inInventory == True:
             player_inventory.append(self.longName)
             self.room = 'inventory'
+        #----------------------------------
+        self.isContainer = False
+        self.containerKey = 'none'
+        self.containerLimit = 'none'
+        self.containerLocked = False
+        #----------------------------------
         self.otherActions = {}
         self.parent = parent #will be used for things like fridges, shests, etc.
         self.health = health        #Health and money will be set to 0 as a default
@@ -54,34 +62,9 @@ class Object: #unfinished - main priority
         self.noDesc = "I see nothing out of the ordinary..."
 
     def add_attribute(self, attribute = 'void', description = 'void', action = 'none', inventoryNeed = False, locked = False):
-        Object.otherActions.append(attribute)
+        if attribute not in Object.otherActions:
+            Object.otherActions.append(attribute)
         self.otherActions.update({attribute: f'{description}|{action}|{inventoryNeed}|{locked}'})
-
-    def see_open_message(self):
-        for i in Object.instances: #wow this is cool
-            if i.name == 'fridge1':
-                return i.open_message
-    
-    def open_close(self, action, message = 'none'):
-        if action == 'open':
-            if self.open == False:
-                self.open = True
-                self.description = self.openDescription
-                print()
-                type_effect(message)
-            else:
-                print()
-                type_effect(f'{self.longName} is already open')
-
-        if action == 'close':
-            if self.open == True:
-                self.open = False
-                self.description = self.closedDescription
-                print()
-                type_effect(message)
-            else:
-                print()
-                type_effect(f'{self.longName} is already closed')
             
     def see_inventory(self):
         inv = 0
@@ -101,9 +84,14 @@ class Object: #unfinished - main priority
             if i.longName == name:
                 if action in i.otherActions:
                     x = i.otherActions[action]
+                    #debug(x)
                     x = x.split('|')
-                    if x[1] == 'open' or x[1] == 'close':
+                    #debug(x[0])
+                    if x[1] in ['open', 'close']:
+                        debug(x[1])
                         i.open_close(x[1], x[0])
+                    if action in ['lock', 'unlock']:
+                        i.lock_unlock_container(action)
                     else:
                         print()
                         type_effect(x[0])
@@ -141,6 +129,8 @@ class Object: #unfinished - main priority
                     self.pick_drop(action, player_room)
                 elif action == 'look':
                     self.item_description()
+                elif action in ['lock', 'unlock']:
+                    self.lock_unlock_container(action)
                 else:
                     self.other_action(name, action)
        
@@ -151,28 +141,156 @@ class Object: #unfinished - main priority
             print()
             type_effect("Hmm, I can't see that")
 
-    def create_container(self, itemLimit = 'none'):
+    def create_container(self, locked = False, key = 'none', lockAbility = False, itemLimit = 'none'):
         self.isContainer = True
+        self.locked = locked
+        self.containerKey = key
+        if self.locked:
+            self.lockAbility = True
+            self.add_attribute('lock')
+            self.add_attribute('unlock')
+        else:
+            self.lockAbility = lockAbility
         self.containerLimit = itemLimit
+
+    def container_check(self, name):
+        for i in Object.instances:
+            if i.longName == name and i.isContainer:
+                return True
+            if i.longName == name and not i.isContainer:
+                return 'notContainer'
+    
+    def change_container_key(self, key): #very simple function to change the container key
+        self.containerKey = key
+
+    def open_close(self, action, message = 'none'):
+        if action == 'open':
+            if self.open == False:
+                if self.locked:
+                    print()
+                    type_effect(f'{self.longName} is locked. Would you like to try and unlock it(y/n)? ')
+                    choice = input().lower()
+                    if choice in yes:
+                        unlocked = self.unlock_container()
+                else:
+                    unlocked = True
+                if unlocked == True:
+                    self.open = True
+                    self.description = self.openDescription
+                    
+                    #print() # add a way to tell the user everything that is in the container
+                    #type_effect(message)
+                    #debug(message)
+            else:
+                print()
+                type_effect(f'{self.longName} is already open')
+        if action == 'close':
+            if self.open == True:
+                self.open = False
+                self.description = self.closedDescription
+                print()
+                type_effect(message)
+            else:
+                print()
+                type_effect(f'{self.longName} is already closed')
+
+    def lock_unlock_container(self, action):
+        if action == 'lock':
+            self.lock_container()
+        if action == 'unlock':
+            self.unlock_container()
+    
+    def lock_container(self):
+        if self.isContainer and self.lockAbility:
+            if self.open:
+                print()
+                type_effect(f'You close {self.longName}')
+                self.open = False
+            if not self.locked:
+                for i in Object.instances:
+                    if i.longName == self.containerKey and i.inInventory: #the only way that the container can be locked
+                        print()
+                        type_effect(f'You have locked {self.longName} with {i.longName}')
+                        self.locked = True
+                        return True
+                    elif i.longName == self.containerKey and not i.inInventory:
+                        print()
+                        type_effect(f'You do not have the key({self.containerKey}) in your inventory')
+                        return False
+                    elif i.longName != self.containerKey and i.inInventory:
+                        print()
+                        type_effect(f'{i.longName} is not the key for {self.longName}')
+                        return False
+            else:
+                print()
+                type_effect(f'{self.longName} is already locked')
+                    
+        else:
+            print()
+            type_effect(f'You cannot do that to {self.longName}')
+
+    def unlock_container(self):
+        if self.isContainer and self.lockAbility:
+            if self.locked:
+                type_effect(f'what would you like to use to unlock the {self.longName}?(please type the full name) ')
+                choice = input().lower()
+                for i in Object.instances:
+                    if i.longName == choice:
+                        if i.longName == self.containerKey and i.inInventory: #only way that the container can be unlocked
+                            print()
+                            type_effect(f'You have unlocked {self.longName} with {i.longName}')
+                            self.locked = False
+                            return True
+                        elif i.longName == self.containerKey and not i.inInventory:
+                            print()
+                            type_effect(f'You do not have the key({self.containerKey}) in your inventory')
+                            return False
+                        elif i.longName != self.containerKey and i.inInventory:
+                            print()
+                            type_effect(f'{i.longName} is not the key for {self.longName}')
+                            return False
+            else:
+                print()
+                type_effect(f'{self.longName} is not locked')
+        else:
+            print()
+            type_effect(f'You cannot do that to {self.longName}')
 
     def put_into_container(self, container):
         if self.takeable == True:
             for i in Object.instances:
                 if i.longName == container and i.isContainer:
-                    x = 0
+                    amount = 0
                     for x in Object.instances:
                         if x.parent == i.longName:
-                            x += 1
-                    if i.containerLimit > x:
+                            amount += 1
+                    if i.containerLimit > amount:
+                        debug(self.parent)
                         self.parent = i.longName
-                        print(self.parent)
+                        debug(self.parent)
                     elif i.containerLimit == x:
                         print()
                         type_effect(f'There are already {i.containerLimit} items in {i.longName}')
                 elif i.longName == container and not i.isContainer:
                     print()
                     type_effect(f'You cannot put {self.longName} into {i.longName}')
+        else:
+            print()
+            type_effect()
 
+    def get_items(self, name, player_room, inventoryNeed = False):
+        item_list = []
+        if inventoryNeed == 'both':
+            for i in Object.instances:
+                if i.name == name:
+                    pass
+        else:
+            for i in Object.instances:
+                if i.name == name:
+                    if (i.room == player_room or i.inInventory == inventoryNeed) and (i.parent == 'void' or (i.get_parent_open(i.parent))):
+                        item_list.append(i)
+        return item_list
+    
     def action(self, action, name, player_room = 'none'):
         itemList = []
         
@@ -197,7 +315,6 @@ class Object: #unfinished - main priority
                             i.other_action(i.longName, action)
 
         elif len(itemList) > 1:
-
             if action == 'drop':
                 x = 0
                 inventory = []
@@ -205,7 +322,6 @@ class Object: #unfinished - main priority
                     if i.inInventory == True:
                         inventory.append(i.longName)
                         x += 1
-
                 if len(inventory) > 1:
                     print()
                     type_effect(f'Which did you mean?  ')
