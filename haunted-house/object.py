@@ -84,13 +84,10 @@ class Object: #unfinished - main priority
             if i.longName == name:
                 if action in i.otherActions:
                     x = i.otherActions[action]
-                    #debug(x)
                     x = x.split('|')
-                    #debug(x[0])
                     if x[1] in ['open', 'close']:
-                        debug(x[1])
                         i.open_close(x[1], x[0])
-                    if action in ['lock', 'unlock']:
+                    elif action in ['lock', 'unlock']:
                         i.lock_unlock_container(action)
                     else:
                         print()
@@ -161,7 +158,11 @@ class Object: #unfinished - main priority
                 return 'notContainer'
     
     def change_container_key(self, key): #very simple function to change the container key
-        self.containerKey = key
+        if self.isContainer:
+            self.containerKey = key
+        else:
+            #maybe add a way to create a contained => propably not because i dont want to
+            pass
 
     def open_close(self, action, message = 'none'):
         if action == 'open':
@@ -177,10 +178,19 @@ class Object: #unfinished - main priority
                 if unlocked == True:
                     self.open = True
                     self.description = self.openDescription
-                    
-                    #print() # add a way to tell the user everything that is in the container
-                    #type_effect(message)
-                    #debug(message)
+                    print() # add a way to tell the user everything that is in the container
+                    type_effect(message)
+                    print()
+                    type_effect(f'inside of {self.longName}, there is: ')
+                    items = 0
+                    for i in Object.instances:
+                        if i.parent == self.longName:
+                            print()
+                            type_effect(i.longName)
+                            items += 1
+                    if items == 0:
+                        print()
+                        type_effect('nothing...')
             else:
                 print()
                 type_effect(f'{self.longName} is already open')
@@ -234,8 +244,10 @@ class Object: #unfinished - main priority
             if self.locked:
                 type_effect(f'what would you like to use to unlock the {self.longName}?(please type the full name) ')
                 choice = input().lower()
+                longName = False
                 for i in Object.instances:
                     if i.longName == choice:
+                        longName = True
                         if i.longName == self.containerKey and i.inInventory: #only way that the container can be unlocked
                             print()
                             type_effect(f'You have unlocked {self.longName} with {i.longName}')
@@ -249,6 +261,11 @@ class Object: #unfinished - main priority
                             print()
                             type_effect(f'{i.longName} is not the key for {self.longName}')
                             return False
+
+                if not longName:
+                    print()
+                    type_effect('invalid input')
+                    return False
             else:
                 print()
                 type_effect(f'{self.longName} is not locked')
