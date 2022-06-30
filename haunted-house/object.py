@@ -1,5 +1,3 @@
-'''Object class. as of date on main.py, it is UNFINISHED'''
-
 import sys
 from time import sleep
 from random import randint, choice
@@ -12,13 +10,7 @@ player_inventory = []
 yes = ['yes', 'y']
 no = ['no', 'n']
 
-#room inventories:  #i don't think i will need these 
-void_INV = []
-starting_room_INV = [] #these are not going to end up in the 'final' product, currently being used for testing 
-RM_1_INV = []
-#item_list = starting_room_INV + RM_1_INV
-
-class Object: #unfinished - main priority
+class Object:
     instances = []
     otherActions = []
     #name, player_room, room, description, takeable, inInventory #this is the most basic stuff
@@ -142,6 +134,17 @@ class Object: #unfinished - main priority
         self.isContainer = True
         self.locked = locked
         self.containerKey = key
+        openAction, closeAction = False, False
+        for action in self.otherActions:
+            action = action.split('|')
+            if action[0] == 'open':
+                openAction = True
+            if action == 'close':
+                closeAction = True
+        if not openAction:
+            self.add_attribute('open', f'you open {self.longName}', 'open')
+        if not closeAction:
+            self.add_attribute('close', f'you close {self.longName}', 'close')
         if self.locked:
             self.lockAbility = True
             self.add_attribute('lock')
@@ -322,7 +325,7 @@ class Object: #unfinished - main priority
 
         elif len(itemList) == 1:
             for i in Object.instances:
-                if i.name == name:
+                if i.name == name and i.longName in itemList:
                     if i.room == player_room or i.inInventory == True:
                         if action == 'take' or action == 'drop':
                             i.pick_drop(action, player_room)

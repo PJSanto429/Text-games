@@ -39,7 +39,8 @@ fridge2.add_attribute('open', 'this fridge opens with no effort', 'open')
 fridge2.add_attribute('close', 'this fridge closes very nicely and it practically silent', 'close')
 fridge2.create_container(False)
 
-ketchup1 = Object('ketchup', 'first', 'this is a bottle of ketchup', True, False, 'ketchup bottle', 'gross fridge')
+ketchup1 = Object('ketchup', 'first', 'this is a bottle of ketchup', True, False, 'full ketchup', 'gross fridge')
+ketchup2 = Object('ketchup', 'first', 'this is an empty bottle of ketchup', True, False, 'empty ketchup')
 
 mustard1 = Object('mustard', 'first', 'this is a bottle of mustard', True, False, 'mustard bottle', 'gross fridge')
 
