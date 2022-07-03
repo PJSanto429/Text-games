@@ -1,5 +1,6 @@
 #text input
 
+from numpy import full
 from typeEffect import type_effect
 from object import *
 from room import *
@@ -47,12 +48,20 @@ def text_input(text, player_room, version = 'main'): #pretty much done
 
         elif action == 'take' or action == 'drop' or (action == 'look' or action == 'l' ) or (action in Object.otherActions):
             x = 0
-            for i in Object.instances:
-                if i.longName in fullText:
-                    i.fullName_action(action, i.longName, player_room)
-                    x = 1
-            if x == 0:
-                thing.action(action, text[x - 1], player_room)
+            if version in ['main', 'dev']:
+                for word in ['take ', 'pick ', ' up ', 'drop ', 'look ', 'at ']:
+                    if word in fullText:
+                        try:
+                            fullText = fullText.replace(word, '')
+                        except:
+                            pass
+                fullText = fullText.strip()
+                for i in Object.instances:
+                    if i.longName == fullText:
+                        i.fullName_action(action, i.longName, player_room)
+                        x = 1
+                if x == 0:
+                    thing.action(action, text[x - 1], player_room)
 
         elif action == 'putinto': # this needs to be worked on
                     #right now all it does is makes sure that the function works properly
