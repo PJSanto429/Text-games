@@ -9,6 +9,7 @@ from loading import loading
 from room import *
 from encryptFile import fileCryption
 from debugger import debug
+from emailSender import *
 
 def quit_save(player_room, version):
     currentTime = get_current_time()
@@ -105,6 +106,7 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
             infile.close()
         name = data[code][0]['name']
         password = data[code][0]['password']
+        #email = data[code][0]['email']
         if password != 'none':
             #x = False
             while True:
@@ -115,12 +117,12 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
                     print()
                     type_effect('ERROR. Incorrect password. Please try again, or type EXIT to contiue the game where you left off')
                 elif choice == password:
-                    writeFile(player_room, code, name, version, password)
+                    writeFile(player_room, code, name, version, password) #, email
                     break
                 elif choice == 'EXIT':
                     pass
         else:
-            writeFile(player_room, code, name, version, password)
+            writeFile(player_room, code, name, version, password) #, email
     else:
         print()
         type_effect('Would you like to create a new save file(1) or save to existing file(2)? ')
@@ -145,7 +147,8 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
                     choice = input()
                     if choice == data[code][0]['password']:
                         name = data[code][0]['name']
-                        writeFile(player_room, code, name, version, choice)
+                        #email = data[code][0]['email']
+                        writeFile(player_room, code, name, version, choice) #, email
 
                     else:
                         print()
@@ -153,7 +156,7 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
 
                 else:
                     name = data[code][0]['name']
-                    writeFile(player_room, code, name, version, 'none')
+                    writeFile(player_room, code, name, version, 'none') #, (data[code][0]['email'])
             except:
                 print()
                 type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
@@ -191,17 +194,33 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
             password2 = password.lower()
             if password2 == 'none':
                 password = 'none'
-            else:
-                pass
-            writeFile(player_room, code, name, version, password)
+            #email = getEmail()
+            writeFile(player_room, code, name, version, password) #, email
 
-def writeFile(player_room, code, name = 'none', version = 'main', password = 'none'):
+def getEmail(email = 'none'): #this is a pretty simple thing to add but it is a bunch of little stuff that needs to be added - i dont really want to work on it righ tnor
+    if email == 'none':
+        print()
+        type_effect('if you would like to receive an email with your save information, please enter your email now. otherwise, type none')
+        email = input()
+        if email.lower() == 'none':
+            email = 'none'
+    else:
+        print()
+        type_effect('please enter an email: ')
+        email = input()
+    return email
+
+def writeFile(player_room, code, name = 'none', version = 'main', password = 'none', email = 'none'):
     items = []
+    containers = []
     time = get_current_time()
     for i in Object.instances:  #adds to inventory list
         if i.longName != 'void':
-            items.append(f'{i.longName}: {i.room}') #add more attributes to this(score, health, seen, etc.)
-
+            items.append(f'{i.longName}: {i.room}|{i.parent}') #add more attributes to this(score, health, seen, etc.)
+            if i.isContainer:
+                containers.append(f'{i.longName}: {i.isContainer}|{i.containerKey}|{i.locked}|{i.lockAbility}')
+    
+    #"email": email, # this goes under name in data
     data = {
         code:[
         {
@@ -209,7 +228,8 @@ def writeFile(player_room, code, name = 'none', version = 'main', password = 'no
             "room": player_room,
             "time": time,
             "password": password,
-            "items": items
+            "items": items,
+            "containers": containers
             }
         ]
         }
@@ -221,9 +241,12 @@ def writeFile(player_room, code, name = 'none', version = 'main', password = 'no
             outfile.close()
         if version == 'main':
             loading('saving')
+            fileCryption('encrypt', code)
         if version == 'dev':
+            #if choice in yes:
+            #    email = getEmail('email')
+            #    sendCodeEmail(code, data, email)
             print('save successful')
-        fileCryption('encrypt', code)
     except:
         print()
         type_effect('ERROR. Something went wrong...')
@@ -241,6 +264,7 @@ def loadGame(version = 'main'): #done
         password = data[code][0]['password']
         
         if password != 'none':
+            debug('password == none')
             print()
             type_effect('Please enter the password for this save file: ')
             x = input()

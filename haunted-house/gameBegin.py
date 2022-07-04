@@ -5,10 +5,44 @@ from time import sleep
 from textInput import *
 from loading import error_message
 
+'''PRETTY MUCH EVERYTHING IN THIS FILE IS GARBAGE.
+    It was the first stuff that i worked on(before the actual engine) and is therefore obsolete
+    It will need to be changed if this ever turns into a real game, but it is fine for now
+        - none of it is being used, so who cares
+        - the introduction will need to be changed the most because it is the only 'story' this has
+        - the tutorial will pretty much stay the same, just a few thing will change:
+            + how the actual mechanics of the game are supposed to be used
+        - start_stats will eventually be be integrated once there are items that:
+            + have value(positive or negative)
+            + have health(whether it heals or hurts the user)'''
+
 #start stats
 def start_stats(): #health - money  ALL = 0
     health = 100 #probably not needed yet
     money = 0
+    
+def gameHelpMain():
+    options = ['inventory', 'item interaction', 'save/load']
+    print()
+    type_effect('Welcome to the help function. Please type what you need help with. Your options are: ')
+    print()
+    for option in options:
+        print()
+        type_effect(option)
+    choice = input('choice: ').lower()
+    if choice in options:
+        pass
+    else:
+        print()
+        type_effect('invalid input.')
+
+def gameHelpInventory():
+    print('------------------------- INVENTORY HELP -------------------------')
+    type_effect("To view your inventory, type 'i', 'inv', or 'inventory'")
+    print()
+    type_effect('this will get you something like this:')
+    print()
+    type_effect('your inventory consists of:')
 
 #tutorial
 def tutorial(): #done

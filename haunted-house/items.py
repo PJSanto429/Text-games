@@ -39,8 +39,8 @@ fridge2.add_attribute('open', 'this fridge opens with no effort', 'open')
 fridge2.add_attribute('close', 'this fridge closes very nicely and it practically silent', 'close')
 fridge2.create_container(False)
 
-ketchup1 = Object('ketchup', 'first', 'this is a bottle of ketchup', True, False, 'full ketchup', 'gross fridge')
-ketchup2 = Object('ketchup', 'first', 'this is an empty bottle of ketchup', True, False, 'empty ketchup')
+ketchup1 = Object('ketchup', 'first', 'this is a bottle of ketchup', True, False, 'ketchup bottle', 'gross fridge')
+ketchup2 = Object('ketchup', 'first', 'this is an empty bottle of ketchup', True, False, 'empty ketchup bottle')
 
 mustard1 = Object('mustard', 'first', 'this is a bottle of mustard', True, False, 'mustard bottle', 'gross fridge')
 
@@ -49,8 +49,8 @@ wallpaper1 = Object('wallpaper', 'first', 'void', False, False, 'peeling wallpap
 note1 = Object('note', 'first', 'this is a standard sheet of paper, with a bunch of words witten on it. Might be worth a shot to read it', True, False, 'standard note')
 note1.add_attribute('read', "the note reads: This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
 
-note2 = Object('note', 'first', 'this is a crazy looking note. Read it maybe?', True, False, 'awesome note')
-note2.add_attribute('read', 'this note is too crazy to comprehend. Try later maybe?')
+#note2 = Object('note', 'first', 'this is a crazy looking note. Read it maybe?', True, False, 'awesome note')
+#note2.add_attribute('read', 'this note is too crazy to comprehend. Try later maybe?')
 
 key3 = Object('key', 'first', 'this is a rusty copper key. parts of it are turning green, so it is pretty old', True, True, 'rusty copper key')
 key4 = Object('key', 'first', 'this is a bent car key,. it is hard to tell what type of car it went with, but it obviously would not work in its current condition', True, False, 'bent car key')

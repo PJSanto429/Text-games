@@ -58,18 +58,33 @@ class Object:
             Object.otherActions.append(attribute)
         self.otherActions.update({attribute: f'{description}|{action}|{inventoryNeed}|{locked}'})
             
-    def see_inventory(self):
-        inv = 0
-        print()
+    def see_inventory(self, random = False):
         type_effect('Your inventory consists of:')
-        for i in Object.instances:
-            if i.inInventory == True:
-                inv += 1
-                print()
-                type_effect(i.longName)
-        if inv == 0:
+        if not random:
+            inv = 0
             print()
-            type_effect('Nothing yet...')
+            for i in Object.instances:
+                if i.inInventory == True:
+                    inv += 1
+                    print()
+                    type_effect(i.longName)
+            if inv == 0:
+                print()
+                type_effect('Nothing yet...')
+        else:
+            items = 0
+            print()
+            for i in Object.instances:
+                if items <= 3:
+                    item = (Object.instances[randint(0, len(Object.instances) - 1)])
+                    if item.longName != 'void' and item.takeable and i.parent == 'void':
+                        print() #add the item to a list so it only prints it once
+                        type_effect(item.longName)
+                        items += 1
+                    else:
+                        debug(item.longName)
+                else:
+                    break
 
     def other_action(self, name, action):
         for i in Object.instances:
@@ -122,7 +137,6 @@ class Object:
                     self.lock_unlock_container(action)
                 else:
                     self.other_action(name, action)
-       
             else:
                 print()
                 type_effect("Hmm, I can't see that")
