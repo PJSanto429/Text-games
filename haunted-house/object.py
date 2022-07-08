@@ -96,12 +96,21 @@ class Object:
                         i.open_close(x[1], x[0])
                     elif action in ['lock', 'unlock']:
                         i.lock_unlock_container(action)
+                    elif action in ['']: #add move here(to move into another room)
+                        pass
+                    #also add a way to make the object disappear(just move it into void)
                     else:
                         print()
                         type_effect(x[0])
                 else:
                     print()
                     type_effect(f"You can't do that to the {i.longName}")
+                    
+    def item_check(self):
+        items = []
+        for i in Object.instances:
+            if i.room == self.room and i.name == self.name:
+                pass
 
     def get_parent_open(self, parent): #this is used for making sure that an object's parent is open
         for i in Object.instances:
@@ -172,16 +181,16 @@ class Object:
             if i.longName == name and i.isContainer:
                 return True
             if i.longName == name and not i.isContainer:
-                return 'notContainer'
+                return False
     
     def change_container_key(self, key): #very simple function to change the container key
         if self.isContainer:
             self.containerKey = key
         else:
-            #maybe add a way to create a contained => propably not because i dont want to
+            #maybe add a way to create a container => propably not because i dont want to
             pass
 
-    def open_close(self, action, message = 'none'):
+    def open_close(self, action, message = False):
         if action == 'open':
             if self.open == False:
                 if self.locked:
@@ -195,8 +204,12 @@ class Object:
                 if unlocked == True:
                     self.open = True
                     self.description = self.openDescription
-                    print() # add a way to tell the user everything that is in the container
-                    type_effect(message)
+                    print()
+                    if not message:
+                        print()
+                        type_effect(f'You open {self.longName}')
+                    else:
+                        type_effect(message)
                     print()
                     type_effect(f'inside of {self.longName}, there is: ')
                     items = 0
@@ -292,37 +305,46 @@ class Object:
 
     def put_into_container(self, container):
         if self.takeable == True:
-            for i in Object.instances:
-                if i.longName == container and i.isContainer:
-                    amount = 0
-                    for x in Object.instances:
-                        if x.parent == i.longName:
-                            amount += 1
-                    if i.containerLimit > amount:
-                        debug(self.parent)
-                        self.parent = i.longName
-                        debug(self.parent)
-                    elif i.containerLimit == x:
+            for i in Object.instances: #work on this more to make sure that the container is open
+                if i.longName == container and i.isContainer and i.open:
+                    if type(i.containerLimit) == int:
+                        amount = 0
+                        for x in Object.instances:
+                            if x.parent == i.longName:    
+                                amount += 1    
+                        if i.containerLimit > amount:
+                            self.parent = i.longName
+                            type_effect(f'you put {self.longName} into {i.longName}')
+                        elif i.containerLimit == x:
+                            print()
+                            type_effect(f'There are already {i.containerLimit} items in {i.longName}')
+                    else:
                         print()
-                        type_effect(f'There are already {i.containerLimit} items in {i.longName}')
+                        type_effect(f'you put {self.longName} into {i.longName}')
+                        self.parent = i.longName
+                elif i.longName == container and i.isContainer and not i.open:
+                    print()
+                    type_effect(f'{i.longName} is closed. would you like to try and open it? ')
+                    choice = input().lower()
+                    if choice in yes:
+                        i.open_close('open')
+                    else:
+                        print()
+                        type_effect('ok, maybe later')
                 elif i.longName == container and not i.isContainer:
                     print()
                     type_effect(f'You cannot put {self.longName} into {i.longName}')
         else:
             print()
-            type_effect()
+            type_effect(f'You cannot do that to {self.longName}')
 
+                #this will probably be changed from inventoryNeed to takabilityNeed
     def get_items(self, name, player_room, inventoryNeed = False):
         item_list = []
-        if inventoryNeed == 'both':
+        if inventoryNeed == False:
             for i in Object.instances:
-                if i.name == name:
-                    pass
-        else:
-            for i in Object.instances:
-                if i.name == name:
-                    if (i.room == player_room or i.inInventory == inventoryNeed) and (i.parent == 'void' or (i.get_parent_open(i.parent))):
-                        item_list.append(i)
+                if i.name == name and (i.room == player_room or i.inInventory):
+                    item_list.append(i)
         return item_list
     
     def action(self, action, name, player_room = 'none'):
@@ -473,8 +495,6 @@ class Object:
                         type_effect(f"You already have {self.longName} in your inventory")
                 elif self.inInventory == False:
                     self.inInventory, self.room, self.parent = True, 'inventory', 'void'
-                    #self.room = 'inventory'
-                    #self.parent = ''
                     if inform == True:
                         print()
                         player_inventory.append(self.longName)

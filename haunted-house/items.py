@@ -54,7 +54,7 @@ note1.add_attribute('read', "the note reads: This is a note! I can't believe tha
 
 key3 = Object('key', 'first', 'this is a rusty copper key. parts of it are turning green, so it is pretty old', True, True, 'rusty copper key')
 key4 = Object('key', 'first', 'this is a bent car key,. it is hard to tell what type of car it went with, but it obviously would not work in its current condition', True, False, 'bent car key')
-key5 = Object('key', 'first', 'this is a fancy jade key, with a very shiny handle. i wonder what it might unlock?', True, True, 'fancy jade key')
+key5 = Object('key', 'first', 'this is a fancy jade key, with a very shiny handle. i wonder what it might unlock?', True, False, 'fancy jade key')
 
 chair2 = Object('chair', 'first', 'this is a rusted folding chair that looks like it has been welded to the floor. why would someone do that?', False, False, 'rusty folding chair')
 

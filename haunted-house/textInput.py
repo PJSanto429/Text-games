@@ -1,6 +1,5 @@
 #text input
 
-from numpy import full
 from typeEffect import type_effect
 from object import *
 from room import *
@@ -10,11 +9,10 @@ from saveGame import *
 cantSee = "Hmm, I can't see that"
 noDesc = "I see nothing special about that"
 
-#these two are kind of like windows into the Object and Room classes, avoids the need for more imports
 thing = Object('void', 'none')
 room = Room()
 
-def text_input(text, player_room, version = 'main'): #pretty much done
+def text_input(text, player_room, version = 'main'):
     text = text.lower()
     fullText = text
     text = text.split()
@@ -47,6 +45,7 @@ def text_input(text, player_room, version = 'main'): #pretty much done
             room.action('look', player_room)
 
         elif action == 'take' or action == 'drop' or (action == 'look' or action == 'l' ) or (action in Object.otherActions):
+            #move all of this into object.py to clean it all up
             x = 0
             if version in ['main', 'dev']:
                 for word in ['take ', 'pick ', ' up ', 'drop ', 'look ', 'at ']:
@@ -63,15 +62,15 @@ def text_input(text, player_room, version = 'main'): #pretty much done
                 if x == 0:
                     thing.action(action, text[x - 1], player_room)
 
-        elif action == 'putinto': # this needs to be worked on
-                    #right now all it does is makes sure that the function works properly
+        elif action == 'put': # this needs to be worked on => it needs to be put into a function in object.py to clean this file up
             if version == 'dev':
-                print()
-                type_effect('this function needs to be added(check todo 3.III for an idea of how to do it)...')
-                #for i in Object.instances:
-                #    if i.longName == 'standard note':
-                #        i.put_into_container('gross fridge')
-
+                fullText = fullText.replace('put ', '')
+                text = fullText.split('into')
+                text[0], text[1] = text[0].strip(), text[1].strip()
+                for i in Object.instances:
+                    if text[0] == i.longName:
+                        i.put_into_container(text[1])
+                            
             if version == 'main':
                 print()
                 type_effect('invalid input.')
@@ -79,7 +78,7 @@ def text_input(text, player_room, version = 'main'): #pretty much done
         elif action == 'help()':
             if version == 'dev':
                 print()
-                type_effect('function needs to be added...')
+                type_effect('function needs to be added => check the section above #2 in todo.py')
             if version == 'main':
                 print()
                 type_effect('Sorry, but this function is not available yet. Please try in a later version of the game')

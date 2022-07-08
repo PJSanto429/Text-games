@@ -9,7 +9,7 @@ from loading import loading
 from room import *
 from encryptFile import fileCryption
 from debugger import debug
-from emailSender import *
+#from emailSender import *
 
 def quit_save(player_room, version):
     currentTime = get_current_time()
@@ -24,8 +24,6 @@ def quit_save(player_room, version):
             if currentTime[i] > recentSaveTime[i]:
                 do_quit_save(code, player_room, version)
                 break
-            #else:
-            #    print(f'they are the same - {i}')
         if i == 4:
             if (currentTime[4]) >= (recentSaveTime[4] + 2):
                 debug('minutes = different')
