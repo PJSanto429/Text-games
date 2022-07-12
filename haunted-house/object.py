@@ -1,7 +1,5 @@
-import sys
-from time import sleep
-from random import randint, choice
-import gc
+from random import randint
+
 from typeEffect import type_effect
 from debugger import debug
 
@@ -105,12 +103,6 @@ class Object:
                 else:
                     print()
                     type_effect(f"You can't do that to the {i.longName}")
-                    
-    def item_check(self):
-        items = []
-        for i in Object.instances:
-            if i.room == self.room and i.name == self.name:
-                pass
 
     def get_parent_open(self, parent): #this is used for making sure that an object's parent is open
         for i in Object.instances:
@@ -199,6 +191,9 @@ class Object:
                     choice = input().lower()
                     if choice in yes:
                         unlocked = self.unlock_container()
+                    else:
+                        print()
+                        type_effect('ok, maybe later')
                 else:
                     unlocked = True
                 if unlocked == True:
@@ -339,13 +334,21 @@ class Object:
             type_effect(f'You cannot do that to {self.longName}')
 
                 #this will probably be changed from inventoryNeed to takabilityNeed
-    def get_items(self, name, player_room, inventoryNeed = False):
+    def get_items(self, name, player_room, takeAbilityNeed = False):
         item_list = []
-        if inventoryNeed == False:
-            for i in Object.instances:
-                if i.name == name and (i.room == player_room or i.inInventory):
+        for i in Object.instances:
+            if i.name == name and (i.room == player_room or i.inInventory):
+                if takeAbilityNeed:
+                    if i.takeAble:
+                        item_list.append(i)
+                elif not takeAbilityNeed:
                     item_list.append(i)
         return item_list
+    
+    def put_into_sorter(self):
+        #this is going to be the sorter for putting stuff into containers
+        #it will take the object name and container name and go from there
+        pass
     
     def action(self, action, name, player_room = 'none'):
         itemList = []

@@ -48,12 +48,12 @@ def text_input(text, player_room, version = 'main'):
             #move all of this into object.py to clean it all up
             x = 0
             if version in ['main', 'dev']:
-                for word in ['take ', 'pick ', ' up ', 'drop ', 'look ', 'at ']:
+                actions = ['take ', 'pick ', ' up ', 'drop ', 'look ', 'at ']
+                for word in Object.otherActions:
+                    actions.append(f'{word} ')
+                for word in actions:
                     if word in fullText:
-                        try:
-                            fullText = fullText.replace(word, '')
-                        except:
-                            pass
+                        fullText = fullText.replace(word, '')
                 fullText = fullText.strip()
                 for i in Object.instances:
                     if i.longName == fullText:

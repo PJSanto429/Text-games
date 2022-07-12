@@ -1,7 +1,6 @@
 #this is a save game function
 import json
-from time import sleep, gmtime, strftime
-import sys
+from time import gmtime, strftime
 from random import randint
 from object import *
 from typeEffect import type_effect
@@ -9,7 +8,6 @@ from loading import loading
 from room import *
 from encryptFile import fileCryption
 from debugger import debug
-#from emailSender import *
 
 def quit_save(player_room, version):
     currentTime = get_current_time()
@@ -89,9 +87,6 @@ def times_played():
         data = infile.read()
         infile.close()
     print(data[1])
-
-def auto_save(player_room = 'none', version = 'main', code = 1234):
-    pass
 
 def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much done
     with open('players/saveCode.txt', 'r') as infile:
@@ -195,6 +190,7 @@ def saveGame(player_room = 'none', version = 'main', code = 1234): #pretty much 
             #email = getEmail()
             writeFile(player_room, code, name, version, password) #, email
 
+#this is not currently being used(might not ever be used)
 def getEmail(email = 'none'): #this is a pretty simple thing to add but it is a bunch of little stuff that needs to be added - i dont really want to work on it righ tnor
     if email == 'none':
         print()
@@ -211,12 +207,14 @@ def getEmail(email = 'none'): #this is a pretty simple thing to add but it is a 
 def writeFile(player_room, code, name = 'none', version = 'main', password = 'none', email = 'none'):
     items = []
     containers = []
+    otherActions = []
     time = get_current_time()
     for i in Object.instances:  #adds to inventory list
         if i.longName != 'void':
-            items.append(f'{i.longName}: {i.room}|{i.parent}') #add more attributes to this(score, health, seen, etc.)
+            items.append(f'{i.longName}: {i.room}|{i.parent}|{i.open}')
             if i.isContainer:
                 containers.append(f'{i.longName}: {i.isContainer}|{i.containerKey}|{i.locked}|{i.lockAbility}')
+            #otherActions.append(f'{i.longName}')
     
     #"email": email, # this goes under name in data
     data = {
