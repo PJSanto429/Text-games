@@ -106,7 +106,10 @@ class Object:
 
     def get_parent_open(self, parent): #this is used for making sure that an object's parent is open
         for i in Object.instances:
-            if i.longName == parent and i.open == True:
+            if parent != 'void':
+                if i.longName == parent and i.open == True:
+                    return True
+            else:
                 return True
 
     def item_description(self): #prints the item's description
@@ -216,6 +219,7 @@ class Object:
                     if items == 0:
                         print()
                         type_effect('nothing...')
+                    return True
             else:
                 print()
                 type_effect(f'{self.longName} is already open')
@@ -322,7 +326,8 @@ class Object:
                     type_effect(f'{i.longName} is closed. would you like to try and open it? ')
                     choice = input().lower()
                     if choice in yes:
-                        i.open_close('open')
+                        if i.open_close('open'):
+                            self.put_into_container(i.longName)
                     else:
                         print()
                         type_effect('ok, maybe later')
@@ -332,8 +337,50 @@ class Object:
         else:
             print()
             type_effect(f'You cannot do that to {self.longName}')
-
-                #this will probably be changed from inventoryNeed to takabilityNeed
+       
+    def ask_items(self, objects):
+        if len(objects) == 0:
+            print()
+            type_effect(self.cantSee)
+            return False
+        if len(objects) == 1:
+            print()
+            return(objects[0])
+        if len(objects) > 1:
+            print()
+            type_effect('which did you mean?')
+            objectNames = []
+            for i in objects:
+                print()
+                type_effect(i.longName)
+            print()
+            choice = input().lower()
+            itemGood = False
+            for i in objects:
+                if i.longName == choice:
+                    itemGood = True
+                    return i
+            if not itemGood:
+                print()
+                type_effect(self.cantSee)
+            
+    def put_into_sorter(self, player_room, objectName, containerName = False):
+        objects, containers = [], []
+        for i in Object.instances:
+            if i.name == objectName and ((i.room == player_room and i.get_parent_open(i.parent)) or i.inInventory):
+                objects.append(i)
+        for x in Object.instances:
+            if x.room == player_room and x.name == containerName and x.isContainer:
+                containers.append(x)
+                
+        item = self.ask_items(objects)
+        container = self.ask_items(containers)
+        # work on this more(everything after this line needs to be erased/new added)
+        print()
+        type_effect(f'the item you picked is {item.longName}')
+        print('--------------------------------')
+        type_effect(f'the container you picked is {container.longName}')
+            
     def get_items(self, name, player_room, takeAbilityNeed = False):
         item_list = []
         for i in Object.instances:
@@ -344,11 +391,6 @@ class Object:
                 elif not takeAbilityNeed:
                     item_list.append(i)
         return item_list
-    
-    def put_into_sorter(self):
-        #this is going to be the sorter for putting stuff into containers
-        #it will take the object name and container name and go from there
-        pass
     
     def action(self, action, name, player_room = 'none'):
         itemList = []
