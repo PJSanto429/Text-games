@@ -1,6 +1,3 @@
-import sys
-from time import sleep
-import gc
 from object import Object
 from typeEffect import type_effect
 from debugger import debug
@@ -9,7 +6,7 @@ class Player(): #this is simply so the player can move rooms and it actually wor
     def __init__(self, room):
         self.room = room
 
-player = Player('start')
+player = Player('first')
 
 class Room():
     instances = []
@@ -37,6 +34,51 @@ class Room():
 
     def go(self, player_room):
         player.room = player_room
+        
+    def get_room_items(self, player_room = False):
+        print()
+        type_effect('You can see ')
+        x = 0
+        for i in Object.instances:
+            if not player_room:
+                if i.room == self.name:
+                    if i.parent == 'void':
+                        if x == 0:
+                            type_effect(i.longName)
+                            x += 1
+                        else:
+                            type_effect(f', {i.longName}')
+                            x += 1
+                    else:
+                        if i.get_parent_open(i.parent):
+                            if x == 0:
+                                type_effect(i.longName)
+                                x += 1
+                            else:
+                                #debug(i.longName)
+                                type_effect(f', {i.longName}')
+                                x += 1
+            else:
+                if i.room == player_room:
+                    if i.parent == 'void':
+                        if x == 0:
+                            type_effect(i.longName)
+                            x += 1
+                        else:
+                            type_effect(f', {i.longName}')
+                            x += 1
+                    else:
+                        if i.get_parent_open(i.parent):
+                            if x == 0:
+                                type_effect(i.longName)
+                                x += 1
+                            else:
+                                #debug(i.longName)
+                                type_effect(f', {i.longName}')
+                                x += 1
+        if x == 0:
+            print()
+            type_effect('nothing...')
 
     def room_description(self, player_room, moved = False):
         for i in Room.instances:
@@ -45,58 +87,32 @@ class Room():
                 if moved == True:
                     print('-----------------------------------------------------------------------------------------------')
                 type_effect(i.description)
-                print()
-                type_effect('You can see ')
-                x = 0
-
-        for i in Object.instances:
-            if i.room == player_room:
-                if i.parent == 'void':
-                    if x == 0:
-                        type_effect(i.longName)
-                        x += 1
-                    else:
-                        type_effect(f', {i.longName}')
-                        x += 1
-                else:
-                    if i.get_parent_open(i.parent):
-                        if x == 0:
-                            type_effect(i.longName)
-                            x += 1
-                        else:
-                            #debug(i.longName)
-                            type_effect(f', {i.longName}')
-                            x += 1
-
-        if x == 0:
-            print()
-            type_effect('nothing...')
-
+                i.get_room_items(player_room)
+                i.get_room_directions()
+                    
+    def get_room_directions(self):
         print()
         type_effect('You can go:')
         x = 0
-        
-        for i in Room.instances:
-            if i.name == player_room:
-                if i.north != False:
-                    print()
-                    type_effect('north')
-                    x += 1
-                if i.south != False:
-                    print()
-                    type_effect('south')
-                    x += 1
-                if i.east != False:
-                    print()
-                    type_effect('east')
-                    x += 1
-                if i.west != False:
-                    print()
-                    type_effect('west')
-                    x += 1
-                if x == 0:
-                    print()
-                    type_effect('nowhere...')
+        if self.north != False:
+            print()
+            type_effect('north')
+            x += 1
+        if self.south != False:
+            print()
+            type_effect('south')
+            x += 1
+        if self.east != False:
+            print()
+            type_effect('east')
+            x += 1
+        if self.west != False:
+            print()
+            type_effect('west')
+            x += 1
+        if x == 0:
+            print()
+            type_effect('nowhere...')
 
     def move_room(self, player_room, direction):
         for i in Room.instances:
@@ -140,18 +156,3 @@ class Room():
 
     def change_description(self, description = 'void'):
         self.description = description
-
-    def test(self, action = 'all'): #all of these are just for testing purposes
-        if action == 'all':
-            print()
-            type_effect(f"Name: {self.name}")
-            print()
-            type_effect(f"Description: {self.description}")
-            print()
-            type_effect(f'north: {self.north}')
-            print()
-            type_effect(f'south: {self.south}')
-            print()
-            type_effect(f'east: {self.east}')
-            print()
-            type_effect(f'west: {self.west}')

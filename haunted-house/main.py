@@ -1,12 +1,4 @@
 #imports---------------------
-#python built in imports
-from time import sleep, time
-import sys
-import json
-from string import ascii_letters, ascii_lowercase, ascii_uppercase
-from random import randint, choice
-
-# my imports - files I made
 from object import *
 from room import *
 from items import *
@@ -21,7 +13,7 @@ if __name__ == '__main__':
     #start_stats() #might not be needed
 
     #introduction() #needs to be changed
-    print('---------------------main build-(v 0.2.0)--------------------')
+    print('---------------------main build(v 0.3.5)--------------------')
     firstStartup()
     loading("start")
     player.room = 'first'

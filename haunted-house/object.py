@@ -60,7 +60,6 @@ class Object:
         type_effect('Your inventory consists of:')
         if not random:
             inv = 0
-            print()
             for i in Object.instances:
                 if i.inInventory == True:
                     inv += 1
@@ -338,7 +337,7 @@ class Object:
             print()
             type_effect(f'You cannot do that to {self.longName}')
        
-    def ask_items(self, objects):
+    def ask_items(self, objects, falseMessage = False):
         if len(objects) == 0:
             print()
             type_effect(self.cantSee)
@@ -362,7 +361,10 @@ class Object:
                     return i
             if not itemGood:
                 print()
-                type_effect(self.cantSee)
+                if not falseMessage:
+                    type_effect(self.cantSee)
+                else:
+                    type_effect(falseMessage)
             
     def put_into_sorter(self, player_room, objectName, containerName = False):
         objects, containers = [], []
@@ -376,10 +378,20 @@ class Object:
         item = self.ask_items(objects)
         container = self.ask_items(containers)
         # work on this more(everything after this line needs to be erased/new added)
+        #item.put_into_container(container)
         print()
-        type_effect(f'the item you picked is {item.longName}')
-        print('--------------------------------')
-        type_effect(f'the container you picked is {container.longName}')
+        if item:
+            print(f'{item.longName} = {type(item)}')
+        else:
+            print('no item')
+        if container:
+            debug(f'{container.longName} = {type(container)}')
+        else:
+            print('no container')
+        #print()
+        #type_effect(f'the item you picked is {item.longName}')
+        #print('--------------------------------')
+        #type_effect(f'the container you picked is {container.longName}')
             
     def get_items(self, name, player_room, takeAbilityNeed = False):
         item_list = []
@@ -421,65 +433,20 @@ class Object:
                 inventory = []
                 for i in Object.instances:
                     if i.inInventory == True:
-                        inventory.append(i.longName)
+                        inventory.append(i)
                         x += 1
-                if len(inventory) > 1:
-                    print()
-                    type_effect(f'Which did you mean?  ')
-                    for i in inventory:
-                        print()
-                        type_effect(i)
-
-                    print()
-                    choice = input()
-                    print()
-                    for i in Object.instances:
-                        if (i.longName == choice) and (i.inInventory == True) and (i.longName in inventory):
-                            i.pick_drop(action, player_room)
-                            x = True
-
-                    if x != True:
-                        print()
-                        type_effect("You don't have that!")
-                
-                elif len(inventory) == 1:
-                    for i in Object.instances:
-                        if i.longName in itemList and i.inInventory == True:
-                            i.pick_drop(action, player_room)
+                item = self.ask_items(inventory, 'You don\'t have that!')
+                item.pick_drop(action, player_room)
 
             elif action == 'take':
-                x = 0
+                #x = 0
                 roomInventory = []
                 for i in Object.instances:
                     if i.longName in itemList and i.inInventory == False:
-                        roomInventory.append(i.longName)
-                        x += 1
-
-                if len(roomInventory) > 1:
-                    print()
-                    type_effect(f'Which did you mean?  ')
-                    for i in roomInventory:
-                        print()
-                        type_effect(i)
-
-                    print()
-                    choice = input()
-                    print()
-                    for i in Object.instances:
-                        if (i.longName == choice) and (i.inInventory == False) and (i.longName in roomInventory):
-                            i.pick_drop(action, player_room)
-                            x = True
-
-                    if x != True:
-                        print()
-                        type_effect(self.cantSee)
-                
-                elif len(roomInventory) == 1:
-                    for i in Object.instances:
-                        if i.longName in itemList and i.inInventory == False:
-                            #print()
-                            #type_effect(i.longName)
-                            i.pick_drop(action, player_room)
+                        roomInventory.append(i)
+                        #x += 1
+                item = self.ask_items(roomInventory)
+                item.pick_drop(action, player_room)
 
             elif action == 'look' or action in Object.otherActions:
                 x = 0

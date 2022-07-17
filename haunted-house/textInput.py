@@ -20,20 +20,26 @@ def text_input(text, player_room, version = 'main'):
         action = text[0]
         x = len(text)
 
-        if text[0] == 'quit' or text[0] == 'exit' or text[0] == 'stop':
+        if action in ['quit', 'exit', 'stop']:
             quit_save(player_room, version)
 
-        elif action =='inv' or action == 'inventory' or action == 'i':
+        elif action in ['inv', 'inventory']:
             thing.see_inventory()
+        
+        elif action in ['items']:
+            room.get_room_items(player_room)
+        
+        elif action == 'items':
+            pass
 
         elif action == 'wait':
             print()
             type_effect('Time passes...')
         
-        elif len(text) == 1 and (action == 'look' or action == 'l'):
+        elif len(text) == 1 and (action in ['l', 'look']):
             room.action('look', player_room)
 
-        elif action == 'move' or action == 'go':
+        elif action in ['move', 'go']:
             room.action('move', player_room, text[x - 1])
         
         elif action == 'save':
