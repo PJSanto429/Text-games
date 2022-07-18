@@ -1,5 +1,6 @@
 #text input
 
+from numpy import full
 from typeEffect import type_effect
 from object import *
 from room import *
@@ -25,16 +26,17 @@ def text_input(text, player_room, version = 'main'):
 
         elif action in ['inv', 'inventory']:
             thing.see_inventory()
-        
-        elif action in ['items']:
-            room.get_room_items(player_room)
-        
-        elif action == 'items':
-            pass
+            
+        elif fullText == 'look at me':
+            print()
+            type_effect('looking fresh as ever')
 
         elif action == 'wait':
             print()
             type_effect('Time passes...')
+        
+        elif action in ['items', 'objects']:
+            room.get_room_items(player_room)
         
         elif len(text) == 1 and (action in ['l', 'look']):
             room.action('look', player_room)
