@@ -298,40 +298,39 @@ class Object:
 
     def put_into_container(self, container):
         if self.takeable:
-            for i in Object.instances:
-                if i.longName == container and i.isContainer and i.open:
-                    if type(i.containerLimit) == int:
-                        amount = 0
-                        for x in Object.instances:
-                            if x.parent == i.longName:    
-                                amount += 1    
-                        if i.containerLimit > amount:
-                            self.parent = i.longName
-                            self.inInventory = False
-                            self.room = i.room
-                            type_effect(f'you put {self.longName} into {i.longName}')
-                        elif i.containerLimit == x:
-                            print()
-                            type_effect(f'There are already {i.containerLimit} items in {i.longName}')
-                    else:
-                        print()
-                        type_effect(f'you put {self.longName} into {i.longName}')
-                        self.parent = i.longName
+            if container.isContainer and container.open:
+                if type(container.containerLimit) == int:
+                    amount = 0
+                    for x in Object.instances:
+                        if x.parent == container.longName:
+                            amount += 1    
+                    if container.containerLimit > amount:
+                        self.parent = container.longName
                         self.inInventory = False
-                        self.room = i.room
-                elif i.longName == container and i.isContainer and not i.open:
-                    print()
-                    type_effect(f'{i.longName} is closed. would you like to try and open it? ')
-                    choice = input().lower()
-                    if choice in yes:
-                        if i.open_close('open'):
-                            self.put_into_container(i.longName)
-                    else:
+                        self.room = container.room
+                        type_effect(f'you put {self.longName} into {container.longName}')
+                    elif container.containerLimit == x:
                         print()
-                        type_effect('ok, maybe later')
-                elif i.longName == container and not i.isContainer:
+                        type_effect(f'There are already {container.containerLimit} items in {container.longName}')
+                else:
                     print()
-                    type_effect(f'You cannot put {self.longName} into {i.longName}')
+                    type_effect(f'you put {self.longName} into {container.longName}')
+                    self.parent = container.longName
+                    self.inInventory = False
+                    self.room = container.room
+            elif container.isContainer and not container.open:
+                print()
+                type_effect(f'{container.longName} is closed. would you like to try and open it? ')
+                choice = input().lower()
+                if choice in yes:
+                    if container.open_close('open'):
+                        self.put_into_container(container)
+                else:
+                    print()
+                    type_effect('ok, maybe later')
+            elif not container.isContainer:
+                print()
+                type_effect(f'You cannot put {self.longName} into {container.longName}')
         else:
             print()
             type_effect(f'You cannot do that to {self.longName}')
@@ -379,30 +378,19 @@ class Object:
             
     def put_into_sorter(self, player_room, objectName, containerName = False):
         objects, containers = [], []
-        for i in Object.instances:
-            if i.name == objectName and ((i.room == player_room and i.get_parent_open(i.parent)) or i.inInventory):
-                objects.append(i)
-        for x in Object.instances:
-            if x.room == player_room and x.name == containerName and x.isContainer:
-                containers.append(x)
+        if type(objectName) != object:
+            for i in Object.instances:
+                if i.name == objectName and ((i.room == player_room and i.get_parent_open(i.parent)) or i.inInventory):
+                    objects.append(i)
+            item = self.ask_items(objects)[0]
+        
+        if type(containerName) != object:
+            for x in Object.instances:
+                if x.room == player_room and x.name == containerName and x.isContainer:
+                    containers.append(x)
+            container = self.ask_items(containers)[0]
                 
-        item = self.ask_items(objects)
-        container = self.ask_items(containers)
-        # work on this more(everything after this line needs to be erased/new added)
-        #item.put_into_container(container)
-        print()
-        if item:
-            print(f'{item.longName} = {type(item)}')
-        else:
-            print('no item')
-        if container:
-            debug(f'{container.longName} = {type(container)}')
-        else:
-            print('no container')
-        #print()
-        #type_effect(f'the item you picked is {item.longName}')
-        #print('--------------------------------')
-        #type_effect(f'the container you picked is {container.longName}')
+        item.put_into_container(container)
             
     def get_items(self, name, player_room, takeAbilityNeed = False): # i dont think that this is currently being used: probably delete it
         item_list = []

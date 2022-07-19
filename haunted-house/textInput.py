@@ -1,6 +1,8 @@
 #text input
 
+from matplotlib import container
 from numpy import full
+from sqlalchemy import Constraint
 from typeEffect import type_effect
 from object import *
 from room import *
@@ -75,9 +77,21 @@ def text_input(text, player_room, version = 'main'):
                 fullText = fullText.replace('put ', '')
                 text = fullText.split('into')
                 text[0], text[1] = text[0].strip(), text[1].strip()
+                item, container = False, False
+                itemName, containerName = False, False
                 for i in Object.instances:
+                    if text[1] == i.longName:
+                        container = i
+                    if i.name in text[1]:
+                        containerName = i.name
                     if text[0] == i.longName:
-                        i.put_into_container(text[1])
+                        item = i
+                    if i.name in text[0]:
+                        itemName = i.name
+                if type(item) == object and type(container) == object:
+                    item.put_into_container(container)
+                else:
+                    thing.put_into_sorter(player_room, itemName, containerName)
                             
             if version == 'main':
                 print()
