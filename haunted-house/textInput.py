@@ -56,8 +56,8 @@ def text_input(text, player_room, version = 'main'):
 
         elif action == 'take' or action == 'drop' or (action == 'look' or action == 'l' ) or (action in Object.otherActions):
             #move all of this into object.py to clean it all up
-            x = 0
             if version in ['main', 'dev']:
+                x = 0
                 actions = ['take ', 'pick ', ' up ', 'drop ', 'look ', 'at ']
                 for word in Object.otherActions:
                     actions.append(f'{word} ')
@@ -72,8 +72,8 @@ def text_input(text, player_room, version = 'main'):
                 if x == 0:
                     thing.action(action, text[x - 1], player_room)
 
-        elif action == 'put': # this needs to be worked on => it needs to be put into a function in object.py to clean this file up
-            if version == 'dev':
+        elif action == 'put': # this needs to be put into a function in object.py to clean this file up
+            if version in ['dev', 'main']:
                 fullText = fullText.replace('put ', '')
                 text = fullText.split('into')
                 text[0], text[1] = text[0].strip(), text[1].strip()
@@ -82,20 +82,20 @@ def text_input(text, player_room, version = 'main'):
                 for i in Object.instances:
                     if text[1] == i.longName:
                         container = i
-                    if i.name in text[1]:
+                    elif i.name in text[1]:
                         containerName = i.name
                     if text[0] == i.longName:
                         item = i
-                    if i.name in text[0]:
+                    elif i.name in text[0]:
                         itemName = i.name
-                if type(item) == object and type(container) == object:
+                if type(item) == Object and type(container) == Object:
                     item.put_into_container(container)
+                elif type(item) == Object and not type(container) == Object:
+                    thing.put_into_sorter(player_room, item, containerName)
+                elif not type(item) == Object and type(container) == Object:
+                    thing.put_into_sorter(player_room, itemName, container)
                 else:
                     thing.put_into_sorter(player_room, itemName, containerName)
-                            
-            if version == 'main':
-                print()
-                type_effect('invalid input.')
 
         elif action == 'help()':
             if version == 'dev':

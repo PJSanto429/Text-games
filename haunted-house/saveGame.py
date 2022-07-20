@@ -207,16 +207,13 @@ def getEmail(email = 'none'): #this is a pretty simple thing to add but it is a 
 def writeFile(player_room, code, name = 'none', version = 'main', password = 'none', email = 'none'):
     items = []
     containers = []
-    otherActions = []
     time = get_current_time()
     for i in Object.instances:  #adds to inventory list
-        if i.longName != 'void':
-            items.append(f'{i.longName}: {i.room}|{i.parent}|{i.open}')
+        if i.longName != 'void' and i.room != 'void':
+            items.append(f'{i.longName}: {i.room}|{i.parent}')
             if i.isContainer:
-                containers.append(f'{i.longName}: {i.isContainer}|{i.containerKey}|{i.locked}|{i.lockAbility}')
-            #otherActions.append(f'{i.longName}')
+                containers.append(f'{i.longName}: {i.isContainer}|{i.containerKey}|{i.locked}|{i.lockAbility}|{i.open}')
     
-    #"email": email, # this goes under name in data
     data = {
         code:[
         {
@@ -239,26 +236,26 @@ def writeFile(player_room, code, name = 'none', version = 'main', password = 'no
             loading('saving')
             fileCryption('encrypt', code)
         if version == 'dev':
-            #if choice in yes:
-            #    email = getEmail('email')
-            #    sendCodeEmail(code, data, email)
             print('save successful')
     except:
         print()
         type_effect('ERROR. Something went wrong...')
 
-def loadGame(version = 'main'): #done
+def loadGame(version = 'main'):
     print()
     type_effect('Please type your savecode now: ')
     code = input()
     try:
         fileCryption('decrypt', code)
+    except:
+        pass
+    try:
         with open(f'players/{code}.json', 'r') as infile:
             data = json.load(infile)
             infile.close()
             #print(data['player1'][0]['name'])
         password = data[code][0]['password']
-        
+    
         if password != 'none':
             debug('password == none')
             print()
@@ -270,8 +267,11 @@ def loadGame(version = 'main'): #done
                     loading('loading')
                 room = data[code][0]['room']
                 items = data[code][0]['items']
+                try:
+                    containers = data[code][0]['containers']
+                except:
+                    pass
                 load = True
-                #return code, room, inventory, items
             else:
                 print()
                 type_effect('Incorrect password')
@@ -285,8 +285,11 @@ def loadGame(version = 'main'): #done
                 type_effect('load = good')
             room = data[code][0]['room']
             items = data[code][0]['items']
+            try:
+                containers = data[code][0]['containers']
+            except:
+                pass
             load = True
-            #return room, inventory, items
 
         if load == True:
             items2 = []
@@ -295,9 +298,7 @@ def loadGame(version = 'main'): #done
                 i = i.split(':')
                 i[1] = i[1].strip()
                 items2.append(i)
-                #print(i)
             item = items2
-
             print()
             for x, y in item:
                 try:
@@ -312,12 +313,10 @@ def loadGame(version = 'main'): #done
                             i.room = i.homeRoom
                 except:
                     pass
-
             return room
-
     except:
-        print()
         type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
+
 
 def getRoom(code):
     with open(f'players/{code}.json', 'r') as infile:

@@ -3,8 +3,6 @@ from random import randint
 from typeEffect import type_effect
 from debugger import debug
 
-player_inventory = []
-
 yes = ['yes', 'y']
 no = ['no', 'n']
 
@@ -34,7 +32,6 @@ class Object:
         self.longName = longName #for if there are multiple items in room/inventory with same name
         self.seen = seen #for checking if the object has been seen(not currently being used)
         if self.inInventory:
-            player_inventory.append(self.longName)
             self.room = 'inventory'
         #----------------------------------
         self.isContainer = False
@@ -69,19 +66,15 @@ class Object:
                 print()
                 type_effect('Nothing yet...')
         else:
-            items = 0
+            items = []
             print()
             for i in Object.instances:
-                if items <= 3:
+                if len(items) <= 3:
                     item = (Object.instances[randint(0, len(Object.instances) - 1)])
-                    if item.longName != 'void' and item.takeable and i.parent == 'void':
+                    if item.longName != 'void' and item.takeable and i.parent == 'void' and item not in items:
                         print() #add the item to a list so it only prints it once
                         type_effect(item.longName)
-                        items += 1
-                    else:
-                        debug(item.longName)
-                else:
-                    break
+                        items.append(item)
 
     def other_action(self, name, action):
         for i in Object.instances:
@@ -112,6 +105,7 @@ class Object:
                 return True
 
     def item_description(self): #prints the item's description
+        #add the item long name to be printed above the description
         if self.description == 'void':
             print()
             type_effect(self.noDesc)
@@ -378,18 +372,22 @@ class Object:
             
     def put_into_sorter(self, player_room, objectName, containerName = False):
         objects, containers = [], []
-        if type(objectName) != object:
+        if type(objectName) != Object:
             for i in Object.instances:
                 if i.name == objectName and ((i.room == player_room and i.get_parent_open(i.parent)) or i.inInventory):
                     objects.append(i)
             item = self.ask_items(objects)[0]
+        else:
+            item = objectName
         
-        if type(containerName) != object:
+        if type(containerName) != Object:
             for x in Object.instances:
                 if x.room == player_room and x.name == containerName and x.isContainer:
                     containers.append(x)
             container = self.ask_items(containers)[0]
-                
+        else:
+            container = containerName
+        #now to actually go into the container
         item.put_into_container(container)
             
     def get_items(self, name, player_room, takeAbilityNeed = False): # i dont think that this is currently being used: probably delete it
@@ -409,46 +407,32 @@ class Object:
             if i.name == name and (i.room == player_room or i.inInventory):
                 if i.parent == 'void' or (i.get_parent_open(i.parent)):
                     itemList.append(i)
+                    
+        if action == 'drop':
+            inventory = []
+            for i in Object.instances:
+                if i.inInventory:
+                    inventory.append(i)
+            items = self.ask_items(inventory, 'You don\'t have that!')
+            for i in items:
+                i.pick_drop(action, player_room)
 
-        if len(itemList) == 0:
-            print()
-            type_effect(self.cantSee)
+        elif action == 'take':
+            roomInventory = []
+            for i in Object.instances:
+                if i in itemList and not i.inInventory:
+                    roomInventory.append(i)
+            items = self.ask_items(roomInventory)
+            for i in items:
+                i.pick_drop(action, player_room)
 
-        elif len(itemList) == 1:
-            if itemList[0].room == player_room or itemList[0].inInventory:
-                if action == 'take' or action == 'drop':
-                    itemList[0].pick_drop(action, player_room)
+        elif action == 'look' or action in Object.otherActions:
+            items = self.ask_items(itemList)
+            for i in items:
                 if action == 'look':
-                    itemList[0].item_description()
-                if action in Object.otherActions:
-                    itemList[0].other_action(itemList[0].longName, action)
-
-        elif len(itemList) > 1:
-            if action == 'drop':
-                inventory = []
-                for i in Object.instances:
-                    if i.inInventory:
-                        inventory.append(i)
-                items = self.ask_items(inventory, 'You don\'t have that!')
-                for i in items:
-                    i.pick_drop(action, player_room)
-
-            elif action == 'take':
-                roomInventory = []
-                for i in Object.instances:
-                    if i in itemList and not i.inInventory:
-                        roomInventory.append(i)
-                items = self.ask_items(roomInventory)
-                for i in items:
-                    i.pick_drop(action, player_room)
-
-            elif action == 'look' or action in Object.otherActions:
-                items = self.ask_items(itemList)
-                for i in items:
-                    if action == 'look':
-                        i.item_description()
-                    else:
-                        i.other_action(i.longName, action)
+                    i.item_description()
+                else:
+                    i.other_action(i.longName, action)
     
     def open_description(self, description):
         self.openDescription = description
@@ -466,12 +450,8 @@ class Object:
                 else:
                     self.inInventory, self.room, self.parent = True, 'inventory', 'void'
                     if inform:
-                        #print()
-                        player_inventory.append(self.longName)
                         type_effect(f"You have picked up the {self.longName}")
                         print()
-                    else:
-                        player_inventory.append(self.longName)
             else:
                 if self.takeable_message != 'void':
                     print()
@@ -486,10 +466,7 @@ class Object:
                 self.room = player_room
                 if inform:
                     print()
-                    player_inventory.remove(self.longName)
                     type_effect(f"You have dropped {self.longName}")
-                else:
-                    player_inventory.remove(self.longName)
             else:
                 print()
                 type_effect(f"You don't have {self.longName} in your inventory")
