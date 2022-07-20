@@ -212,7 +212,7 @@ def writeFile(player_room, code, name = 'none', version = 'main', password = 'no
         if i.longName != 'void' and i.room != 'void':
             items.append(f'{i.longName}: {i.room}|{i.parent}')
             if i.isContainer:
-                containers.append(f'{i.longName}: {i.isContainer}|{i.containerKey}|{i.locked}|{i.lockAbility}|{i.open}')
+                containers.append(f'{i.longName}: {i.locked}|{i.containerKey}|{i.lockAbility}|{i.containerLimit}|{i.open}')
     
     data = {
         code:[
@@ -253,7 +253,6 @@ def loadGame(version = 'main'):
         with open(f'players/{code}.json', 'r') as infile:
             data = json.load(infile)
             infile.close()
-            #print(data['player1'][0]['name'])
         password = data[code][0]['password']
     
         if password != 'none':
@@ -290,22 +289,44 @@ def loadGame(version = 'main'):
             except:
                 pass
             load = True
-
+    except:
+        pass
+    try:
         if load == True:
+            containers2 = []
+            for i in containers:
+                i = i.split(':')
+                i[1] = i[1].strip()
+                i[1] = i[1].split('|')
+                containers2.append(i)
+            containers = containers2
+            #getting/setting all containers
+            for x, y in containers:
+                try:
+                    for i in Object.instances:
+                        if i.longName == x:
+                            i.locked = y[0]
+                            i.open = y[4]
+                except:
+                    pass
+    except:
+        pass
+    try:
             items2 = []
-
             for i in items:
                 i = i.split(':')
                 i[1] = i[1].strip()
+                i[1] = i[1].split('|')
                 items2.append(i)
             item = items2
-            print()
+            #gettting/setting all items
             for x, y in item:
                 try:
                     for i in Object.instances:
                         if i.longName == x:
-                            i.room = y
-                            if y == 'inventory':
+                            i.room = y[0]
+                            i.parent = y[1]
+                            if y[0] == 'inventory':
                                 i.inInventory = True
                             else:
                                 i.inInventory = False
@@ -313,9 +334,16 @@ def loadGame(version = 'main'):
                             i.room = i.homeRoom
                 except:
                     pass
+            
             return room
     except:
-        type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
+        #type_effect("I cannot find a save file with that code. Either you typed the wrong number, or you didn't save your game.")
+        if version == 'main':
+            lastSaveUpdate = 'July 7, 2022'
+            type_effect(f"something went wrong with loading this game. if the save file was created before the {lastSaveUpdate} update, it might not be able to load")
+        else:
+            print()
+            type_effect('something went wrong')
 
 
 def getRoom(code):

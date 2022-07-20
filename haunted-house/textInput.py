@@ -1,8 +1,3 @@
-#text input
-
-from matplotlib import container
-from numpy import full
-from sqlalchemy import Constraint
 from typeEffect import type_effect
 from object import *
 from room import *
