@@ -2,6 +2,7 @@ from typeEffect import type_effect
 from object import *
 from room import *
 from saveGame import *
+from gameBegin import gameHelpMain
 
 #constants:
 cantSee = "Hmm, I can't see that"
@@ -92,10 +93,9 @@ def text_input(text, player_room, version = 'main'):
                 else:
                     thing.put_into_sorter(player_room, itemName, containerName)
 
-        elif action == 'help()':
+        elif action in ['help()', 'help']:
             if version == 'dev':
-                print()
-                type_effect('function needs to be added => check the section above #2 in todo.py')
+                gameHelpMain()
             if version == 'main':
                 print()
                 type_effect('Sorry, but this function is not available yet. Please try in a later version of the game')

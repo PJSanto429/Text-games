@@ -12,9 +12,9 @@ from firstStartup import *
 if __name__ == '__main__':
     #start_stats() #might not be needed
 
-    #introduction() #needs to be changed
     print('---------------------main build(v 0.3.5)--------------------')
-    firstStartup()
+    print()
+    introduction() #needs to be changed
     loading("start")
     player.room = 'first'
     text_input('look', player.room)
