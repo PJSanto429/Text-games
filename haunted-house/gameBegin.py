@@ -16,7 +16,7 @@ def gameHelpMain():
                 print()
                 type_effect(option)
         else:
-            type_effect('please make another action, or type DONE to resume the game')
+            type_effect('please make another choice, or type DONE to resume the game')
         print()
         choice = input('choice: ').lower()
         if choice in options:
@@ -34,7 +34,7 @@ def gameHelpMain():
         
 def saveLoadHelp():
     print()
-    type_effect('-------------- Saving/Loading -----------------------')
+    type_effect('-------------- Saving/Loading -----------------------', 'white')
     print()
     type_effect('saving and loading is very helpful when you would like to take a break from the game and resume at a later time')
     print()
@@ -56,7 +56,7 @@ def saveLoadHelp():
 
 def itemInteractionHelp():
     print()
-    type_effect('-------------- Item Interaction -----------------------')
+    type_effect('-------------- Item Interaction -----------------------', 'white')
     print()
     print()
     type_effect('interacting with items is a large part of this game. here are a few things to remember:')
@@ -133,7 +133,8 @@ def itemInteractionHelp():
     type_effect('eg. read note, drink bottle, eat hamburger')
 
 def gameHelpInventory():
-    print('------------------------- INVENTORY -------------------------')
+    print()
+    type_effect('------------------------- INVENTORY -------------------------', 'white')
     print()
     type_effect("To view your inventory, type 'inv' or 'inventory'")
     print()

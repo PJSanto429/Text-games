@@ -52,7 +52,49 @@ class Object:
         if attribute not in Object.otherActions:
             Object.otherActions.append(attribute)
         self.otherActions.update({attribute: f'{description}|{action}|{inventoryNeed}|{locked}'})
+        
+    def put_into_input_sorter(self, fullText, player_room):
+        fullText = fullText.replace('put ', '')
+        text = fullText.split('into')
+        text[0], text[1] = text[0].strip(), text[1].strip()
+        item, container = False, False
+        itemName, containerName = False, False
+        for i in Object.instances:
+            if text[1] == i.longName:
+                container = i
+            elif i.name in text[1]:
+                containerName = i.name
+            if text[0] == i.longName:
+                item = i
+            elif i.name in text[0]:
+                itemName = i.name
+        if type(item) == Object and type(container) == Object:
+            item.put_into_container(container)
+        elif type(item) == Object and not type(container) == Object:
+            self.put_into_sorter(player_room, item, containerName)
+        elif not type(item) == Object and type(container) == Object:
+            self.put_into_sorter(player_room, itemName, container)
+        else:
+            self.put_into_sorter(player_room, itemName, containerName)
             
+    def action_input_sorter(self, action, player_room, text, fullText): #take stuff from text input and put it here(simple stuff)
+        x = 0
+        actions = ['take ', 'pick ', ' up ', 'drop ', 'look ', 'at ']
+        for word in Object.otherActions:
+            actions.append(f'{word} ')
+        #debug('made it here')
+        for word in actions:
+            if word in fullText:
+                fullText = fullText.replace(word, '')
+        fullText = fullText.strip()
+        for i in Object.instances:
+            if i.longName == fullText:
+                i.fullName_action(action, i.longName, player_room)
+                x = 1
+        #debug(text[len(text) - 1])
+        if x == 0:
+            self.action(action, text[len(text) - 1], player_room)
+    
     def see_inventory(self, random = False):
         type_effect('Your inventory consists of:')
         if not random:
