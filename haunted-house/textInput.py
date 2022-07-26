@@ -35,9 +35,16 @@ def text_input(text, player_room, version = 'main'):
         
         elif action in ['items', 'objects']:
             room.get_room_items(player_room)
-        
-        elif len(text) == 1 and (action in ['l', 'look']):
-            room.action('look', player_room)
+            
+        elif len(text) == 1:
+            if action in ['l', 'look']:
+                room.action('look', player_room)
+
+            elif action == 'drop':
+                thing.drop_input_sorter(player_room)
+
+            elif action == 'take':
+                thing.take_input_sorter(player_room)
 
         elif action in ['move', 'go']:
             room.action('move', player_room, text[x - 1])

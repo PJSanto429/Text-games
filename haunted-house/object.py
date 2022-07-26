@@ -77,12 +77,31 @@ class Object:
         else:
             self.put_into_sorter(player_room, itemName, containerName)
             
+    def drop_input_sorter(self, player_room):
+        inventory = []
+        for i in Object.instances:
+            if i.inInventory:
+                inventory.append(i)
+        item = self.ask_items(inventory, 'You don\'t have that', False, 'Which item would you like to drop?')
+        for i in item:
+            i.pick_drop('drop', player_room)
+            
+    def take_input_sorter(self, player_room):
+        itemList = []
+        for i in Object.instances:
+            if i.room == player_room and i.takeable and not i.inInventory:
+                if i.parent == 'void' or (i.get_parent_open(i.parent)):
+                    itemList.append(i)
+        item = self.ask_items(itemList, False, False, 'Which item would you like to take?')
+        for i in item:
+            i.pick_drop('take', player_room)
+        
+    
     def action_input_sorter(self, action, player_room, text, fullText): #take stuff from text input and put it here(simple stuff)
         x = 0
         actions = ['take ', 'pick ', ' up ', 'drop ', 'look ', 'at ']
         for word in Object.otherActions:
             actions.append(f'{word} ')
-        #debug('made it here')
         for word in actions:
             if word in fullText:
                 fullText = fullText.replace(word, '')
@@ -91,7 +110,6 @@ class Object:
             if i.longName == fullText:
                 i.fullName_action(action, i.longName, player_room)
                 x = 1
-        #debug(text[len(text) - 1])
         if x == 0:
             self.action(action, text[len(text) - 1], player_room)
     
@@ -371,7 +389,7 @@ class Object:
             print()
             type_effect(f'You cannot do that to {self.longName}')
        
-    def ask_items(self, objects, falseMessage = False, sayInventory = False):
+    def ask_items(self, objects, falseMessage = False, sayInventory = False, askMessage = False):
         if len(objects) == 0:
             print()
             type_effect(self.cantSee)
@@ -381,7 +399,10 @@ class Object:
             return([objects[0]])
         if len(objects) > 1:
             print()
-            type_effect('which did you mean?')
+            if not askMessage:
+                type_effect('which did you mean?')
+            else:
+                type_effect(askMessage)
             for i in objects:
                 print()
                 if sayInventory and i.inInventory:
@@ -453,7 +474,7 @@ class Object:
         if action == 'drop':
             inventory = []
             for i in Object.instances:
-                if i.inInventory:
+                if i.name == name and i in itemList:
                     inventory.append(i)
             items = self.ask_items(inventory, 'You don\'t have that!')
             for i in items:
