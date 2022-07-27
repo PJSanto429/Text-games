@@ -26,8 +26,8 @@ def text_input(text, player_room, version = 'main'):
             thing.see_inventory()
             
         elif fullText == 'look at me':
-            print()
-            type_effect('looking fresh as ever')
+            #this stuff will be stored in room class until player class is built
+            room.player_look()
 
         elif action == 'wait':
             print()
@@ -57,7 +57,7 @@ def text_input(text, player_room, version = 'main'):
             room.go(player_room)
             room.action('look', player_room)
 
-        elif action == 'take' or action == 'drop' or (action == 'look' or action == 'l' ) or (action in Object.otherActions):
+        elif action in ['drop', 'take', 'look', 'l', 'examine'] or (action in Object.otherActions):
             if version in  ['dev', 'main']:
                 thing.action_input_sorter(action, player_room, text, fullText)
 

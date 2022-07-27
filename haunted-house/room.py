@@ -1,11 +1,11 @@
 from object import Object
 from typeEffect import type_effect
 from debugger import debug
+from random import choice
 
 class Player(): #this is simply so the player can move rooms and it actually work.
     def __init__(self, room):
         self.room = room
-
 player = Player('first')
 
 class Room():
@@ -29,8 +29,20 @@ class Room():
                 if action == 'move':
                     i.move_room(player_room, direction)
                 if action == 'go':
+                    #i think this is for teleporting the player => im not sure
                     #i.go(player_room)
                     pass
+                
+    def player_look(self):
+        #this stuf will be in character.py class soon(hopefully)
+        player_descripions = [
+            'looking fresh as ever',
+            'very heroic looking',
+            'according to grandma, you are a real cutie. i think otherwise',
+            'id rather not...'
+            ]
+        print()
+        type_effect(choice(player_descripions))
 
     def go(self, player_room):
         player.room = player_room
