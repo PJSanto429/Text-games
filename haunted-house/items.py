@@ -5,6 +5,7 @@ from room import Room
 
 key1 = Object('key', 'void', 'this is a large gold key', True, False, 'large gold key')
 key2 = Object('key', 'void', 'this is a small bronze key', True, False, 'small bronze key')
+key2.add_aliases(['bronze key', 'small key']) #has to be a list
 
 cat1 = Object('cat', 'void', 'this is a big grey cat, with very long whiskers', False, False, 'big grey cat')
 cat1.notTakeable_message('As you are trying to pick up the big grey cat, it keeps jumping out of your arms. This may not be the best idea')
@@ -14,10 +15,6 @@ cat2.notTakeable_message('As you are trying to pick up the small black cat, it k
 
 chair1 = Object('chair', 'void', 'this is a large fancy chair whith large butt marks', False, False, 'large chair')
 chair1.notTakeable_message('this chair is bolted to the floor, making it unable to be moved')
-
-#wall = Object('wall', 'void', 'this is a wall', False, False, 'boring grey wall')
-
-#===================================================================
 
 #-----------------------ROOM ONE ----------- Room creation
 room1 = Room('first')
@@ -49,7 +46,11 @@ note1 = Object('note', 'first', 'this is a standard sheet of paper, with a bunch
 note1.add_attribute('read', "the note reads: This is a note! I can't believe that I wrote a note and you are actually reading it! Woohoo!")
 
 key3 = Object('key', 'first', 'this is a rusty copper key. parts of it are turning green, so it is pretty old', True, True, 'rusty copper key')
-key4 = Object('key', 'first', 'this is a bent car key,. it is hard to tell what type of car it went with, but it obviously would not work in its current condition', True, True, 'bent car key')
+key3.add_aliases(['copper key', 'rusty key'])
+
+key4 = Object('key', 'first', 'this is a bent car key. it is hard to tell what type of car it went with, but it obviously would not work in its current condition', True, True, 'bent car key')
+key4.add_aliases(['car key', 'bent key'])
+
 key5 = Object('key', 'first', 'this is a fancy jade key, with a very shiny handle. i wonder what it might unlock?', True, False, 'fancy jade key')
 
 chair2 = Object('chair', 'first', 'this is a rusted folding chair that looks like it has been welded to the floor. why would someone do that?', False, False, 'rusty folding chair')
@@ -58,6 +59,7 @@ chair3 = Object('chair', 'first', 'this is a very comfortable looking aderondac 
 
 cat3 = Object('cat', 'first', 'this is a fat tabby cat, with very long fur', False, False, 'fat tabby cat')
 cat3.notTakeable_message('As you are trying to pick up the fat tabby cat it keeps jumping out of your arms. This may not be the best idea')
+cat3.add_aliases(['fat cat', 'tabby cat'])
 
 #===================================================================
 #----------------------- ROOM TWO ----------- Room creation

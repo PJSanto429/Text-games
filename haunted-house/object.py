@@ -40,7 +40,8 @@ class Object:
         self.containerLocked = False
         #----------------------------------
         self.otherActions = {}
-        self.parent = parent #will be used for things like fridges, shests, etc.
+        self.aliases = []
+        self.parent = parent #will be used for things like fridges, chests, etc.
         self.health = health        #Health and money will be set to 0 as a default
         self.money = money          #most items will not have health or money
 
@@ -52,6 +53,11 @@ class Object:
         if attribute not in Object.otherActions:
             Object.otherActions.append(attribute)
         self.otherActions.update({attribute: f'{description}|{action}|{inventoryNeed}|{locked}'})
+        
+    def add_aliases(self, aliases: list):
+        for alias in aliases:
+            if alias not in self.aliases:
+                self.aliases.append(alias)
         
     def put_into_input_sorter(self, fullText, player_room):
         fullText = fullText.replace('put ', '')
@@ -97,7 +103,7 @@ class Object:
             i.pick_drop('take', player_room)
         
     
-    def action_input_sorter(self, action, player_room, text, fullText): #take stuff from text input and put it here(simple stuff)
+    def action_input_sorter(self, action, player_room, text, fullText):
         x = 0
         actions = ['take ', 'pick ', ' up ', 'drop ', 'look ', 'examine', 'at ']
         for word in Object.otherActions:
@@ -111,7 +117,7 @@ class Object:
                 i.fullName_action(action, i.longName, player_room)
                 x = 1
         if x == 0:
-            self.action(action, text[len(text) - 1], player_room)
+            self.action(action, fullText, player_room)
     
     def see_inventory(self, random = False):
         type_effect('Your inventory consists of:')
@@ -463,13 +469,19 @@ class Object:
                 elif not takeAbilityNeed:
                     item_list.append(i)
         return item_list
+
+    def alias_check(self, name):
+        for alias in self.aliases:
+            if alias == name:
+                return True
     
     def action(self, action, name, player_room = 'none'):
         itemList = []
         for i in Object.instances:
-            if i.name == name and (i.room == player_room or i.inInventory):
-                if i.parent == 'void' or (i.get_parent_open(i.parent)):
-                    itemList.append(i)
+            if i.name == name or i.alias_check(name):
+                if (i.room == player_room or i.inInventory):
+                    if i.parent == 'void' or (i.get_parent_open(i.parent)):
+                        itemList.append(i)
                     
         if action == 'drop':
             inventory = []
