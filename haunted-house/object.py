@@ -99,7 +99,7 @@ class Object:
     
     def action_input_sorter(self, action, player_room, text, fullText): #take stuff from text input and put it here(simple stuff)
         x = 0
-        actions = ['take ', 'pick ', ' up ', 'drop ', 'look ', 'at ']
+        actions = ['take ', 'pick ', ' up ', 'drop ', 'look ', 'examine', 'at ']
         for word in Object.otherActions:
             actions.append(f'{word} ')
         for word in actions:
@@ -188,7 +188,7 @@ class Object:
             if self.parent == 'void' or (self.get_parent_open(self.parent)):
                 if action == 'take' or action == 'drop':
                     self.pick_drop(action, player_room)
-                elif action == 'look':
+                elif action in ['look', 'l', 'examine']:
                     self.item_description()
                 elif action in ['lock', 'unlock']:
                     self.lock_unlock_container(action)
@@ -489,7 +489,7 @@ class Object:
             for i in items:
                 i.pick_drop(action, player_room)
 
-        elif action == 'look' or action in Object.otherActions:
+        elif action in ['look', 'examine'] or action in Object.otherActions:
             items = self.ask_items(itemList)
             for i in items:
                 if action == 'look':
