@@ -66,7 +66,7 @@ def text_input(text, player_room, version = 'main'):
 
         elif action in ['drop', 'take', 'look', 'examine'] or (action in Object.otherActions):
             if version in  ['dev', 'main']:
-                thing.action_input_sorter(action, player_room, text, fullText)
+                thing.action_input_sorter(action, player_room, fullText)
 
         elif action == 'put':
             if version in ['dev', 'main']:

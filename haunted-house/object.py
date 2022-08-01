@@ -101,9 +101,8 @@ class Object:
         item = self.ask_items(itemList, False, False, 'Which item would you like to take?')
         for i in item:
             i.pick_drop('take', player_room)
-        
-    
-    def action_input_sorter(self, action, player_room, text, fullText):
+
+    def action_input_sorter(self, action, player_room, fullText):
         x = 0
         actions = ['take ', 'pick ', ' up ', 'drop ', 'look ', 'examine', 'at ']
         for word in Object.otherActions:
@@ -502,7 +501,7 @@ class Object:
                 i.pick_drop(action, player_room)
 
         elif action in ['look', 'examine'] or action in Object.otherActions:
-            items = self.ask_items(itemList)
+            items = self.ask_items(itemList, sayInventory=True)
             for i in items:
                 if action == 'look':
                     i.item_description()

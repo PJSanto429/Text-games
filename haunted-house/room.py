@@ -10,8 +10,10 @@ player = Player('first')
 
 class Room():
     instances = []
+    nameInstances = []
     def __init__(self, name = 'void', description = 'void', north = False, south = False, east = False, west = False):
         self.__class__.instances.append(self)
+        self.__class__.nameInstances.append(name)
         self.name = name
         self.description = description
 
