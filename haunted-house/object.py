@@ -1,5 +1,7 @@
 from random import randint
 
+from numpy import full
+
 from typeEffect import type_effect
 from debugger import debug
 
@@ -8,7 +10,7 @@ no = ['no', 'n']
 
 class Object:
     instances = []
-    otherActions = []
+    otherActions = ['lock', 'unlock']
     #name, player_room, room, description, takeable, inInventory #this is the most basic stuff
     def __init__(self, name = 'void', room = 'start', description = 'void', takeable = False, inInventory = False, longName = 'void', parent = 'void', open = False, hidden = False, seen = False, health = 0, money = 0):
         self.__class__.instances.append(self)
@@ -28,6 +30,7 @@ class Object:
         #----------------------------------
         self.takeable = takeable #lets items be picked up. default will be False(unable to be picked up)
         self.inInventory = inInventory  #this will always be false by default
+        self.hidden = hidden
         #----------------------------------
         self.longName = longName #for if there are multiple items in room/inventory with same name
         self.seen = seen #for checking if the object has been seen(not currently being used)
@@ -104,7 +107,7 @@ class Object:
 
     def action_input_sorter(self, action, player_room, fullText):
         x = 0
-        actions = ['take ', 'pick ', ' up ', 'drop ', 'look ', 'examine', 'at ']
+        actions = ['take ', 'pick ', ' up ', 'drop ', 'look ', 'examine', 'at ', 'unlock ']
         for word in Object.otherActions:
             actions.append(f'{word} ')
         for word in actions:
@@ -215,7 +218,7 @@ class Object:
             action = action.split('|')
             if action[0] == 'open':
                 openAction = True
-            if action == 'close':
+            if action[0] == 'close':
                 closeAction = True
         if not openAction:
             self.add_attribute('open', f'you open {self.longName}', 'open')
@@ -299,24 +302,28 @@ class Object:
                 type_effect(f'You close {self.longName}')
                 self.open = False
             if not self.locked:
-                for i in Object.instances:
-                    if i.longName == self.containerKey and i.inInventory: #the only way that the container can be locked
-                        print()
-                        type_effect(f'You have locked {self.longName} with {i.longName}')
-                        self.locked = True
-                        return True
-                    elif i.longName == self.containerKey and not i.inInventory:
-                        print()
-                        type_effect(f'You do not have the key({self.containerKey}) in your inventory')
-                        return False
-                    elif i.longName != self.containerKey and i.inInventory:
-                        print()
-                        type_effect(f'{i.longName} is not the key for {self.longName}')
-                        return False
+                print()
+                type_effect(f'what would you like to use to lock {self.longName}? ')
+                choice = input().lower()
+                itemList = self.get_default_items(choice, self.room)
+                item = self.ask_items(itemList, allowAll=False)
+                # i will probably change this so it does not need to be in your inventory, but who knows
+                if item[0].longName == self.containerKey and item[0].inInventory: #the only way that the container can be locked
+                    print()
+                    type_effect(f'You have locked {self.longName} with {item[0].longName}')
+                    self.locked = True
+                    return True
+                elif item[0].longName == self.containerKey and not item[0].inInventory:
+                    print()
+                    type_effect(f'You do not have the key({self.containerKey}) in your inventory')
+                    return False
+                elif item[0].longName != self.containerKey and item[0].inInventory:
+                    print()
+                    type_effect(f'{item[0].longName} is not the key for {self.longName}')
+                    return False
             else:
                 print()
                 type_effect(f'{self.longName} is already locked')
-                    
         else:
             print()
             type_effect(f'You cannot do that to {self.longName}')
@@ -324,29 +331,23 @@ class Object:
     def unlock_container(self):
         if self.isContainer and self.lockAbility:
             if self.locked:
-                type_effect(f'what would you like to use to unlock the {self.longName}?(please type the full name) ')
+                type_effect(f'what would you like to use to unlock the {self.longName}? ')
                 choice = input().lower()
-                longName = False
-                for i in Object.instances:
-                    if i.longName == choice:
-                        longName = True
-                        if i.longName == self.containerKey and i.inInventory: #only way that the container can be unlocked
-                            print()
-                            type_effect(f'You have unlocked {self.longName} with {i.longName}')
-                            self.locked = False
-                            return True
-                        elif i.longName == self.containerKey and not i.inInventory:
-                            print()
-                            type_effect(f'You do not have the key({self.containerKey}) in your inventory')
-                            return False
-                        elif i.longName != self.containerKey and i.inInventory:
-                            print()
-                            type_effect(f'{i.longName} is not the key for {self.longName}')
-                            return False
-
-                if not longName:
+                itemList = self.get_default_items(choice, self.room)
+                item = self.ask_items(itemList, allowAll=False)
+                #same as above, inventory need might not be necessary
+                if item[0].longName == self.containerKey and item[0].inInventory: #only way that the container can be unlocked
                     print()
-                    type_effect('invalid input')
+                    type_effect(f'You have unlocked {self.longName} with {item[0].longName}')
+                    self.locked = False
+                    return True
+                elif item[0].longName == self.containerKey and not item[0].inInventory:
+                    print()
+                    type_effect(f'You do not have the key({self.containerKey}) in your inventory')
+                    return False
+                elif item[0].longName != self.containerKey and item[0].inInventory:
+                    print()
+                    type_effect(f'{item[0].longName} is not the key for {self.longName}')
                     return False
             else:
                 print()
@@ -394,7 +395,7 @@ class Object:
             print()
             type_effect(f'You cannot do that to {self.longName}')
        
-    def ask_items(self, objects, falseMessage = False, sayInventory = False, askMessage = False):
+    def ask_items(self, objects, falseMessage = False, sayInventory = False, askMessage = False, allowAll = True):
         if len(objects) == 0:
             print()
             type_effect(self.cantSee)
@@ -414,16 +415,17 @@ class Object:
                     type_effect(f'{i.longName} - inventory')
                 else:
                     type_effect(i.longName)
-            if len(objects) == 2:
-                print()
-                type_effect('both')
-            elif len(objects) > 2:
-                print()
-                type_effect('all')
+            if allowAll:
+                if len(objects) == 2:
+                    print()
+                    type_effect('both')
+                elif len(objects) > 2:
+                    print()
+                    type_effect('all')
             print()
             choice = input().lower()
             itemGood = False
-            if choice in ['both', 'all']:
+            if choice in ['both', 'all'] and allowAll:
                 itemGood = True
                 return objects
             else:
@@ -473,14 +475,18 @@ class Object:
         for alias in self.aliases:
             if alias == name:
                 return True
-    
-    def action(self, action, name, player_room = 'none'):
+            
+    def get_default_items(self, name, player_room):
         itemList = []
         for i in Object.instances:
             if i.name == name or i.alias_check(name):
                 if (i.room == player_room or i.inInventory):
                     if i.parent == 'void' or (i.get_parent_open(i.parent)):
                         itemList.append(i)
+        return itemList
+    
+    def action(self, action, name, player_room = 'none'):
+        itemList = self.get_default_items(name, player_room)
                     
         if action == 'drop':
             inventory = []
@@ -544,9 +550,3 @@ class Object:
             else:
                 print()
                 type_effect(f"You don't have {self.longName} in your inventory")
-
-    def return_name(self, x = 'name'):
-        if x == 'name':
-            return self.name
-        elif x == 'longName':
-            return self.longName

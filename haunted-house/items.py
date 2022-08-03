@@ -27,7 +27,7 @@ fridge1.open_description('this is a great big stinky fridge with a broken light,
 fridge1.add_attribute('open', 'with some effort, you are able to open the fridge. there is really nothing special about it when it is open.', 'open')
 fridge1.add_attribute('close', 'you shut the fridge, hoping to get rid of some of the awful smell, but no luck', 'close')
 fridge1.add_attribute('smell', 'Yuck!')
-fridge1.create_container(True, 'rusty copper key')
+fridge1.create_container(True, 'rusty copper key', True)
 
 fridge2 = Object('fridge', 'first', 'this is a clean fridge that looks brand new', False, False, 'clean fridge')
 fridge2.open_description('the inside of this fridge is somehow even cleaner than the outside')

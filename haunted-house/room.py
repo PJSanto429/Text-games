@@ -30,14 +30,10 @@ class Room():
                     i.room_description(player.room)
                 if action == 'move':
                     i.move_room(player_room, direction)
-                if action == 'go':
-                    #i think this is for teleporting the player => im not sure
-                    #i.go(player_room)
-                    pass
                 
     def player_look(self):
-        #this stuf will be in character.py class soon(hopefully)
-        player_descripions = [
+        #this stuff will be in character.py class soon(hopefully)
+        player_descripions = [ #just add more descriptions here for more randomness
             'looking fresh as ever',
             'very heroic looking',
             'according to grandma, you are a real cutie. i think otherwise',
