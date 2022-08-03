@@ -1,6 +1,9 @@
 from object import Object
 from typeEffect import type_effect
-from debugger import debug
+try:
+    from debugger import debug
+except:
+    pass
 from random import choice
 
 class Player(): #this is simply so the player can move rooms and it actually work.

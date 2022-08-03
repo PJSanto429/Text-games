@@ -7,7 +7,10 @@ from typeEffect import type_effect
 from loading import loading
 from room import *
 from encryptFile import fileCryption
-from debugger import debug
+try:
+    from debugger import debug
+except:
+    pass
 
 def quit_save(player_room, version):
     currentTime = get_current_time()

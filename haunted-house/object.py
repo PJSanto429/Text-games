@@ -1,9 +1,10 @@
 from random import randint
 
-from numpy import full
-
 from typeEffect import type_effect
-from debugger import debug
+try:
+    from debugger import debug
+except:
+    pass
 
 yes = ['yes', 'y']
 no = ['no', 'n']
