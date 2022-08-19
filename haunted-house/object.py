@@ -1,5 +1,4 @@
-from random import randint
-
+from random import randint, choice
 from typeEffect import type_effect
 try:
     from debugger import debug
@@ -139,9 +138,10 @@ class Object:
             print()
             for i in Object.instances:
                 if len(items) <= 3:
-                    item = (Object.instances[randint(0, len(Object.instances) - 1)])
+                    #item = (Object.instances[randint(0, len(Object.instances) - 1)])
+                    item = choice(Object.instances)
                     if item.longName != 'void' and item.takeable and i.parent == 'void' and item not in items:
-                        print() #add the item to a list so it only prints it once
+                        print()
                         type_effect(item.longName)
                         items.append(item)
 
@@ -174,12 +174,12 @@ class Object:
                 return True
 
     def item_description(self): #prints the item's description
-        #add the item long name to be printed above the description
         if self.description == 'void':
             print()
             type_effect(self.noDesc)
         else:
             print()
+            print(f'------ {self.longName} ------')
             type_effect(self.description)
             self.seen = True
 

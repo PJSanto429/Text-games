@@ -27,7 +27,7 @@ def quit_save(player_room, version):
                 break
         if i == 4:
             if (currentTime[4]) >= (recentSaveTime[4] + 2):
-                debug('minutes = different')
+                #debug('minutes = different')
                 do_quit_save(code, player_room, version)
                 break
     

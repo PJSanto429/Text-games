@@ -2,14 +2,10 @@
 def firstStartup():
     from os import mkdir, path
     from cryptography.fernet import Fernet
-
-    isExist = path.exists('players') #dont change this or save/load will not work
-    if isExist == False:
+    if not path.exists('players'):
         mkdir('players')
-
-    isExist = path.exists('key.key')
-    if isExist == False:
+    if not path.exists('key.key'):
         key = Fernet.generate_key()
-        with open('key.key', 'wb') as file: #DONT UNCOMMENT THIS OR THE KEY WILL CHANGE
+        with open('key.key', 'wb') as file:
             file.write(key)
             file.close()

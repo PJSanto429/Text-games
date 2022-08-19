@@ -37,7 +37,7 @@ class Room():
     def player_look(self):
         #this stuff will be in character.py class soon(hopefully)
         player_descripions = [ #just add more descriptions here for more randomness
-            'looking fresh as ever',
+            'you look fresh as ever',
             'very heroic looking',
             'according to grandma, you are a real cutie. i think otherwise',
             'id rather not...'
@@ -68,7 +68,6 @@ class Room():
                                 type_effect(i.longName)
                                 x += 1
                             else:
-                                #debug(i.longName)
                                 type_effect(f', {i.longName}')
                                 x += 1
             else:
