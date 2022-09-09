@@ -59,6 +59,7 @@ def graphicsInit():
                         pygame.quit()
                         sys.exit()
                     else:
+                        setInputText(' '.join(allText[-1]))
                         text_input(userText, 'first', 'dev', True)
                         userText = ''
                 else:
@@ -81,6 +82,6 @@ def graphicsInit():
         input_rect.w = max(100, text_surface.get_width() + 10)
     
         pygame.display.flip()
-        if inputText:
-            setInputText(' '.join(allText[-1]))
+        #if inputText:
+        #    setInputText(' '.join(allText[-1]))
         clock.tick(60)
