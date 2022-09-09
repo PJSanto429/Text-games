@@ -49,9 +49,6 @@ def text_input(text, player_room, version = 'main'):
                 
             elif action in ['inv', 'inventory']:
                 thing.see_inventory()
-
-            elif action in ['move', 'go']:
-                room.action('move', player_room, text[x - 1])
                 
             elif action in ['help()', 'help']:
                 if version in ['dev']:
@@ -63,6 +60,9 @@ def text_input(text, player_room, version = 'main'):
         elif fullText == 'look at me':
             #this stuff will be stored in room class until player class is built
             room.player_look()
+            
+        elif action in ['move', 'go']:
+            room.action('move', player_room, text[x - 1])
 
         elif action in ['drop', 'take', 'look', 'examine'] or (action in Object.otherActions):
             if version in  ['dev', 'main']:
